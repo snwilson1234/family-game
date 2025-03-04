@@ -2,8 +2,11 @@ import { useState } from 'react';
 
 export default function PlayerChoice() {
   const [players, setPlayers] = useState<number | null>(null);
+  const [continueVisible, setContinueVisible] = useState<boolean | null>(null);
+
 
   const handlePlayerUpdate = (value: number) => {
+    enableContinue();
     setPlayers(value);
   };
 
@@ -12,6 +15,14 @@ export default function PlayerChoice() {
       players === id ? 'text-slate-600' : 'text-slate-900'
     }`;
   };
+
+  const enableContinue = () => {
+    setContinueVisible(true);
+  }
+
+  const getContinueVisibility = () => {
+    return continueVisible == true ? 'visible' : 'invisible';
+  }
 
   return (
     <div className="flex flex-col gap-20 p-8">
@@ -41,13 +52,13 @@ export default function PlayerChoice() {
       <div className="
             flex flex-col items-center">
         <button
-          className="
-            bg-fuchsia-800 text-slate-900
-            font-semibold rounded-lg w-md
-            h-full text-lg shadow-lg 
-            shadow-fuchsia-800/50 
-            hover:cursor-pointer 
-            hover:text-slate-600"
+          className={`${getContinueVisibility()} 
+          bg-fuchsia-800 text-slate-900
+          font-semibold rounded-lg w-md
+          h-full text-lg shadow-lg 
+          shadow-fuchsia-800/50 
+          hover:cursor-pointer 
+          hover:text-slate-600`}
         >Continue</button>
       </div>
     </div>
