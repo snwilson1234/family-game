@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function PlayerChoice() {
@@ -49,17 +50,27 @@ export default function PlayerChoice() {
             bg-fuchsia-500 shadow-fuchsia-500/50`}
           >Four</button>
       </div>
-      <div className="
-            flex flex-col items-center">
+      <div
+        className="
+          flex flex-col items-center">
+        <Link
+          href={{
+            pathname: '/game',
+            query: {
+              search: `${players}`
+            }
+          }}
+        >
         <button
           className={`${getContinueVisibility()} 
-          bg-fuchsia-800 text-slate-900
-          font-semibold rounded-lg w-md
-          h-full text-lg shadow-lg 
-          shadow-fuchsia-800/50 
-          hover:cursor-pointer 
-          hover:text-slate-600`}
-        >Continue</button>
+            bg-fuchsia-800 text-slate-900
+            font-semibold rounded-lg w-md
+            h-full text-lg shadow-lg 
+            shadow-fuchsia-800/50 
+            hover:cursor-pointer 
+            hover:text-slate-600`}
+          >Continue</button>
+        </Link>
       </div>
     </div>
   );
