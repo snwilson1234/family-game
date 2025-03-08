@@ -15,7 +15,7 @@ const ConnectPage: NextPage<ConnectPageProps> = ({ numPlayers }) => {
                     ">
                         <h1 className="
                             text-5xl font-medium inline-block
-                            ">Choose Players</h1>
+                            ">Connect Players</h1>
                 </div>
                 
                 <div className="
@@ -52,7 +52,6 @@ const ConnectPage: NextPage<ConnectPageProps> = ({ numPlayers }) => {
                         }
                     </div>
                 </div>
-            <div>Number of players: {numPlayers ?? "Not provided"}</div>
         </div>
     );
 };
