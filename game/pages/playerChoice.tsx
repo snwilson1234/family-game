@@ -35,19 +35,19 @@ export default function PlayerChoice() {
           id="btn-2"
           onClick={() => handlePlayerUpdate(2)}
           className={`${getButtonClassNames(2)} 
-            bg-fuchsia-300 shadow-fuchsia-300/50`}
+            bg-slate-300 shadow-slate-300/50`}
         >Two</button>
         <button
           id="btn-3"
           onClick={() => handlePlayerUpdate(3)}
           className={`${getButtonClassNames(3)}
-            bg-fuchsia-400 shadow-fuchsia-400/50`}
+            bg-slate-400 shadow-slate-400/50`}
         >Three</button>
         <button
           id="btn-4"
           onClick={() => handlePlayerUpdate(4)}
           className={`${getButtonClassNames(4)}
-            bg-fuchsia-500 shadow-fuchsia-500/50`}
+            bg-slate-500 shadow-slate-500/50`}
           >Four</button>
       </div>
       <div
@@ -55,20 +55,20 @@ export default function PlayerChoice() {
           flex flex-col items-center">
         <Link
           href={{
-            pathname: '/game',
+            pathname: '/connectPage',
             query: {
-              search: `${players}`
+              numPlayers: `${players}`
             }
           }}
         >
         <button
           className={`${getContinueVisibility()} 
-            bg-fuchsia-800 text-slate-900
+            bg-slate-600 text-slate-900
             font-semibold rounded-lg w-md
             h-full text-lg shadow-lg 
-            shadow-fuchsia-800/50 
+            shadow-slate-800/50 
             hover:cursor-pointer 
-            hover:text-slate-600`}
+            hover:text-slate-800`}
           >Continue</button>
         </Link>
       </div>
