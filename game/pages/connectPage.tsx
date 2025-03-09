@@ -64,7 +64,7 @@ const ConnectPage = () => {
                     ">
                         {
                             Array.from({ length: numPlayers }).map((_, index) => {
-                                const playerId = Object.keys(players)[index]; // Get the player id by index
+                                const playerId = Object.keys(players)[index];
     
                                 return (
                                     <div key={index} className="flex flex-row items-center px-6 gap-2 h-10 w-xl rounded-md bg-slate-500">
@@ -84,27 +84,6 @@ const ConnectPage = () => {
                                     </div>
                                 );
                             })
-                            // Object.entries(players).map(([id, type]) => (
-                            //     <div key={id} className="
-                            //         flex flex-row items-center
-                            //         px-6 gap-2
-                            //         h-10 w-xl
-                            //         rounded-md
-                            //         bg-slate-500
-                            //     ">
-                            //         {
-                            //             id ? <p>{id}</p> : (
-                            //                 <div>
-                            //                     <Loader2 className="
-                            //                         h-5 w-5 animate-spin text-white
-                            //                     " />
-                            //                     <p>Waiting...</p>
-                            //                 </div>
-                            //             )
-                                    
-                            //         }
-                            //     </div>
-                            // ))
                         }
                     </div>
                 </div>
