@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 
-//use device type to determine if this is the admin or player, to keep things simple.
+//use device type to determine if this is the host or player, to keep things simple.
 async function getDeviceType() {
   const userAgent = (await headers()).get("user-agent") || "";
 
@@ -16,7 +16,7 @@ export default async function Home() {
   // store device type
   const deviceType = getDeviceType();
 
-  // if deviceType is desktop, this is an admin
+  // if deviceType is desktop, this is an host
   // display the game-setup page.
   if (await deviceType === "desktop") {
     return (
@@ -59,6 +59,9 @@ export default async function Home() {
       <Link
           href={{
             pathname: '/connectPage',
+            query : {
+              playerType: "player",
+            }
           }}
         >
         <button

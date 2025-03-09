@@ -57,7 +57,8 @@ export default function PlayerChoice() {
           href={{
             pathname: '/connectPage',
             query: {
-              numPlayers: `${players}`
+              numPlayers: `${players}`,
+              playerType: "host"
             }
           }}
         >
