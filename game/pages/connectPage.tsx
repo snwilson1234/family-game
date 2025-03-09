@@ -1,11 +1,37 @@
-import { GetServerSideProps, NextPage } from "next";
+// 'use client';
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 import { Loader2 } from "lucide-react"; 
 
-interface ConnectPageProps {
-    numPlayers?: number;
-}
+import socket from "./socket";
 
-const ConnectPage: NextPage<ConnectPageProps> = ({ numPlayers }) => {
+const ConnectPage = () => {
+
+    const searchParams = useSearchParams();
+    const numPlayers = Number(searchParams?.get("numPlayers")) || 0;
+
+    const [players, setPlayers] = useState({});
+    const [role, setRole] = useState("");
+
+    useEffect(() => {
+        if (!socket.connected) {
+            socket.connect();
+        }
+
+        socket.on("updatePlayers", setPlayers);
+        return () => {
+            socket.off("updatePlayers");
+            socket.disconnect();
+        };
+    }, []);
+
+    const joinGame = (type) => {
+        setRole(type);
+        socket.emit("joinGame", type);
+    };
+
+
     return (
         <div className="
                 flex flex-col gap-20 p-8
@@ -35,8 +61,8 @@ const ConnectPage: NextPage<ConnectPageProps> = ({ numPlayers }) => {
                         rounded-md shadow-lg
                     ">
                         {
-                            Array.from({ length: numPlayers! }).map((_, index) => (
-                                <div key={index} className="
+                            Object.entries(players).map(([id, type]) => (
+                                <div key={id} className="
                                     flex flex-row items-center
                                     px-6 gap-2
                                     h-10 w-xl
@@ -46,24 +72,25 @@ const ConnectPage: NextPage<ConnectPageProps> = ({ numPlayers }) => {
                                     <Loader2 className="
                                         h-5 w-5 animate-spin text-white
                                     " />
-                                    <p>Waiting...</p>
+                                    {
+                                        id ? <p>{id}</p> : <p>Waiting...</p>
+                                    }
                                 </div>
                             ))
                         }
                     </div>
                 </div>
+                <button 
+                    className="
+                        bg-slate-400
+                        hover:cursor-pointer    
+                    "
+                    onClick={() => joinGame("player")}
+                >
+                    Join
+                </button>
         </div>
     );
-};
-
-export const getServerSideProps: GetServerSideProps<ConnectPageProps> = async ({ query }) => {
-    const numPlayers = Array.isArray(query.numPlayers) ? query.numPlayers[0] : query.numPlayers;
-    
-    return {
-        props: {
-            numPlayers: numPlayers ? Number(numPlayers) : undefined, // Convert to number safely
-        },
-    };
 };
 
 export default ConnectPage;

@@ -16,6 +16,8 @@ export default async function Home() {
   // store device type
   const deviceType = getDeviceType();
 
+  // if deviceType is desktop, this is an admin
+  // display the game-setup page.
   if (await deviceType === "desktop") {
     return (
       <div className="flex flex-col gap-20 p-8">
@@ -56,7 +58,7 @@ export default async function Home() {
     return (
       <Link
           href={{
-            pathname: '/client/lobby',
+            pathname: '/connectPage',
           }}
         >
         <button

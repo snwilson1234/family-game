@@ -3,18 +3,24 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
+//setup express app & cors headers
 const app = express();
-app.use(cors()); // Allow requests from different origins
+app.use(cors());
 
+// create http server for the express app
 const server = http.createServer(app);
+
+// create websocket server and attach to HTTP server
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allows all clients on your network
+    origin: "*",
   },
 });
 
-let players = {}; // Store connected players
+// store connected players
+let players = {};
 
+// listen for player connections
 io.on("connection", (socket) => {
   console.log(`Player connected: ${socket.id}`);
 
