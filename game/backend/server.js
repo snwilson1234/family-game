@@ -26,7 +26,7 @@ io.on("connection", (socket) => {
 
   // Handle player joining
   socket.on("joinGame", (playerType) => {
-    players[socket.id] = playerType; // Store player type (host/player)
+    players[socket.id] = playerType;
     io.emit("updatePlayers", players); // Send updated player list
   });
 

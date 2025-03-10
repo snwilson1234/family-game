@@ -55,7 +55,8 @@ export default function PlayerChoice() {
           flex flex-col items-center">
         <Link
           href={{
-            pathname: '/connectPage',
+            pathname: '/categorySelection',
+            //pathname: '/connectPage',
             query: {
               numPlayers: `${players}`,
               playerType: "host"
