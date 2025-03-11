@@ -1,6 +1,7 @@
+'use client';
 import { useState } from "react";
 
-
+//just  write whole game here and refactor later
 const CategorySelectionPage = () => {
 
     const categories = [
@@ -73,7 +74,7 @@ const CategorySelectionPage = () => {
     return (
         <div className="
             flex flex-col items-center align-center
-            text-white w-full gap-2
+            text-white w-full gap-2 h-screen
         ">
             <h1 className="
                 text-lg
@@ -91,14 +92,14 @@ const CategorySelectionPage = () => {
             </button>
             <ul className="
                 flex flex-col items-center gap-1 py-5
-                bg-slate-600 w-3/5 rounded-md
+                bg-slate-600 w-3/5 h-3/5 rounded-md
             ">
                 {
                     selectedCategories.map(
                         (category, index) => (
                             <li className="
                                 bg-slate-500 text-white w-100
-                                rounded-md p-2
+                                rounded-md p-2 h-1/10
                             " key={index}>
                                 {category}
                             </li>
@@ -119,6 +120,17 @@ const CategorySelectionPage = () => {
             <div>
                 <p>{randomLetter}</p>
             </div>
+
+            <button 
+                onClick={generateRandomLetter}
+                disabled={selectedCategories.length === 0 || randomLetter === ""}
+                className={`
+                    bg-slate-500 p-2
+                    rounded-md
+                    ${selectedCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-slate-300"}
+                    `}>
+                Continue
+            </button>
         </div>
     );
 }

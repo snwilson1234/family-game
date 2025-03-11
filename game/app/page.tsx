@@ -1,24 +1,27 @@
-import { headers } from "next/headers";
+'use client';
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 
-//use device type to determine if this is the host or player, to keep things simple.
-async function getDeviceType() {
-  const userAgent = (await headers()).get("user-agent") || "";
-
-  if (/iphone|ipod/i.test(userAgent)) return "iphone";
-  if (/windows|macintosh|linux|x11/i.test(userAgent)) return "desktop";
-  return "mobile";
-}
-
-export default async function Home() {
-
+export default function Home() {
   // store device type
-  const deviceType = getDeviceType();
+  // use device type to determine if this is the host or player, to keep things simple.
+  const [deviceType, setDeviceType] = useState<string | null>(null);
 
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (/iphone|ipod/i.test(userAgent)) setDeviceType("iphone");
+    else if (/windows|macintosh|linux|x11/i.test(userAgent)) setDeviceType("desktop");
+    else setDeviceType("mobile");
+  }, []);
+
+  // prevent flashing page "wait until hydration to decide what to display"
+  if (deviceType === null) {
+    return null;
+  }
   // if deviceType is desktop, this is an host
   // display the game-setup page.
-  if (await deviceType === "desktop") {
+  else if (deviceType === "desktop") {
     return (
       <div className="flex flex-col gap-20 p-8">
         <header className="
