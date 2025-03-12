@@ -103,9 +103,9 @@ const ConnectPage = () => {
                         </div>
                     </div>
                     
-                    {/* <Link href={{
+                    <Link href={{
                         pathname: '/gameboard',
-                    }}> */}
+                    }}>
                         <button 
                             onClick={() => setGameActive(true)}
                             className="
@@ -116,7 +116,7 @@ const ConnectPage = () => {
                             hover:cursor-pointer
                             hover:text-slate-400
                         ">Start Game</button>
-                    {/* </Link> */}
+                    </Link>
                     
                     {
                         <p>You are player: test</p>
