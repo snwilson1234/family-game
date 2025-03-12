@@ -1,7 +1,8 @@
 'use client';
 import { useState } from "react";
+import { GameState } from "./gamestate/gamestate";
 
-//just  write whole game here and refactor later
+//just write whole game here and refactor later
 const CategorySelectionPage = () => {
 
     const categories = [
@@ -59,6 +60,7 @@ const CategorySelectionPage = () => {
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [randomLetter, setRandomLetter] = useState<string>("");
+    const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
 
     const generateRandomCategories = () => {
         const shuffled = [...categories].sort(() => 0.5 - Math.random());
