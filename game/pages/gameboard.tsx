@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Timer from "./../shared/timer";
 import { GameState } from "./gamestate/gamestate";
 
@@ -61,6 +61,8 @@ const Gameboard = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [randomLetter, setRandomLetter] = useState<string>("");
     const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
+    const [timeLeft, setTimeLeft] = useState(5); //TODO: update to 180 when done testing
+    const [isRunning, setIsRunning] = useState(false);
 
     const generateRandomCategories = () => {
         const shuffled = [...categories].sort(() => 0.5 - Math.random());
@@ -71,6 +73,27 @@ const Gameboard = () => {
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const randomIndex = Math.floor(Math.random() * letters.length);
         setRandomLetter(letters[randomIndex]);
+    };
+
+    useEffect(() => {
+        if (!isRunning || timeLeft <= 0) return;
+        const timer = setInterval(() => {
+          setTimeLeft((prev) => prev - 1);
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [isRunning, timeLeft]);
+
+    // when the timer is up, select new category
+    useEffect(() => {
+        if (isRunning && timeLeft == 0) {
+            setGameState(GameState.CategorySelection);
+        }
+    }, [timeLeft])
+    
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs.toString().padStart(2, "0")}`;
     };
     
     return (
@@ -202,7 +225,54 @@ const Gameboard = () => {
                         )  
                     }
                 </ul>
-                <Timer />
+                {/*Timer*/}
+                <div className="
+                    flex flex-col w-1/4 h-1/4 gap-2 p-4
+                    text-center text-2xl font-bold
+                    rounded-lg bg-slate-400
+                ">
+                    <div>{formatTime(timeLeft)}</div>
+                    <div className="
+                        flex flex-col items-center gap-2 w-full
+                    ">
+                        <button 
+                        className="
+                            bg-emerald-900 text-white rounded-md
+                            w-1/2
+                            hover:cursor-pointer
+                            hover:text-slate-300
+                        " 
+                        onClick={() => setIsRunning(true)}
+                        >
+                        Start
+                        </button>
+                        <button 
+                        className="
+                            bg-red-900 text-white rounded-md
+                            w-1/2
+                            hover:cursor-pointer
+                            hover:text-slate-300
+                        " 
+                        onClick={() => setIsRunning(false)}
+                        >
+                        Stop
+                        </button>
+                        <button 
+                        className="
+                            bg-blue-900 text-white rounded-md
+                            w-1/2
+                            hover:cursor-pointer
+                            hover:text-slate-300
+                        " 
+                        onClick={() => {
+                            setTimeLeft(5);
+                            setIsRunning(false);
+                        }}
+                        >
+                        Reset
+                        </button>
+                    </div>
+                    </div>
                 </div>  
             </div>
         </div>

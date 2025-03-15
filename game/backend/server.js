@@ -19,7 +19,6 @@ const io = new Server(server, {
 
 // store connected players
 let players = {};
-
 // listen for player connections
 io.on("connection", (socket) => {
   console.log(`Player connected: ${socket.id}`);
@@ -28,11 +27,6 @@ io.on("connection", (socket) => {
   socket.on("joinGame", (playerType) => {
     players[socket.id] = playerType;
     io.emit("updatePlayers", players); // Send updated player list
-  });
-
-  // Handle player actions (e.g., answering a question)
-  socket.on("playerAction", (data) => {
-    io.emit("updateGame", data); // Broadcast action to all players
   });
 
   // Handle player disconnecting
@@ -46,3 +40,4 @@ io.on("connection", (socket) => {
 server.listen(3001, () => {
   console.log("Server running on http://192.168.1.204:3001"); // Replace with your local IP
 });
+
