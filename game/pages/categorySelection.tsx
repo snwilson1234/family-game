@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { GameState } from "./gamestate/gamestate";
 
-//just write whole game here and refactor later
+
 const CategorySelectionPage = () => {
 
     const categories = [

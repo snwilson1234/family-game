@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useWebSocket } from "./socketContext";
 
+
 const AdminPage = () => {
 
   const socket = useWebSocket();
