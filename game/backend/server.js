@@ -23,10 +23,16 @@ let players = {};
 io.on("connection", (socket) => {
   console.log(`Player connected: ${socket.id}`);
 
-  // Handle player joining
+  // listen for joinGame event
   socket.on("joinGame", (playerType) => {
     players[socket.id] = playerType;
     io.emit("updatePlayers", players); // Send updated player list
+    console.log("All players: ", players);
+    socket.emit("confirmJoin", {playerId: socket.id});
+  });
+
+  socket.on("whoami", () => {
+    socket.emit("whoami", {playerId: socket.id});
   });
 
   // Handle player disconnecting

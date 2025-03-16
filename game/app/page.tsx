@@ -1,9 +1,13 @@
 'use client';
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useWebSocket } from "@/pages/socketContext";
+import { Socket } from "socket.io-client";
 
 
 export default function Home() {
+
+  const socket: Socket = useWebSocket();
   // store device type
   // use device type to determine if this is the host or player, to keep things simple.
   const [deviceType, setDeviceType] = useState<string | null>(null);

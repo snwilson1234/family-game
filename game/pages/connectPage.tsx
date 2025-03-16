@@ -4,30 +4,34 @@ import { useSearchParams } from "next/navigation";
 
 import { Loader2, Signal } from "lucide-react"; 
 
-import socket from "./socket";
+import { useWebSocket } from "./socketContext";
 import Link from "next/link";
+import { Socket } from "socket.io-client";
 
 const ConnectPage = () => {
+
+    const socket: Socket = useWebSocket();
 
     const searchParams = useSearchParams();
     const numPlayers = Number(searchParams?.get("numPlayers")) || 0;
     const playerType = searchParams.get("playerType");
 
     const [players, setPlayers] = useState({});
+    const [thisPlayer, setThisPlayer] = useState(null);
     const [role, setRole] = useState("");
     const [gameActive, setGameActive] = useState(false);
 
     useEffect(() => {
-        if (!socket.connected) {
-            socket.connect();
-            joinGame(playerType);
+        if (socket != null) {
+            socket.emit("joinGame", {playerType:"admin"})
         }
 
         socket.on("updatePlayers", setPlayers);
+        socket.on("confirmJoin", setThisPlayer);
 
         return () => {
             socket.off("updatePlayers");
-            socket.disconnect();
+            socket.off("confirmJoin");
         };
     }, []);
 
@@ -36,10 +40,10 @@ const ConnectPage = () => {
     }, [players]);
     
 
-    const joinGame = (type) => {
-        setRole(type);
-        socket.emit("joinGame", type);
-    };
+    // const joinGame = (type) => {
+    //     setRole(type);
+    //     socket.emit("joinGame", type);
+    // };
 
     if (gameActive) {
         return (
@@ -119,7 +123,7 @@ const ConnectPage = () => {
                     </Link>
                     
                     {
-                        <p>You are player: test</p>
+                        <p>You are: {`${thisPlayer ? thisPlayer['playerId'] : ""}`}</p>
                     }
             </div>
         );

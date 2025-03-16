@@ -2,8 +2,11 @@
 import { useEffect, useState } from "react";
 import Timer from "./../shared/timer";
 import { GameState } from "./gamestate/gamestate";
+import { useWebSocket } from "./socketContext";
 
 const Gameboard = () => {
+
+    const socket = useWebSocket();
 
     const categories = [
         "Animals",
@@ -63,6 +66,7 @@ const Gameboard = () => {
     const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
     const [timeLeft, setTimeLeft] = useState(5); //TODO: update to 180 when done testing
     const [isRunning, setIsRunning] = useState(false);
+    const [thisPlayer, setThisPlayer] = useState(null);
 
     const generateRandomCategories = () => {
         const shuffled = [...categories].sort(() => 0.5 - Math.random());
@@ -74,6 +78,20 @@ const Gameboard = () => {
         const randomIndex = Math.floor(Math.random() * letters.length);
         setRandomLetter(letters[randomIndex]);
     };
+
+    useEffect(() => {
+        if (socket != null) {
+            socket.emit("whoami");
+            // console.log("turned on WHOAMI event");
+            // socket.emit("whoami");
+        }
+
+        socket.on("whoami", setThisPlayer);
+
+        return () => {
+            socket.off("whoami");
+        }
+    }, []);
 
     useEffect(() => {
         if (!isRunning || timeLeft <= 0) return;
@@ -108,6 +126,9 @@ const Gameboard = () => {
                 <h1 className="
                     text-lg
                 ">Category Selection</h1>
+                {
+                        <p>You are: {`${thisPlayer ? thisPlayer['playerId'] : ""}`}</p>
+                    }
 
                 <button 
                     onClick={generateRandomCategories}
