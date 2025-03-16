@@ -2,7 +2,6 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-// import Player from '../pages/gamestate/player';
 
 //setup express app & cors headers
 const app = express();
@@ -18,29 +17,41 @@ const io = new Server(server, {
   },
 });
 
-// store connected players
+// store all connected players, including admin
 let players = {};
+
+// store "player" type players
 let playerArr = [];
 
 // listen for player connections
 io.on("connection", (socket) => {
+  // once player is connected,
   console.log(`Player connected: ${socket.id}`);
 
   // listen for joinGame event
   socket.on("joinGame", (playerName, playerType) => {
     console.log("player", playerName, "joined game");
-    playerArr.push({// update player list
-      id: socket.id,
-      name: playerName,
-      type: playerType
-    });
-    players[String(socket.id)] = {// update player list
+    if (playerType == "player") {
+      // update player array for client usage if "player"
+      playerArr.push({
+        id: socket.id,
+        name: playerName,
+        type: playerType
+      });
+    }
+
+    // update server player object with all players
+    players[String(socket.id)] = {
       name: playerName,
       type: playerType
     }
-    io.emit("updatePlayers", playerArr); // Send updated player array
+
+    // send updated player array to all clients
+    io.emit("updatePlayers", playerArr); 
+
     console.log("All players: ", players);
     console.log("All players array sent to clients: ", playerArr);
+
     socket.emit("confirmJoin", {playerId: socket.id});
   });
 
@@ -62,6 +73,7 @@ io.on("connection", (socket) => {
   // Handle player disconnecting
   socket.on("disconnect", () => {
     console.log(`Player disconnected: ${socket.id}`);
+    playerArr = playerArr.filter(player => player.id !== socket.id);
     delete players[socket.id];
     io.emit("updatePlayers", playerArr);
   });

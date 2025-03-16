@@ -23,13 +23,13 @@ const ConnectPage = () => {
     const numPlayers = Number(searchParams?.get("numPlayers")) || 0;
 
     const [players, setPlayers] = useState<Player[]>([]);
-    const [thisPlayer, setThisPlayer] = useState<Player>();
+    const [adminUser, setAdminUser] = useState<Player>();
     const [gameActive, setGameActive] = useState(false);
 
     useEffect(() => {
         if (socket != null) {
             socket.on("updatePlayers", setPlayers);
-            socket.on("whoami", setThisPlayer);
+            socket.on("whoami", setAdminUser);
             socket.emit("getPlayers");
             socket.emit("whoami");
         }
@@ -37,7 +37,7 @@ const ConnectPage = () => {
         return () => {
             if (socket != null) {
                 socket.off("updatePlayers");
-                socket.off("whoami", setThisPlayer);
+                socket.off("whoami", setAdminUser);
             }
         };
     }, []);
@@ -47,8 +47,8 @@ const ConnectPage = () => {
     }, [players]);
 
     useEffect(() => {
-        console.log("Updated player:", thisPlayer);
-    }, [thisPlayer]);
+        console.log("Updated player:", adminUser);
+    }, [adminUser]);
     
 
     if (gameActive) {
@@ -129,7 +129,7 @@ const ConnectPage = () => {
                     </Link>
                     
                     {
-                        <p>You are: {`${thisPlayer ? thisPlayer['name'] : ""}`}</p>
+                        <p>You are: {`${adminUser ? adminUser['name'] : ""}`}</p>
                     }
             </div>
         );
