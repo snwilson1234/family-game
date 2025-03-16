@@ -20,6 +20,7 @@ const io = new Server(server, {
 
 // store connected players
 let players = {};
+let playerArr = [];
 
 // listen for player connections
 io.on("connection", (socket) => {
@@ -28,30 +29,41 @@ io.on("connection", (socket) => {
   // listen for joinGame event
   socket.on("joinGame", (playerName, playerType) => {
     console.log("player", playerName, "joined game");
+    playerArr.push({// update player list
+      id: socket.id,
+      name: playerName,
+      type: playerType
+    });
     players[String(socket.id)] = {// update player list
-      playerName: playerName,
-      playerType: playerType
+      name: playerName,
+      type: playerType
     }
-    io.emit("updatePlayers", players); // Send updated player list
+    io.emit("updatePlayers", playerArr); // Send updated player array
     console.log("All players: ", players);
+    console.log("All players array sent to clients: ", playerArr);
     socket.emit("confirmJoin", {playerId: socket.id});
   });
 
   socket.on("whoami", () => {
-    socket.emit("whoami", {playerId: socket.id});
+    console.log("received whoami request");
+    socket.emit("whoami", {
+      id: String(socket.id),
+      name: players[socket.id]['name'],
+      type: players[socket.id]['type'],
+    });
   });
 
   socket.on("getPlayers", () => {
     console.log("received get players request");
     console.log("players:", players);
-    socket.emit("updatePlayers", players);
+    socket.emit("updatePlayers", playerArr);
   })
 
   // Handle player disconnecting
   socket.on("disconnect", () => {
     console.log(`Player disconnected: ${socket.id}`);
     delete players[socket.id];
-    io.emit("updatePlayers", players);
+    io.emit("updatePlayers", playerArr);
   });
 });
 

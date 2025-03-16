@@ -11,13 +11,19 @@ import { Socket } from "socket.io-client";
 
 const ConnectPage = () => {
 
+    interface Player {
+        id: string;
+        name: string;
+        type: string;
+    };
+
     const socket: Socket = useWebSocket();
 
     const searchParams = useSearchParams();
     const numPlayers = Number(searchParams?.get("numPlayers")) || 0;
 
-    const [players, setPlayers] = useState({});
-    const [thisPlayer, setThisPlayer] = useState(null);
+    const [players, setPlayers] = useState<Player[]>([]);
+    const [thisPlayer, setThisPlayer] = useState<Player>();
     const [gameActive, setGameActive] = useState(false);
 
     useEffect(() => {
@@ -39,6 +45,10 @@ const ConnectPage = () => {
     useEffect(() => {
         console.log("Updated players list:", players);
     }, [players]);
+
+    useEffect(() => {
+        console.log("Updated player:", thisPlayer);
+    }, [thisPlayer]);
     
 
     if (gameActive) {
@@ -79,15 +89,15 @@ const ConnectPage = () => {
                         ">
                             {
                                 Array.from({ length: numPlayers }).map((_, index) => {
-                                    const playerId = Object.keys(players)[index];
+                                    const player = players[index];
         
                                     return (
                                         <div key={index} className="flex flex-row items-center px-6 gap-2 h-10 w-4/5 rounded-md bg-slate-500">
                                             {
-                                                playerId ? (
+                                                (player && player["type"] == "player") ? (
                                                     <>
                                                         <Signal className="text-white"/>
-                                                        <p>{playerId}</p>
+                                                        <p>{player['name']}</p>
                                                     </>
                                                 ) : (
                                                     <>
@@ -119,7 +129,7 @@ const ConnectPage = () => {
                     </Link>
                     
                     {
-                        <p>You are: {`${thisPlayer ? thisPlayer['playerId'] : ""}`}</p>
+                        <p>You are: {`${thisPlayer ? thisPlayer['name'] : ""}`}</p>
                     }
             </div>
         );
