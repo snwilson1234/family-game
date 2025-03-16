@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+// import Player from '../pages/gamestate/player';
 
 //setup express app & cors headers
 const app = express();
@@ -19,13 +20,18 @@ const io = new Server(server, {
 
 // store connected players
 let players = {};
+
 // listen for player connections
 io.on("connection", (socket) => {
   console.log(`Player connected: ${socket.id}`);
 
   // listen for joinGame event
-  socket.on("joinGame", (playerType) => {
-    players[socket.id] = playerType;
+  socket.on("joinGame", (playerName, playerType) => {
+    console.log("player", playerName, "joined game");
+    players[String(socket.id)] = {// update player list
+      playerName: playerName,
+      playerType: playerType
+    }
     io.emit("updatePlayers", players); // Send updated player list
     console.log("All players: ", players);
     socket.emit("confirmJoin", {playerId: socket.id});
@@ -34,6 +40,12 @@ io.on("connection", (socket) => {
   socket.on("whoami", () => {
     socket.emit("whoami", {playerId: socket.id});
   });
+
+  socket.on("getPlayers", () => {
+    console.log("received get players request");
+    console.log("players:", players);
+    socket.emit("updatePlayers", players);
+  })
 
   // Handle player disconnecting
   socket.on("disconnect", () => {

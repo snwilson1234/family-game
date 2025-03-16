@@ -14,24 +14,24 @@ const ConnectPage = () => {
 
     const searchParams = useSearchParams();
     const numPlayers = Number(searchParams?.get("numPlayers")) || 0;
-    const playerType = searchParams.get("playerType");
 
     const [players, setPlayers] = useState({});
     const [thisPlayer, setThisPlayer] = useState(null);
-    const [role, setRole] = useState("");
     const [gameActive, setGameActive] = useState(false);
 
     useEffect(() => {
         if (socket != null) {
-            socket.emit("joinGame", {playerType:"admin"})
+            socket.on("updatePlayers", setPlayers);
+            socket.on("whoami", setThisPlayer);
+            socket.emit("getPlayers");
+            socket.emit("whoami");
         }
 
-        socket.on("updatePlayers", setPlayers);
-        socket.on("confirmJoin", setThisPlayer);
-
         return () => {
-            socket.off("updatePlayers");
-            socket.off("confirmJoin");
+            if (socket != null) {
+                socket.off("updatePlayers");
+                socket.off("whoami", setThisPlayer);
+            }
         };
     }, []);
 
@@ -39,11 +39,6 @@ const ConnectPage = () => {
         console.log("Updated players list:", players);
     }, [players]);
     
-
-    // const joinGame = (type) => {
-    //     setRole(type);
-    //     socket.emit("joinGame", type);
-    // };
 
     if (gameActive) {
         return (

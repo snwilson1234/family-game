@@ -12,10 +12,7 @@ const PlayerJoinForm = () => {
     const joinGame = (event: any) => {
         event.preventDefault();
         if (socket && playerName.trim() !== "") {
-            socket.emit("joinGame", {
-                playerName: playerName, 
-                playerType: "player"
-            });
+            socket.emit("joinGame", playerName, "player");
             router.push("/playerLobby");
         }
     }

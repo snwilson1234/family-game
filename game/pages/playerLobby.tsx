@@ -1,6 +1,6 @@
 
 const PlayerLobby = () => {
-    return <div>Waiting for host to start game..</div>
+    return <div>Waiting for admin to start game..</div>
 }
 
 export default PlayerLobby;

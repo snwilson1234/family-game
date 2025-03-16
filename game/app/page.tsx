@@ -7,12 +7,12 @@ export default function Home() {
 
   const router = useRouter();
 
-  // use device type to determine if this is the host or player, to keep things simple.
+  // use device type to determine if this is the admin or player, to keep things simple.
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
 
     if (/windows|macintosh|linux|x11/i.test(userAgent)) {
-      // desktop device is admin/host
+      // desktop device is admin
       router.push("/adminPage");
     }
     else {
