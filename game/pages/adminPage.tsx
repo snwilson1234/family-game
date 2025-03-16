@@ -5,7 +5,7 @@ import { useWebSocket } from "./socketContext";
 
 const AdminPage = () => {
 
-  const socket = useWebSocket();
+  const socket: Socket = useWebSocket();
 
   useEffect(() => {
     if (socket != null) {

@@ -13,7 +13,7 @@ const Gameboard = () => {
         type: string;
     };
 
-    const socket = useWebSocket();
+    const socket: Socket = useWebSocket();
 
     const categories = [
         "Animals",
@@ -102,6 +102,18 @@ const Gameboard = () => {
     }, []);
 
     useEffect(() => {
+        if (selectedCategories.length > 0) {
+            socket.emit("setCategories", selectedCategories);
+        }
+    }, [selectedCategories]);
+
+    useEffect(() => {
+        if (randomLetter != "") {
+            socket.emit("setLetter", randomLetter);
+        }
+    }, [randomLetter]);
+
+    useEffect(() => {
         if (!isRunning || timeLeft <= 0) return;
         const timer = setInterval(() => {
           setTimeLeft((prev) => prev - 1);
@@ -136,7 +148,7 @@ const Gameboard = () => {
                 ">Category Selection</h1>
 
                 <button 
-                    onClick={generateRandomCategories}
+                    onClick={() => generateRandomCategories()}
                     className="
                         bg-slate-500 p-2
                         rounded-md

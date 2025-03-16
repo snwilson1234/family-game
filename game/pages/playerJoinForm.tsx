@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 const PlayerJoinForm = () => {
 
-    const socket = useWebSocket();
+    const socket: Socket = useWebSocket();
     const router = useRouter();
     
     const [playerName, setPlayerName] = useState("");
