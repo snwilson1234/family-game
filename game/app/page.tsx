@@ -16,18 +16,16 @@ export default function Home() {
 
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
-    if (/iphone|ipod/i.test(userAgent)) setDeviceType("iphone");
-    else if (/windows|macintosh|linux|x11/i.test(userAgent)) setDeviceType("desktop");
-    else setDeviceType("mobile");
 
-    localStorage.setItem("deviceType", deviceType!);
-
-    if (deviceType == "iphone" || deviceType == "mobile") {
-      router.push("/playerJoinForm");
-    }
-    else {
+    if (/windows|macintosh|linux|x11/i.test(userAgent)) {
+      // desktop device is admin/host
       router.push("/adminPage");
     }
+    else {
+      // all other users are player
+      router.push("/playerJoinForm");
+    }
+      
   }, []);
 
   return <div className="flex flex-col items-center justify-center w-full h-screen text-3xl">Loading...</div>;
