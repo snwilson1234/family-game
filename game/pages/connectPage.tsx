@@ -49,6 +49,12 @@ const ConnectPage = () => {
     useEffect(() => {
         console.log("Updated player:", adminUser);
     }, [adminUser]);
+
+    const sendStartGameSignal = () => {
+        if (socket != null) {
+            socket.emit("startGame");
+        }
+    }
     
 
     if (gameActive) {
@@ -117,7 +123,10 @@ const ConnectPage = () => {
                         pathname: '/gameboard',
                     }}>
                         <button 
-                            onClick={() => setGameActive(true)}
+                            onClick={() => {
+                                setGameActive(true);
+                                sendStartGameSignal();
+                            }}
                             className="
                             bg-slate-400
                             w-xs h-20

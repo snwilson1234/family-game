@@ -70,6 +70,12 @@ io.on("connection", (socket) => {
     socket.emit("updatePlayers", playerArr);
   })
 
+  // listen for admin to start the game
+  socket.on("startGame", () => {
+    console.log("Admin has started the game.");
+    io.emit("startGame", true);
+  })
+
   // Handle player disconnecting
   socket.on("disconnect", () => {
     console.log(`Player disconnected: ${socket.id}`);

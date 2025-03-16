@@ -1,6 +1,6 @@
 
 
-const PlayerForm = () => {
+const PlayerResponseForm = () => {
 
     return (
         <div className="
@@ -26,4 +26,4 @@ const PlayerForm = () => {
         </div>
     );
 }
-export default PlayerForm;
+export default PlayerResponseForm;

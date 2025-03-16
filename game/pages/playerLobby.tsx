@@ -1,24 +1,46 @@
 import { useEffect, useState } from "react";
 import { useWebSocket } from "./socketContext";
+import { useRouter } from 'next/navigation';
 
 
 const PlayerLobby = () => {
+    interface Player {
+        id: string;
+        name: string;
+        type: string;
+    };
+
+    const router = useRouter();
     const socket: Socket = useWebSocket();
-    const [thisPlayer, setThisPlayer] = useState(null);
+    const [thisPlayer, setThisPlayer] = useState<Player>();
+    const [gameStarted, setGameStarted] = useState<Boolean>(false);
 
     useEffect(() => {
         if (socket != null) {
+            // listen for player info
             socket.on("whoami", setThisPlayer);
-            // console.log("turned on WHOAMI event");
+
+            // enable listening for game start
+            socket.on("startGame", setGameStarted);
+
+            // request player info
             socket.emit("whoami");
         }
 
         return () => {
             if (socket != null) {
+                // disable socket event listeners
                 socket.off("whoami", setThisPlayer);
+                socket.off("startGame");
             }
         }
     }, []);
+
+    useEffect(() => {
+        if (gameStarted === true) {
+            router.push("/playerResponseForm");
+        }
+    }, [gameStarted]);
 
     return <div>You are {`${thisPlayer ? thisPlayer['name'] : ""}`}</div>
 }

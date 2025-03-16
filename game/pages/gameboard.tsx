@@ -7,6 +7,12 @@ import { useWebSocket } from "./socketContext";
 
 const Gameboard = () => {
 
+    interface Player {
+        id: string;
+        name: string;
+        type: string;
+    };
+
     const socket = useWebSocket();
 
     const categories = [
@@ -67,7 +73,8 @@ const Gameboard = () => {
     const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
     const [timeLeft, setTimeLeft] = useState(5); //TODO: update to 180 when done testing
     const [isRunning, setIsRunning] = useState(false);
-    const [thisPlayer, setThisPlayer] = useState(null);
+    const [thisPlayer, setThisPlayer] = useState<Player>();
+    const [players, setPlayers] = useState<Player[]>([]);
 
     const generateRandomCategories = () => {
         const shuffled = [...categories].sort(() => 0.5 - Math.random());
@@ -82,15 +89,15 @@ const Gameboard = () => {
 
     useEffect(() => {
         if (socket != null) {
+            socket.on("updatePlayers", setPlayers);
+            socket.on("whoami", setThisPlayer);
+            socket.emit("getPlayers");
             socket.emit("whoami");
-            // console.log("turned on WHOAMI event");
-            // socket.emit("whoami");
         }
-
-        socket.on("whoami", setThisPlayer);
 
         return () => {
             socket.off("whoami");
+            socket.off("updatePlayers");
         }
     }, []);
 
@@ -127,9 +134,6 @@ const Gameboard = () => {
                 <h1 className="
                     text-lg
                 ">Category Selection</h1>
-                {
-                        <p>You are: {`${thisPlayer ? thisPlayer['playerId'] : ""}`}</p>
-                    }
 
                 <button 
                     onClick={generateRandomCategories}
@@ -199,12 +203,12 @@ const Gameboard = () => {
                             text-lg
                             text-left
                             pl-8 w-1/2
-                        ">Player1</h1>
+                        ">{players.length >= 1 ? players[0]['name'] : ""}</h1>
                         <h1 className="
                             text-lg
                             text-right
                             pr-8 w-1/2
-                        ">Player2</h1>
+                        ">{players.length >= 2 ? players[1]['name'] : ""}</h1>
                     </div>
                     
                     <div className="
@@ -215,15 +219,13 @@ const Gameboard = () => {
                             text-lg
                             text-left
                             pl-8 w-1/2
-                        ">Player3</h1>
+                        ">{players.length >= 3 ? players[2]['name'] : ""}</h1>
                         <h1 className="
                             text-lg
                             text-right
                             pr-8 w-1/2
-                        ">Player4</h1>
+                        ">{players.length >= 4 ? players[3]['name'] : ""}</h1>
                     </div>
-
-                    
                 </div>
                 <div className=" 
                     flex flex-row justify-center items-center
@@ -246,55 +248,60 @@ const Gameboard = () => {
                             )
                         )  
                     }
-                </ul>
+                    </ul>
                 {/*Timer*/}
-                <div className="
-                    flex flex-col w-1/4 h-1/4 gap-2 p-4
-                    text-center text-2xl font-bold
-                    rounded-lg bg-slate-400
-                ">
-                    <div>{formatTime(timeLeft)}</div>
+                <div className="flex flex-col w-1/4 h-1/4">
+                    <div className="text-3xl text-center">
+                        <p>Letter: {randomLetter}</p>
+                    </div>
                     <div className="
-                        flex flex-col items-center gap-2 w-full
+                        flex flex-col w-full h-full gap-2 p-4
+                        text-center text-2xl font-bold
+                        rounded-lg bg-slate-400
                     ">
-                        <button 
-                        className="
-                            bg-emerald-900 text-white rounded-md
-                            w-1/2
-                            hover:cursor-pointer
-                            hover:text-slate-300
-                        " 
-                        onClick={() => setIsRunning(true)}
-                        >
-                        Start
-                        </button>
-                        <button 
-                        className="
-                            bg-red-900 text-white rounded-md
-                            w-1/2
-                            hover:cursor-pointer
-                            hover:text-slate-300
-                        " 
-                        onClick={() => setIsRunning(false)}
-                        >
-                        Stop
-                        </button>
-                        <button 
-                        className="
-                            bg-blue-900 text-white rounded-md
-                            w-1/2
-                            hover:cursor-pointer
-                            hover:text-slate-300
-                        " 
-                        onClick={() => {
-                            setTimeLeft(5);
-                            setIsRunning(false);
-                        }}
-                        >
-                        Reset
-                        </button>
+                        <div>{formatTime(timeLeft)}</div>
+                        <div className="
+                            flex flex-col items-center gap-2 w-full
+                        ">
+                            <button 
+                            className="
+                                bg-emerald-900 text-white rounded-md
+                                w-1/2
+                                hover:cursor-pointer
+                                hover:text-slate-300
+                            " 
+                            onClick={() => setIsRunning(true)}
+                            >
+                            Start
+                            </button>
+                            <button 
+                            className="
+                                bg-red-900 text-white rounded-md
+                                w-1/2
+                                hover:cursor-pointer
+                                hover:text-slate-300
+                            " 
+                            onClick={() => setIsRunning(false)}
+                            >
+                            Stop
+                            </button>
+                            <button 
+                            className="
+                                bg-blue-900 text-white rounded-md
+                                w-1/2
+                                hover:cursor-pointer
+                                hover:text-slate-300
+                            " 
+                            onClick={() => {
+                                setTimeLeft(5);
+                                setIsRunning(false);
+                            }}
+                            >
+                            Reset
+                            </button>
+                        </div>
                     </div>
-                    </div>
+                </div>
                 </div>  
             </div>
         </div>
