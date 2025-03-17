@@ -47,7 +47,8 @@ io.on("connection", (socket) => {
     // update server player object with all players
     players[String(socket.id)] = {
       name: playerName,
-      type: playerType
+      type: playerType,
+      answers: []
     }
 
     // send updated player array to all clients
@@ -103,6 +104,13 @@ io.on("connection", (socket) => {
     console.log("sending letter to client");
     socket.emit("updateLetter", roundLetter);
   });
+
+  // listen for player response
+  socket.on("submitAnswers", (answers) => {
+    console.log("received player", players[socket.id]["name"], "answers");
+    console.log("their answers were:", answers);
+    players[socket.id]["answers"] = answers;
+  })
 
   // Handle player disconnecting
   socket.on("disconnect", () => {

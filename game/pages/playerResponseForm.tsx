@@ -9,6 +9,7 @@ const PlayerResponseForm = () => {
 
     const [categories, setCategories] = useState([]);
     const [letter, setLetter] = useState("");
+    const [answers, setAnswers] = useState<string[]>([]);
 
     useEffect(() => {
         if (socket != null) {
@@ -25,6 +26,24 @@ const PlayerResponseForm = () => {
         }
     },[]);
 
+    const submitAnswers = (event: React.FormEvent) => {
+        event.preventDefault();
+
+        console.log("player answers:", answers);
+
+        if (socket) {
+            socket.emit("submitAnswers", answers);
+        }
+    };
+
+    const handleInputChange = (index: number, value: string) => {
+        setAnswers((prevAnswers) => {
+            const updatedAnswers = [...prevAnswers];
+            updatedAnswers[index] = value;
+            return updatedAnswers;
+        });
+    };
+
     return (
         <div className="
             flex flex-col w-full h-screen items-center
@@ -33,22 +52,24 @@ const PlayerResponseForm = () => {
                 text-xl font-bold
             ">Enter your answers below, starting with: {letter}</h1>
 
-            <form className="flex flex-col w-full h-screen items-center">
+            <form 
+                onSubmit={submitAnswers}
+                className="flex flex-col w-full h-screen items-center">
                 {
                     categories.map(
                         (category, index) => (
                             <label key={index} className="mb-2">
                                 <h1 className="text-bold text-lg">{category}: </h1>
-                                <input 
+                                <input
+                                    onChange={(e) => handleInputChange(index, e.target.value)} 
                                     className="bg-slate-100 text-black"
                                     name={`query${index}`} 
-                                    value={`test ${index + 1}`} 
                                 />
                             </label>
                             )
                         )
                     }
-                <button type="submit">Submit Answers</button>
+                <button className="bg-slate-400 text-white font-bold rounded-md p-2" type="submit">Submit Answers</button>
             </form>
         </div>
     );
