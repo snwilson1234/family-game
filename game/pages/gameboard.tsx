@@ -3,15 +3,12 @@ import { useEffect, useState } from "react";
 import Timer from "./../shared/timer";
 import { GameState } from "./gamestate/gamestate";
 import { useWebSocket } from "./socketContext";
+import { Player } from "./types/player";
+import ResultsPage from "./resultsPage";
+
 
 
 const Gameboard = () => {
-
-    interface Player {
-        id: string;
-        name: string;
-        type: string;
-    };
 
     const socket: Socket = useWebSocket();
 
@@ -124,7 +121,7 @@ const Gameboard = () => {
     // when the timer is up, select new category
     useEffect(() => {
         if (isRunning && timeLeft == 0) {
-            setGameState(GameState.CategorySelection);
+            setGameState(GameState.Results);
         }
     }, [timeLeft])
     
@@ -315,6 +312,11 @@ const Gameboard = () => {
                     </div>
                 </div>
                 </div>  
+            </div>
+            <div className={`
+                ${gameState === GameState.Results ? 'visible' : 'invisible'}`}
+            >
+                <ResultsPage />
             </div>
         </div>
     );

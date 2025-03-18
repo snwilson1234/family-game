@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useWebSocket } from "./socketContext";
 import { useRouter } from 'next/navigation';
+import { Player } from "./types/player";
+
 
 
 const PlayerLobby = () => {
-    interface Player {
-        id: string;
-        name: string;
-        type: string;
-    };
-
     const router = useRouter();
     const socket: Socket = useWebSocket();
     const [thisPlayer, setThisPlayer] = useState<Player>();

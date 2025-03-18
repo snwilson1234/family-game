@@ -110,7 +110,11 @@ io.on("connection", (socket) => {
     console.log("received player", players[socket.id]["name"], "answers");
     console.log("their answers were:", answers);
     players[socket.id]["answers"] = answers;
-  })
+    playerArr = playerArr.map(player =>
+        player.id === socket.id ? { ...player, answers: answers } : player
+    );
+    io.emit("updatePlayers", playerArr);
+  });
 
   // Handle player disconnecting
   socket.on("disconnect", () => {

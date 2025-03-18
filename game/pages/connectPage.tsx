@@ -7,15 +7,11 @@ import { Loader2, Signal } from "lucide-react";
 import { useWebSocket } from "./socketContext";
 import Link from "next/link";
 import { Socket } from "socket.io-client";
+import { Player } from "./types/player";
+
 
 
 const ConnectPage = () => {
-
-    interface Player {
-        id: string;
-        name: string;
-        type: string;
-    };
 
     const socket: Socket = useWebSocket();
 
