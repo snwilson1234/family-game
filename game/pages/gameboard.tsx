@@ -323,7 +323,11 @@ const Gameboard = () => {
                     text-lg font-bold rounded-md
                     hover:cursor-pointer
                     hover:text-slate-400
-                " onClick={() => setGameState(GameState.Active)}>Continue</button>
+                " onClick={() => {
+                    setGameState(GameState.CategorySelection);
+                    setIsRunning(false);
+                    setTimeLeft(5);
+                }}>Continue</button>
                 </div>
             </div>
         </div>
