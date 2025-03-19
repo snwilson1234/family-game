@@ -317,6 +317,14 @@ const Gameboard = () => {
                 ${gameState === GameState.Results ? 'visible' : 'invisible'}`}
             >
                 <ResultsPage />
+                <div className="flex flex-col items-center">
+                <button className="
+                    bg-slate-400 w-xs h-20
+                    text-lg font-bold rounded-md
+                    hover:cursor-pointer
+                    hover:text-slate-400
+                " onClick={() => setGameState(GameState.Active)}>Continue</button>
+                </div>
             </div>
         </div>
     );

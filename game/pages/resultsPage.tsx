@@ -32,7 +32,7 @@ const ResultsPage = () => {
     // }, [players]);
 
     return (
-        <div className="flex flex-col h-screen w-full items-center gap-10">
+        <div className="flex flex-col h-full w-full items-center gap-10">
             <h1 className="text-3xl font-bold font-white">The results are in...</h1>
             <div className="
                 flex flex-row h-full w-full gap-10 p-8
@@ -81,34 +81,6 @@ const ResultsPage = () => {
                         </div>
                     ))
                 }
-                
-                {/* <div className="
-                    flex flex-col w-1/4 h-full
-                ">
-                    <div className="
-                        flex flex-col w-full h-3/4 bg-slate-800 gap-2 rounded-lg
-                        items-center justify-center
-                    ">
-                        {
-                            Array.from({ length: 10 }, (_, index) => (
-                                <div className="text-xl bg-slate-700 text-center rounded-lg w-3/4 p-1">
-                                    <h2>Sample answer</h2>
-                                </div>
-                                )
-                            )
-                        }
-                    </div>
-
-                    <div className="
-                        flex flex-col items-center justify-center text-lg h-1/4
-                    ">
-                        <h1>Player1 Name</h1>
-                    </div>
-                </div> */}
-                
-                
-                
-
             </div>
         </div>
     );
