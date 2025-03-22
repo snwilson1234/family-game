@@ -27,9 +27,6 @@ const ResultsPage = () => {
             }
         }
     }, []);
-    // useEffect(() => {
-    //     socket.on
-    // }, [players]);
 
     return (
         <div className="flex flex-col h-full w-full items-center gap-10">

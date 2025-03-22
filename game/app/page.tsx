@@ -22,6 +22,6 @@ export default function Home() {
       
   }, []);
 
-  return <div className="flex flex-col items-center justify-center w-full h-screen text-3xl">Loading...</div>;
+  return <div className="items-center justify-center w-full h-screen text-3xl">Loading...</div>;
 }
 

@@ -14,8 +14,8 @@ export default function PlayerChoice() {
   };
 
   const getButtonClassNames = (id: number) => {
-    return `font-semibold rounded-lg size-40 text-lg shadow-lg hover:cursor-pointer hover:text-slate-600 ${
-      players === id ? 'text-slate-600' : 'text-slate-900'
+    return `${
+      players === id ? 'text-indigo-200 bg-indigo-600' : 'text-indigo-50'
     }`;
   };
 
@@ -36,20 +36,17 @@ export default function PlayerChoice() {
         <button
           id="btn-2"
           onClick={() => handlePlayerUpdate(2)}
-          className={`${getButtonClassNames(2)} 
-            bg-slate-300 shadow-slate-300/50`}
+          className={`btn btn-secondary ${getButtonClassNames(2)}`}
         >Two</button>
         <button
           id="btn-3"
           onClick={() => handlePlayerUpdate(3)}
-          className={`${getButtonClassNames(3)}
-            bg-slate-400 shadow-slate-400/50`}
+          className={`btn btn-secondary ${getButtonClassNames(3)}`}
         >Three</button>
         <button
           id="btn-4"
           onClick={() => handlePlayerUpdate(4)}
-          className={`${getButtonClassNames(4)}
-            bg-slate-500 shadow-slate-500/50`}
+          className={`btn btn-secondary ${getButtonClassNames(4)}`}
           >Four</button>
       </div>
       <div
@@ -64,13 +61,7 @@ export default function PlayerChoice() {
           }}
         >
         <button
-          className={`${getContinueVisibility()} 
-            bg-slate-600 text-slate-900
-            font-semibold rounded-lg w-md
-            h-full text-lg shadow-lg 
-            shadow-slate-800/50 
-            hover:cursor-pointer 
-            hover:text-slate-800`}
+          className="btn btn-primary w-lg"
           >Continue</button>
         </Link>
       </div>

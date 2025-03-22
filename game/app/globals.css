@@ -8,13 +8,33 @@
   --font-roboto: "Roboto Slab", sans-serif;
 }
 
+@layer components {
+  .btn {
+    @apply rounded-lg shadow-lg p-6;
+    @apply font-semibold;
+    @apply transition duration-200 hover:cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-800 text-white hover:bg-indigo-900;
+  }
+
+  .btn-secondary {
+    @apply bg-indigo-400 text-white hover:bg-indigo-600;
+  }
+}
+
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: oklch(0.257 0.09 281.288);
+  --foreground: oklch(0.962 0.018 272.314);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-roboto);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }

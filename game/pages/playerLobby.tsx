@@ -38,7 +38,25 @@ const PlayerLobby = () => {
         }
     }, [gameStarted]);
 
-    return <div>You are {`${thisPlayer ? thisPlayer['name'] : ""}`}</div>
+    return (
+        <div className="
+            flex flex-row justify-center items-center h-screen w-full
+            bg-indigo-950
+        ">
+            <div className="
+                flex flex-col gap-5
+            ">
+                <h1 className="
+                    text-2xl font-bold font-semibold text-center
+                ">Hello {`${thisPlayer ? thisPlayer['name'] : ""}`}!</h1>
+                <h1 className="
+                    text-xl text-center
+                ">
+                    Waiting for Admin to start the game....
+                </h1>
+            </div>
+        </div>
+    ); 
 }
 
 export default PlayerLobby;

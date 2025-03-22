@@ -75,18 +75,18 @@ const ConnectPage = () => {
                     
                     <div className="
                         flex flex-col items-center
-                        bg-slate-700 rounded-md
+                        bg-indigo-700 rounded-md
                         h-100 w-3/4
                     ">
                         <div className="
                             flex flex-col items-center h-10
-                            justify-center
+                            justify-center text-lg font-semibold
                         ">
                             <p className="">Connections</p>
                         </div>
                         <div className="
                             flex flex-col items-center h-85 w-4/5
-                            bg-slate-800 py-6 gap-2
+                            bg-indigo-800 py-6 gap-2
                             rounded-md shadow-lg
                         ">
                             {
@@ -94,7 +94,7 @@ const ConnectPage = () => {
                                     const player = players[index];
         
                                     return (
-                                        <div key={index} className="flex flex-row items-center px-6 gap-2 h-10 w-4/5 rounded-md bg-slate-500">
+                                        <div key={index} className="flex flex-row items-center px-6 gap-2 h-10 w-4/5 rounded-md bg-indigo-500">
                                             {
                                                 (player && player["type"] == "player") ? (
                                                     <>
@@ -124,12 +124,7 @@ const ConnectPage = () => {
                                 sendStartGameSignal();
                             }}
                             className="
-                            bg-slate-400
-                            w-xs h-20
-                            text-lg font-bold
-                            rounded-md
-                            hover:cursor-pointer
-                            hover:text-slate-400
+                            btn btn-primary w-xl
                         ">Start Game</button>
                     </Link>
                     

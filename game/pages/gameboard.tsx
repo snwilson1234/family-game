@@ -93,8 +93,10 @@ const Gameboard = () => {
         }
 
         return () => {
-            socket.off("whoami");
-            socket.off("updatePlayers");
+            if (socket != null) {
+                socket.off("whoami");
+                socket.off("updatePlayers");
+            }
         }
     }, []);
 
@@ -136,65 +138,83 @@ const Gameboard = () => {
             {/* Category Page */}
             <div className={`
                 ${gameState === GameState.CategorySelection ? 'visible' : 'invisible'}
-                flex flex-col items-center align-center
-                text-white w-full gap-2 h-screen
+                flex flex-col items-center justify-center
+                w-full h-screen pt-10
                 absolute
             `}>
-                <h1 className="
-                    text-lg
-                ">Category Selection</h1>
-
-                <button 
-                    onClick={() => generateRandomCategories()}
-                    className="
-                        bg-slate-500 p-2
-                        rounded-md
-                        hover:cursor-pointer
-                        hover:text-slate-300
-                    ">
-                    Generate Categories
-                </button>
-                <ul className="
-                    flex flex-col items-center gap-1 py-5
-                    bg-slate-600 w-3/5 h-3/5 rounded-md
+                <div className="
+                    flex flex-row w-full h-8/10 items-center justify-center
                 ">
-                    {
-                        selectedCategories.map(
-                            (category, index) => (
-                                <li className="
-                                    bg-slate-500 text-white w-100
-                                    rounded-md p-2 h-1/10
-                                " key={index}>
-                                    {category}
-                                </li>
-                            )
-                        )  
-                    }
-                </ul>
-                <button 
-                    onClick={generateRandomLetter}
-                    className="
-                        bg-slate-500 p-2
-                        rounded-md
-                        hover:cursor-pointer
-                        hover:text-slate-300
+                    <div className="
+                        flex flex-col items-center justify-center
+                        w-1/2 gap-4 h-full
                     ">
-                    Generate Letter
-                </button>
-                <div>
-                    <p>{randomLetter}</p>
-                </div>
+                        <h1 className="
+                            text-3xl font-medium
+                        ">Your categories are...</h1>
 
-                <button 
-                    onClick={() => setGameState(GameState.Active)}
-                    disabled={selectedCategories.length === 0 || randomLetter === ""}
-                    className={`
-                        bg-slate-500 p-2
-                        rounded-md
-                        ${selectedCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-slate-300"}
-                        `}>
-                    Continue
-                </button>
+                        <ul className="
+                            flex flex-col items-center gap-1 py-5
+                            bg-indigo-600 w-3/4 rounded-md text-xl
+                            shadow-lg h-4/5
+                        ">
+                            {
+                                selectedCategories.map(
+                                    (category, index) => (
+                                        <li className="
+                                            bg-indigo-500 w-1/2
+                                            rounded-md p-2 h-1/10
+                                            shadow-lg
+                                        " key={index}>
+                                            {category}
+                                        </li>
+                                    )
+                                )  
+                            }
+                        </ul>
+                    </div>
+
+                    <div className="
+                        flex flex-col items-center justify-center
+                        w-1/2 h-full
+                    ">
+                        <h1 className="text-9xl font-bold">{randomLetter ? randomLetter : "_"}</h1>
+                    </div>
+                </div>
+                <div className="
+                    flex flex-row w-full h-2/10 items-center justify-between
+                    px-40
+                ">
+                    <button 
+                        onClick={() => generateRandomCategories()}
+                        className="
+                            btn btn-primary
+                            text-3xl w-2/5
+                        ">
+                        Generate Categories
+                    </button>
+                    <button 
+                        onClick={generateRandomLetter}
+                        className="
+                            btn btn-primary
+                            text-3xl w-2/5
+                        ">
+                        Generate Letter
+                    </button>
+                </div>
+                <div className="
+                    flex flex-col align-center items-center h-1/10
+                ">
+                    <button 
+                        onClick={() => setGameState(GameState.Active)}
+                        disabled={selectedCategories.length === 0 || randomLetter === ""}
+                        className={`
+                            btn btn-primary text-xl
+                            ${selectedCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}
+                            `}>
+                        Continue
+                    </button>
+                </div>
             </div>
             {/* Gameboard */}
             <div className={`
@@ -202,7 +222,7 @@ const Gameboard = () => {
             `}>
                 <div className="
                     flex flex-col justify-between absolute
-                    text-white w-full gap-2 h-screen z-0
+                     w-full gap-2 h-screen z-0
                 ">
                     <div className="
                         flex flex-row justify-between
@@ -239,17 +259,17 @@ const Gameboard = () => {
                 <div className=" 
                     flex flex-row justify-center items-center
                     w-full h-screen gap-5 z-10 absolute
-                    text-white
+                    
                 ">
                     <ul className="
                         flex flex-col items-center gap-1 py-5
-                        bg-slate-600 w-1/4 h-3/5 rounded-md
+                        bg-indigo-600 w-1/4 h-3/5 rounded-md
                     ">
                     {
                         selectedCategories.map(
                             (category, index) => (
                                 <li className="
-                                    bg-slate-500 text-white w-4/5
+                                    bg-indigo-500  w-4/5
                                     rounded-md p-2 h-1/10
                                 " key={index}>
                                     {category}
@@ -266,7 +286,7 @@ const Gameboard = () => {
                     <div className="
                         flex flex-col w-full h-full gap-2 p-4
                         text-center text-2xl font-bold
-                        rounded-lg bg-slate-400
+                        rounded-lg bg-indigo-400
                     ">
                         <div>{formatTime(timeLeft)}</div>
                         <div className="
@@ -274,10 +294,10 @@ const Gameboard = () => {
                         ">
                             <button 
                             className="
-                                bg-emerald-900 text-white rounded-md
+                                bg-emerald-900 rounded-md
                                 w-1/2
                                 hover:cursor-pointer
-                                hover:text-slate-300
+                                hover:text-indigo-300
                             " 
                             onClick={() => setIsRunning(true)}
                             >
@@ -285,10 +305,10 @@ const Gameboard = () => {
                             </button>
                             <button 
                             className="
-                                bg-red-900 text-white rounded-md
+                                bg-red-900 rounded-md
                                 w-1/2
                                 hover:cursor-pointer
-                                hover:text-slate-300
+                                hover:text-indigo-300
                             " 
                             onClick={() => setIsRunning(false)}
                             >
@@ -296,10 +316,10 @@ const Gameboard = () => {
                             </button>
                             <button 
                             className="
-                                bg-blue-900 text-white rounded-md
+                                bg-blue-900 rounded-md
                                 w-1/2
                                 hover:cursor-pointer
-                                hover:text-slate-300
+                                hover:text-indigo-300
                             " 
                             onClick={() => {
                                 setTimeLeft(5);
@@ -319,10 +339,10 @@ const Gameboard = () => {
                 <ResultsPage />
                 <div className="flex flex-col items-center">
                 <button className="
-                    bg-slate-400 w-xs h-20
+                    bg-indigo-400 w-xs h-20
                     text-lg font-bold rounded-md
                     hover:cursor-pointer
-                    hover:text-slate-400
+                    hover:text-indigo-400
                 " onClick={() => {
                     setGameState(GameState.CategorySelection);
                     setIsRunning(false);
