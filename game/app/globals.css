@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 @import "tailwindcss";
+
 
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-roboto: "Roboto Slab", sans-serif;
 }
 
 :root {
@@ -13,5 +16,5 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-roboto);
 }
