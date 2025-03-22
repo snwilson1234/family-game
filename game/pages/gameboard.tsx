@@ -176,9 +176,14 @@ const Gameboard = () => {
 
                     <div className="
                         flex flex-col items-center justify-center
-                        w-1/2 h-full
+                        w-1/2 gap-4 h-full
                     ">
-                        <h1 className="text-9xl font-bold">{randomLetter ? randomLetter : "_"}</h1>
+                        <h1 className="
+                            text-3xl font-medium
+                        ">Your letter is...</h1>
+                        <div className="text-9xl font-bold h-4/5">
+                            <h1>{randomLetter ? randomLetter : "_"}</h1>
+                        </div>
                     </div>
                 </div>
                 <div className="
@@ -269,8 +274,9 @@ const Gameboard = () => {
                         selectedCategories.map(
                             (category, index) => (
                                 <li className="
-                                    bg-indigo-500  w-4/5
+                                    bg-indigo-500 w-4/5
                                     rounded-md p-2 h-1/10
+                                    text-lg
                                 " key={index}>
                                     {category}
                                 </li>
@@ -279,16 +285,17 @@ const Gameboard = () => {
                     }
                     </ul>
                 {/*Timer*/}
-                <div className="flex flex-col w-1/4 h-1/4">
-                    <div className="text-3xl text-center">
-                        <p>Letter: {randomLetter}</p>
+                <div className="flex flex-col w-1/4 h-full align-center justify-center">
+                    <div className="h-1/4 text-center">
+                        <p className="text-2xl">Your Letter is:</p>
+                        <h1 className="text-9xl">{randomLetter}</h1>
                     </div>
                     <div className="
-                        flex flex-col w-full h-full gap-2 p-4
-                        text-center text-2xl font-bold
+                        flex flex-col w-full h-1/3 align-center
+                        text-center justify-center text-2xl font-bold
                         rounded-lg bg-indigo-400
                     ">
-                        <div>{formatTime(timeLeft)}</div>
+                        <div className="h-1/4 text-5xl">{formatTime(timeLeft)}</div>
                         <div className="
                             flex flex-col items-center gap-2 w-full
                         ">

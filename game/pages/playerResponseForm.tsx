@@ -50,38 +50,38 @@ const PlayerResponseForm = () => {
     };
 
     return (
-        <div>
+        <div className="flex flex-col w-full h-screen">
             <div className={`
-                ${formState === PlayerFormState.Submitted ? 'visible' : 'invisible' }    
+                ${formState === PlayerFormState.Submitted ? 'visible' : 'invisible' }  absolute  
             `}>
                 Waiting for timer to run out...
             </div>
             <div className={`
-                flex flex-col w-full h-screen items-center
+                flex flex-col w-full h-full p-2 items-center absolute
                 ${formState === PlayerFormState.Active ? 'visible' : 'invisible' }   
             `}>
                 <h1 className="
                     text-xl font-bold
-                ">Enter your answers below, starting with: {letter}</h1>
+                ">Your letter is: {letter}</h1>
 
                 <form 
                     onSubmit={submitAnswers}
-                    className="flex flex-col w-full h-screen items-center">
+                    className="flex flex-col items-center w-full h-screen bg-indigo-800 rounded-md p-4">
                     {
                         categories.map(
                             (category, index) => (
                                 <label key={index} className="mb-2">
-                                    <h1 className="text-bold text-lg">{category}: </h1>
+                                    <h1 className="text-bold text-md">{category}: </h1>
                                     <input
                                         onChange={(e) => handleInputChange(index, e.target.value)} 
-                                        className="bg-slate-100 text-black"
+                                        className="bg-indigo-50 text-indigo-900 capitalize rounded-sm pt-1 px-2 border-b-4 border-indigo-500 focus:outline-2 focus:outline-indigo-500"
                                         name={`query${index}`} 
                                     />
                                 </label>
                                 )
                             )
                         }
-                    <button className="bg-slate-400 text-white font-bold rounded-md p-2" type="submit">Submit Answers</button>
+                    <button className="bg-indigo-400 text-white font-bold rounded-md p-2" type="submit">Submit Answers</button>
                 </form>
             </div>
         </div>
