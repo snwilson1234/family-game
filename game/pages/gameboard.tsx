@@ -68,7 +68,7 @@ const Gameboard = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [randomLetter, setRandomLetter] = useState<string>("");
     const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-    const [timeLeft, setTimeLeft] = useState(5); //TODO: update to 180 when done testing
+    const [timeLeft, setTimeLeft] = useState(8); //TODO: update to 180 when done testing
     const [isRunning, setIsRunning] = useState(false);
     const [thisPlayer, setThisPlayer] = useState<Player>();
     const [players, setPlayers] = useState<Player[]>([]);
@@ -124,6 +124,7 @@ const Gameboard = () => {
     useEffect(() => {
         if (isRunning && timeLeft == 0) {
             setGameState(GameState.Results);
+            socket.emit("endRound");
         }
     }, [timeLeft])
     
@@ -306,7 +307,10 @@ const Gameboard = () => {
                                 hover:cursor-pointer
                                 hover:text-indigo-300
                             " 
-                            onClick={() => setIsRunning(true)}
+                            onClick={() => {
+                                setIsRunning(true);
+                                socket.emit("startRound");
+                            }}
                             >
                             Start
                             </button>

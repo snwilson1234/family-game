@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useWebSocket } from "./socketContext";
 import { useRouter } from "next/navigation";
+import { LobbyState } from "./types/lobbystate";
 
 
 const PlayerJoinForm = () => {
@@ -14,7 +15,7 @@ const PlayerJoinForm = () => {
         event.preventDefault();
         if (socket && playerName.trim() !== "") {
             socket.emit("joinGame", playerName, "player");
-            router.push("/playerLobby");
+            router.push(`playerLobby?lobbyState=${LobbyState.WaitingForStart}`);
         }
     }
 

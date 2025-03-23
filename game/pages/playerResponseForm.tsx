@@ -2,29 +2,35 @@ import { useEffect, useState } from "react";
 import { useWebSocket } from "./socketContext";
 import { Socket } from "socket.io-client";
 import { PlayerFormState } from "./types/formstate";
+import { useRouter } from "next/router";
+import { LobbyState } from "./types/lobbystate";
 
 // need to work on state changes in game and form
 
 const PlayerResponseForm = () => {
 
     const socket: Socket = useWebSocket();
+    const router = useRouter();
 
     const [categories, setCategories] = useState([]);
     const [letter, setLetter] = useState("");
     const [answers, setAnswers] = useState<string[]>([]);
     const [formState, setFormState] = useState<PlayerFormState>(PlayerFormState.Active);
+    const [roundActive, setRoundActive] = useState<Boolean>(true);
 
     useEffect(() => {
         if (socket != null) {
             socket.on("updateCategories", setCategories);
             socket.on("updateLetter", setLetter);
             socket.emit("getCategories");
+            socket.on("roundActive", setRoundActive);
         }
 
         return () => {
             if (socket != null) {
                 socket.off("updateCategories");
                 socket.off("updateLetter");
+                socket.off("roundActive", setRoundActive);
             }
         }
     },[]);
@@ -48,6 +54,12 @@ const PlayerResponseForm = () => {
             return updatedAnswers;
         });
     };
+
+    useEffect(() => {
+        if (roundActive === false) {
+            router.push(`playerLobby?lobbyState=${LobbyState.BetweenRound}`);
+        }
+    }, [roundActive])
 
     return (
         <div className="flex flex-col w-full h-screen items-center justify-center">

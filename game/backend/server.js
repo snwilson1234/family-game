@@ -86,6 +86,17 @@ io.on("connection", (socket) => {
     console.log("received new categories", categories);
     roundCategories = categories;
     io.emit("updateCategories", roundCategories);
+    io.emit("categorySelection", true);
+  });
+
+  socket.on("startRound", () => {
+    console.log("Admin has started the round.");
+    io.emit("roundActive", true);
+  });
+
+  socket.on("endRound", () => {
+    console.log("Admin has ended the rounded.")
+    io.emit("roundActive", false);
   });
 
   // listen for other players to request the current categories for their form labels
