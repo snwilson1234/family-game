@@ -68,7 +68,7 @@ const Gameboard = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [randomLetter, setRandomLetter] = useState<string>("");
     const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-    const [timeLeft, setTimeLeft] = useState(8); //TODO: update to 180 when done testing
+    const [timeLeft, setTimeLeft] = useState(30); //TODO: update to 180 when done testing
     const [isRunning, setIsRunning] = useState(false);
     const [thisPlayer, setThisPlayer] = useState<Player>();
     const [players, setPlayers] = useState<Player[]>([]);
@@ -333,7 +333,7 @@ const Gameboard = () => {
                                 hover:text-indigo-300
                             " 
                             onClick={() => {
-                                setTimeLeft(5);
+                                setTimeLeft(30);
                                 setIsRunning(false);
                             }}
                             >
@@ -357,7 +357,7 @@ const Gameboard = () => {
                 " onClick={() => {
                     setGameState(GameState.CategorySelection);
                     setIsRunning(false);
-                    setTimeLeft(5);
+                    setTimeLeft(30);
                 }}>Continue</button>
                 </div>
             </div>
