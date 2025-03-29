@@ -40,7 +40,8 @@ io.on("connection", (socket) => {
       playerArr.push({
         id: socket.id,
         name: playerName,
-        type: playerType
+        type: playerType,
+        points: 0,
       });
     }
 
@@ -48,7 +49,8 @@ io.on("connection", (socket) => {
     players[String(socket.id)] = {
       name: playerName,
       type: playerType,
-      answers: []
+      answers: [],
+      points: 0
     }
 
     // send updated player array to all clients
@@ -66,6 +68,7 @@ io.on("connection", (socket) => {
       id: String(socket.id),
       name: players[socket.id]['name'],
       type: players[socket.id]['type'],
+      points: players[socket.id]['points']
     });
   });
 

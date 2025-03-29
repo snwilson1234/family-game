@@ -3,4 +3,5 @@ export interface Player {
     name: string;
     type: string;
     answers: Array<string>;
+    points: number;
 }

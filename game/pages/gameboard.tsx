@@ -68,7 +68,7 @@ const Gameboard = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [randomLetter, setRandomLetter] = useState<string>("");
     const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-    const [timeLeft, setTimeLeft] = useState(30); //TODO: update to 180 when done testing
+    const [timeLeft, setTimeLeft] = useState(20); //TODO: update to 180 when done testing
     const [isRunning, setIsRunning] = useState(false);
     const [thisPlayer, setThisPlayer] = useState<Player>();
     const [players, setPlayers] = useState<Player[]>([]);
@@ -238,12 +238,18 @@ const Gameboard = () => {
                             text-lg
                             text-left
                             pl-8 w-1/2
-                        ">{players.length >= 1 ? players[0]['name'] : ""}</h1>
+                        ">{`
+                            ${players.length >= 1 ? players[0]['name'] : ""}:
+                            ${players.length >= 1 ? players[0]['points'] : ""}
+                        `}</h1>
                         <h1 className="
                             text-lg
                             text-right
                             pr-8 w-1/2
-                        ">{players.length >= 2 ? players[1]['name'] : ""}</h1>
+                        ">{`
+                            ${players.length >= 2 ? players[1]['name'] : ""}:
+                            ${players.length >= 2 ? players[1]['points'] : ""}
+                        `}</h1>
                     </div>
                     
                     <div className="
@@ -333,7 +339,7 @@ const Gameboard = () => {
                                 hover:text-indigo-300
                             " 
                             onClick={() => {
-                                setTimeLeft(30);
+                                setTimeLeft(20);
                                 setIsRunning(false);
                             }}
                             >
@@ -347,7 +353,7 @@ const Gameboard = () => {
             <div className={`
                 ${gameState === GameState.Results ? 'visible' : 'invisible'}`}
             >
-                <ResultsPage />
+                <ResultsPage initialFocusCategoryIdx={`${-1}`} />
                 <div className="flex flex-col items-center">
                 <button className="
                     bg-indigo-400 w-xs h-20
@@ -357,7 +363,7 @@ const Gameboard = () => {
                 " onClick={() => {
                     setGameState(GameState.CategorySelection);
                     setIsRunning(false);
-                    setTimeLeft(30);
+                    setTimeLeft(20);
                 }}>Continue</button>
                 </div>
             </div>
