@@ -85,7 +85,7 @@ const Gameboard = () => {
   };
 
   useEffect(() => {
-    if (socket != null) {
+    if (socket) {
       socket.on("updatePlayers", setPlayers);
       socket.on("whoami", setThisPlayer);
       socket.emit("getPlayers");
@@ -93,7 +93,7 @@ const Gameboard = () => {
     }
 
     return () => {
-      if (socket != null) {
+      if (socket) {
         socket.off("whoami");
         socket.off("updatePlayers");
       }

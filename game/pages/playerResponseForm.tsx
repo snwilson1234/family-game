@@ -20,7 +20,7 @@ const PlayerResponseForm = () => {
   const [roundActive, setRoundActive] = useState<Boolean>(true);
 
   useEffect(() => {
-    if (socket != null) {
+    if (socket) {
       socket.on("updateCategories", setCategories);
       socket.on("updateLetter", setLetter);
       socket.emit("getCategories");
@@ -28,7 +28,7 @@ const PlayerResponseForm = () => {
     }
 
     return () => {
-      if (socket != null) {
+      if (socket) {
         socket.off("updateCategories");
         socket.off("updateLetter");
         socket.off("roundActive", setRoundActive);

@@ -6,10 +6,10 @@ import { useWebSocket } from "./socketContext";
 
 
 const AdminPage = () => {
-  const socket: Socket = useWebSocket();
+  const socket: Socket | null = useWebSocket();
 
   useEffect(() => {
-    if (socket != null) {
+    if (socket) {
       console.log("socket not null");
       socket.emit("joinGame","admin","admin");
     }

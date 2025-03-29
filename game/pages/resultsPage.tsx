@@ -14,7 +14,7 @@ const ResultsPage = () => {
   const [rowFocusColors, setRowFocusColors] = useState<string[]>(['bg-green-800','bg-green-800','bg-green-800','bg-green-800']);
 
   useEffect(() => {
-    if (socket != null) {
+    if (socket) {
       console.log("socket on!!");
       socket.on("updatePlayers", setPlayers);
       socket.on("updateCategories", setCategories);
@@ -23,7 +23,7 @@ const ResultsPage = () => {
     }
 
     return () => {
-      if (socket != null) {
+      if (socket) {
         console.log("socket off!!");
         socket.off("updatePlayers");
         socket.off("updateCategories");

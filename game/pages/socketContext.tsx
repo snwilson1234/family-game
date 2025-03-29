@@ -1,12 +1,12 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 
-const WebSocketContext = createContext(null);
+const WebSocketContext = createContext<Socket | null>(null);
 
 export const WebSocketProvider = ({ children }) => {
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     // server socket

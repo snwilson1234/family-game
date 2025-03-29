@@ -37,7 +37,7 @@ const PlayerLobby = () => {
   const [lobbyState, setLobbyState] = useState<LobbyState>(initialLobbyState);
 
   useEffect(() => {
-    if (socket != null) {
+    if (socket) {
       // listen for player info
       socket.on("whoami", setThisPlayer);
 
@@ -52,7 +52,7 @@ const PlayerLobby = () => {
     }
 
     return () => {
-      if (socket != null) {
+      if (socket) {
         // disable socket event listeners
         socket.off("whoami", setThisPlayer);
         socket.off("startGame");

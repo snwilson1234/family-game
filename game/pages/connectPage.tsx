@@ -9,7 +9,7 @@ import { Player } from "./types/player";
 
 
 const ConnectPage = () => {
-  const socket: Socket = useWebSocket();
+  const socket: Socket | null = useWebSocket();
 
   const searchParams = useSearchParams();
   const numPlayers = Number(searchParams?.get("numPlayers")) || 0;
@@ -19,7 +19,7 @@ const ConnectPage = () => {
   const [gameActive, setGameActive] = useState(false);
 
   useEffect(() => {
-    if (socket != null) {
+    if (socket) {
       socket.on("updatePlayers", setPlayers);
       socket.on("whoami", setAdminUser);
       socket.emit("getPlayers");
@@ -27,28 +27,19 @@ const ConnectPage = () => {
     }
 
     return () => {
-      if (socket != null) {
+      if (socket) {
         socket.off("updatePlayers");
         socket.off("whoami", setAdminUser);
       }
     };
   }, []);
 
-  useEffect(() => {
-    console.log("Updated players list:", players);
-  }, [players]);
-
-  useEffect(() => {
-    console.log("Updated player:", adminUser);
-  }, [adminUser]);
-
   const sendStartGameSignal = () => {
-    if (socket != null) {
+    if (socket) {
       socket.emit("startGame");
     }
   }
   
-
   if (gameActive) {
     return (
       <div></div>
@@ -56,28 +47,12 @@ const ConnectPage = () => {
   }
   else {
     return (
-      <div className="
-          flex flex-col gap-20 p-8
-          items-center w-full
-        ">
-          <div className="
-            flex flex-col items-center
-            w-full
-            ">
-              <h1 className="
-                text-5xl font-medium inline-block
-                ">Connect Players</h1>
+      <div className="flex flex-col w-full h-screen items-center gap-20 p-8">
+          <div className="flex flex-col w-full h-1/4 items-center">
+              <h1 className="text-5xl font-medium inline-block">Connect Players</h1>
           </div>
-          
-          <div className="
-            flex flex-col items-center
-            bg-indigo-700 rounded-md
-            h-100 w-3/4
-          ">
-            <div className="
-              flex flex-col items-center h-10
-              justify-center text-lg font-semibold
-            ">
+          <div className="flex flex-col items-center h-3/4 w-3/4 bg-indigo-700 rounded-md">
+            <div className="flex flex-col items-center h-10 justify-center text-lg font-semibold">
               <p className="">Connections</p>
             </div>
             <div className="
