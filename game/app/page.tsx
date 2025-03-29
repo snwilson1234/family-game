@@ -7,16 +7,15 @@ export default function Home() {
 
   const router = useRouter();
 
-  // use device type to determine if this is the admin or player, to keep things simple.
+  // use device type to determine admin/player role
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
 
+    // desktop device is admin, everyone else a player
     if (/windows|macintosh|linux|x11/i.test(userAgent)) {
-      // desktop device is admin
       router.push("/adminPage");
     }
     else {
-      // all other users are player
       router.push("/playerJoinForm");
     }
       
