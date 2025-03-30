@@ -10,14 +10,14 @@ import { LobbyState } from "./types/lobbystate";
 
 const PlayerResponseForm = () => {
 
-  const socket: Socket = useWebSocket();
+  const socket: Socket | null = useWebSocket();
   const router = useRouter();
 
   const [categories, setCategories] = useState([]);
   const [letter, setLetter] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [formState, setFormState] = useState<PlayerFormState>(PlayerFormState.Active);
-  const [roundActive, setRoundActive] = useState<Boolean>(true);
+  const [roundActive, setRoundActive] = useState<boolean>(true);
 
   useEffect(() => {
     if (socket) {

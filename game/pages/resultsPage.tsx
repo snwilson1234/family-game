@@ -7,7 +7,7 @@ import { Player } from "./types/player";
 
 const ResultsPage = () => {
   
-  const socket: Socket = useWebSocket();
+  const socket: Socket | null = useWebSocket();
   const [players, setPlayers] = useState<Player[]>([]);
   const [categories, setCategories] = useState([]);
   const [focusCategoryIndex, setFocusCategoryIndex] = useState<number>(-1);

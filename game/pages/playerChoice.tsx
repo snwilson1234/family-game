@@ -23,10 +23,6 @@ export default function PlayerChoice() {
     setContinueVisible(true);
   }
 
-  const getContinueVisibility = () => {
-    return continueVisible == true ? 'visible' : 'invisible';
-  }
-
   return (
     <div className="flex flex-col gap-20 p-8">
       <header className="flex items-center mx-auto max-w-sm">
@@ -47,11 +43,9 @@ export default function PlayerChoice() {
           id="btn-4"
           onClick={() => handlePlayerUpdate(4)}
           className={`btn btn-secondary ${getButtonClassNames(4)}`}
-          >Four</button>
+        >Four</button>
       </div>
-      <div
-        className="
-          flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <Link
           href={{
             pathname: '/connectPage',
@@ -60,9 +54,7 @@ export default function PlayerChoice() {
             }
           }}
         >
-        <button
-          className="btn btn-primary w-lg"
-          >Continue</button>
+          <button className="btn btn-primary w-lg">Continue</button>
         </Link>
       </div>
     </div>

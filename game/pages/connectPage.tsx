@@ -47,19 +47,15 @@ const ConnectPage = () => {
   }
   else {
     return (
-      <div className="flex flex-col w-full h-screen items-center gap-20 p-8">
-          <div className="flex flex-col w-full h-1/4 items-center">
+      <div className="flex flex-col items-center w-full h-screen gap-20 p-8">
+          <div className="flex flex-col items-center w-full h-1/5">
               <h1 className="text-5xl font-medium inline-block">Connect Players</h1>
           </div>
-          <div className="flex flex-col items-center h-3/4 w-3/4 bg-indigo-700 rounded-md">
-            <div className="flex flex-col items-center h-10 justify-center text-lg font-semibold">
+          <div className="flex flex-col items-center w-3/4 h-4/5 bg-indigo-700 rounded-md">
+            <div className="flex flex-col items-center w-full h-1/10 justify-center text-lg font-semibold">
               <p className="">Connections</p>
             </div>
-            <div className="
-              flex flex-col items-center h-85 w-4/5
-              bg-indigo-800 py-6 gap-2
-              rounded-md shadow-lg
-            ">
+            <div className="flex flex-col items-center w-3/4 h-8/10 gap-2 py-2 rounded-md shadow-lg bg-indigo-800">
               {
                 Array.from({ length: numPlayers }).map((_, index) => {
                   const player = players[index];
@@ -86,9 +82,7 @@ const ConnectPage = () => {
             </div>
           </div>
           
-          <Link href={{
-            pathname: '/gameboard',
-          }}>
+          <Link href={{ pathname: '/gameboard' }}>
             <button 
               onClick={() => {
                 setGameActive(true);

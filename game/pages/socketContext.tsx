@@ -17,7 +17,7 @@ export const WebSocketProvider = ({ children }) => {
     setSocket(newSocket);
 
     return () => {
-      newSocket.disconnect(); // Clean up on unmount
+      newSocket.disconnect(); // clean up on unmount
     };
   }, []);
 

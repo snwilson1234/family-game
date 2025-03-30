@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useWebSocket } from "./socketContext";
 import { useRouter } from "next/navigation";
 import { LobbyState } from "./types/lobbystate";
+import { Socket } from "socket.io-client";
 
 
 const PlayerJoinForm = () => {
 
-  const socket: Socket = useWebSocket();
+  const socket: Socket | null = useWebSocket();
   const router = useRouter();
   
   const [playerName, setPlayerName] = useState("");
@@ -21,10 +22,7 @@ const PlayerJoinForm = () => {
   }
 
   return (
-    <div className="
-      flex flex-col w-full h-screen items-center
-    ">
-
+    <div className="flex flex-col items-center w-full h-screen">
       <form 
         autoComplete="off" 
         onSubmit={joinGame}
