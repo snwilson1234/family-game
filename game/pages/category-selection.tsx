@@ -11,9 +11,9 @@ const CategorySelection = (
     {
         selectedCategories  : string[],
         randomLetter        : string,
-        onGenerateCategories: any,
-        onGenerateLetter    : any,
-        onContinue          : any,
+        onGenerateCategories: () => void,
+        onGenerateLetter    : () => void,
+        onContinue          : () => void,
     }
 ) => {
     

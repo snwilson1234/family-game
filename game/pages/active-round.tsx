@@ -17,9 +17,9 @@ const ActiveRound = (
     selectedCategories: string[],
     randomLetter: string,
     timeLeft: number,
-    onTimerStart: any,
-    onTimerStop: any,
-    onTimerReset: any,
+    onTimerStart: () => void,
+    onTimerStop: () => void,
+    onTimerReset: () => void,
   }
 ) => {
 
