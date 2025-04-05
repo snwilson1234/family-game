@@ -130,6 +130,16 @@ io.on("connection", (socket) => {
     io.emit("updatePlayers", playerArr);
   });
 
+  // listen for player points update from admin
+  socket.on("updatePoints", (playerId, pointsValue) => {
+    console.log("received points update");
+    players[playerId]["points"] = pointsValue;
+    playerArr = playerArr.map(player =>
+      player.id === playerId ? { ...player, points: pointsValue } : player
+    );
+    io.emit("updatePlayers", playerArr);
+  });
+
   // Handle player disconnecting
   socket.on("disconnect", () => {
     console.log(`Player disconnected: ${socket.id}`);

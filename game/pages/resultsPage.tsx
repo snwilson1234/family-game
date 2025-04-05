@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Player } from "./types/player";
 
 
-const ResultsPage = () => {
+const ResultsPage = ({ onContinue }: { onContinue: any }) => {
   
   const socket: Socket | null = useWebSocket();
   const [players, setPlayers] = useState<Player[]>([]);
@@ -13,6 +13,7 @@ const ResultsPage = () => {
   const [focusCategoryIndex, setFocusCategoryIndex] = useState<number>(-1);
   const [rowFocusColors, setRowFocusColors] = useState<string[]>(['bg-green-800','bg-green-800','bg-green-800','bg-green-800']);
 
+  
   useEffect(() => {
     if (socket) {
       console.log("socket on!!");
@@ -24,16 +25,18 @@ const ResultsPage = () => {
 
     return () => {
       if (socket) {
-        console.log("socket off!!");
+        console.log("socket off from results page!!");
         socket.off("updatePlayers");
         socket.off("updateCategories");
       }
     }
   }, []);
 
+  // useEffect()
+
   useEffect(() => {
-    let row_highlights : string[] = [];
-    let answer_counts: {[key: string]: number} = {};
+    const row_highlights : string[] = [];
+    const answer_counts: {[key: string]: number} = {};
 
     console.log("FOCUS CATEGORY INDEX:", focusCategoryIndex);
 
@@ -45,35 +48,19 @@ const ResultsPage = () => {
     players.forEach(( player, _ ) => {
       const answer = player.answers[focusCategoryIndex];
       row_highlights.push(answer_counts[answer] > 1 ? 'bg-red-800' : 'bg-green-800');
+      if (answer_counts[answer] == 1) {
+        player.points += 10;
+      }
+      console.log(`${player.name} now has ${player.points} points.`);
+
+      socket?.emit("updatePoints",player.id,player.points);
+
     });
 
     // set the row colors based on answer similarities
     setRowFocusColors(row_highlights);
 
   }, [focusCategoryIndex])
-
-  const testFunc = () => {
-    let row_highlights : string[] = [];
-    let answer_counts: {[key: string]: number} = {};
-
-    console.log("FOCUS CATEGORY INDEX:", focusCategoryIndex);
-
-    players.forEach(( player, _ ) => {
-      const answer = player.answers[focusCategoryIndex];
-      answer_counts[answer] = (answer_counts[answer] || 0) + 1;
-    });
-
-    players.forEach(( player, _ ) => {
-      const answer = player.answers[focusCategoryIndex];
-      row_highlights.push(answer_counts[answer] > 1 ? 'bg-red-800' : 'bg-green-800');
-    });
-
-    // increment the index for displaying the highlights
-    setFocusCategoryIndex(focusCategoryIndex + 1);
-
-    // set the row colors based on answer similarities
-    setRowFocusColors(row_highlights);
-  }
 
   return (
     <div className="flex flex-col h-full w-full items-center gap-10 p-8">
@@ -93,7 +80,9 @@ const ResultsPage = () => {
           `}>
           {
             categories?.map((category, index) => (
-              <div className={`
+              <div
+                key={index}
+                className={`
                 text-xl text-center rounded-lg w-full p-1
                 ${index === focusCategoryIndex ? 'bg-gray-800' : 'bg-indigo-800'}
               `}>
@@ -106,7 +95,9 @@ const ResultsPage = () => {
         
         {
           players?.map((player, p_idx) => (
-            <div className={`
+            <div
+              key={p_idx} 
+              className={`
               flex flex-col w-1/${players ? players.length : 2} h-full
             `}>
               <div className="
@@ -115,7 +106,9 @@ const ResultsPage = () => {
               ">
                 {
                   player.answers?.map( (answer, index) => (
-                    <div className={`
+                    <div
+                      key={index}
+                      className={`
                       text-xl text-center rounded-lg w-3/4 p-1
                       ${index == focusCategoryIndex ? rowFocusColors[p_idx] : 'bg-indigo-700'}
                     `}>
@@ -135,6 +128,15 @@ const ResultsPage = () => {
           ))
         }
       </div>
+      <button className="
+        bg-indigo-400 w-xs h-20
+        text-lg font-bold rounded-md
+        hover:cursor-pointer
+        hover:text-indigo-400
+      " onClick={() => {
+        setFocusCategoryIndex(-1);
+        onContinue();
+      }}>Continue</button>
     </div>
   );
 }

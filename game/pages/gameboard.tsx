@@ -133,6 +133,12 @@ const Gameboard = () => {
     const secs = seconds % 60;
     return `${minutes}:${secs.toString().padStart(2, "0")}`;
   };
+
+  const handleResultsContinue = () => {
+    setGameState(GameState.CategorySelection);
+    setIsRunning(false);
+    setTimeLeft(20);
+  };
   
   return (
     <div>
@@ -281,18 +287,8 @@ const Gameboard = () => {
       <div className={`
         ${gameState === GameState.Results ? 'visible' : 'invisible'}`}
       >
-        <ResultsPage initialFocusCategoryIdx={`${-1}`} />
+        <ResultsPage onContinue={handleResultsContinue} />
         <div className="flex flex-col items-center">
-        <button className="
-          bg-indigo-400 w-xs h-20
-          text-lg font-bold rounded-md
-          hover:cursor-pointer
-          hover:text-indigo-400
-        " onClick={() => {
-          setGameState(GameState.CategorySelection);
-          setIsRunning(false);
-          setTimeLeft(20);
-        }}>Continue</button>
         </div>
       </div>
     </div>
