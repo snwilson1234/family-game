@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useWebSocket } from "./socketContext";
+import { useWebSocket } from "./context/GameSocketContext";
 import { Socket } from "socket.io-client";
 import { PlayerFormState } from "./types/formstate";
 import { useRouter } from "next/router";
@@ -58,7 +58,7 @@ const PlayerResponseForm = () => {
 
   useEffect(() => {
     if (roundActive === false) {
-      router.push(`playerLobby?lobbyState=${LobbyState.BetweenRound}`);
+      router.push(`player-lobby?lobbyState=${LobbyState.BetweenRound}`);
     }
   }, [roundActive])
 

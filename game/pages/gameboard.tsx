@@ -1,11 +1,10 @@
 'use client';
 import { useEffect, useState } from "react";
 import { GameState } from "./gamestate/gamestate";
-import { useWebSocket } from "./socketContext";
+import { useWebSocket } from "./context/GameSocketContext";
 import { Player } from "./types/player";
-import ResultsPage from "./resultsPage";
+import ResultsPage from "./results-page";
 import { Socket } from "socket.io-client";
-
 
 
 const Gameboard = () => {
@@ -73,17 +72,6 @@ const Gameboard = () => {
   const [thisPlayer, setThisPlayer] = useState<Player>();
   const [players, setPlayers] = useState<Player[]>([]);
 
-  const generateRandomCategories = () => {
-    const shuffled = [...categories].sort(() => 0.5 - Math.random());
-    setSelectedCategories(shuffled.slice(0, 10));
-  };
-
-  const generateRandomLetter = () => {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    setRandomLetter(letters[randomIndex]);
-  };
-
   useEffect(() => {
     if (socket) {
       socket.on("updatePlayers", setPlayers);
@@ -138,6 +126,17 @@ const Gameboard = () => {
     setGameState(GameState.CategorySelection);
     setIsRunning(false);
     setTimeLeft(20);
+  };
+
+  const generateRandomCategories = () => {
+    const shuffled = [...categories].sort(() => 0.5 - Math.random());
+    setSelectedCategories(shuffled.slice(0, 10));
+  };
+
+  const generateRandomLetter = () => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const randomIndex = Math.floor(Math.random() * letters.length);
+    setRandomLetter(letters[randomIndex]);
   };
   
   return (
@@ -198,6 +197,13 @@ const Gameboard = () => {
           </button>
         </div>
       </div>
+
+
+
+
+
+
+
       {/* Gameboard */}
       <div className={`
         ${gameState === GameState.Active ? 'visible' : 'invisible'}

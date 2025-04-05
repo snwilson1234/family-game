@@ -1,6 +1,6 @@
 'use client';
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "./socketContext"
+import { useWebSocket } from "./context/GameSocketContext"
 import { useEffect, useState } from "react";
 import { Player } from "./types/player";
 

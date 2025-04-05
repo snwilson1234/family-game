@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Loader2, Signal } from "lucide-react"; 
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "./socketContext";
+import { useWebSocket } from "./context/GameSocketContext";
 import { Player } from "./types/player";
 
 
