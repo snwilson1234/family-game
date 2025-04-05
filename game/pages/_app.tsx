@@ -1,5 +1,5 @@
 import '../app/globals.css';
-import { WebSocketProvider } from './socketContext';
+import { WebSocketProvider } from './context/GameSocketContext';
 
 
 function MyApp({ Component, pageProps }: any) {

@@ -48,7 +48,7 @@ export default function PlayerChoice() {
       <div className="flex flex-col items-center">
         <Link
           href={{
-            pathname: '/connectPage',
+            pathname: '/connect-page',
             query: {
               numPlayers: `${players}`,
             }

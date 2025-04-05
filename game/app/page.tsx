@@ -13,10 +13,10 @@ export default function Home() {
 
     // desktop device is admin, everyone else a player
     if (/windows|macintosh|linux|x11/i.test(userAgent)) {
-      router.push("/adminPage");
+      router.push("/admin-page");
     }
     else {
-      router.push("/playerJoinForm");
+      router.push("/player-join-form");
     }
       
   }, []);

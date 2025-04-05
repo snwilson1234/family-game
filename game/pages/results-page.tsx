@@ -1,11 +1,17 @@
 'use client';
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "./socketContext"
+import { useWebSocket } from "./context/GameSocketContext"
 import { useEffect, useState } from "react";
 import { Player } from "./types/player";
 
 
-const ResultsPage = ({ onContinue }: { onContinue: any }) => {
+type ResultsPageProps = {
+  onContinue : () => void
+};
+
+const ResultsPage = ({ 
+  onContinue 
+} : ResultsPageProps) => {
   
   const socket: Socket | null = useWebSocket();
   const [players, setPlayers] = useState<Player[]>([]);

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useWebSocket } from "./socketContext";
+import { useWebSocket } from "./context/GameSocketContext";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Player } from "./types/player";
 import { LobbyState } from "./types/lobbystate";
@@ -70,7 +70,7 @@ const PlayerLobby = () => {
 
   useEffect(() => {
     if (roundActive === true) {
-      router.push("/playerResponseForm");
+      router.push("/player-reponse-form");
     }
   }, [roundActive]);
 
