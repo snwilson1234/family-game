@@ -5,6 +5,8 @@ import { useWebSocket } from "./context/GameSocketContext";
 import { Player } from "./types/player";
 import ResultsPage from "./results-page";
 import { Socket } from "socket.io-client";
+import CategorySelection from "./category-selection";
+import ActiveRound from "./active-round";
 
 
 const Gameboard = () => {
@@ -138,157 +140,48 @@ const Gameboard = () => {
     const randomIndex = Math.floor(Math.random() * letters.length);
     setRandomLetter(letters[randomIndex]);
   };
+
+  const handleTimerStart = () => {
+    setIsRunning(true);
+    socket.emit("startRound");
+  };
+
+  const handleTimerStop = () => {
+    setIsRunning(false)
+  };
+
+  const handleTimerReset = () => {
+    setTimeLeft(20);
+    setIsRunning(false);
+  };
   
   return (
     <div>
-      {/* Category Page */}
       <div className={`
         ${gameState === GameState.CategorySelection ? 'visible' : 'invisible'}
         flex flex-col items-center justify-center w-full h-screen pt-10
         absolute
       `}>
-        <div className="flex flex-row items-center justify-center w-full h-8/10">
-          <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
-            <h1 className="text-3xl font-medium">Your categories are...</h1>
-            <ul className="flex flex-col items-center w-3/4 h-4/5 gap-1 py-5 bg-indigo-600 rounded-md text-xl shadow-lg">
-              {
-                selectedCategories.map(
-                  (category, index) => (
-                    <li className="
-                      bg-indigo-500 w-1/2
-                      rounded-md p-2 h-1/10
-                      shadow-lg
-                    " key={index}>
-                      {category}
-                    </li>
-                  )
-                )  
-              }
-            </ul>
-          </div>
-
-          <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
-            <h1 className="text-3xl font-medium">Your letter is...</h1>
-            <div className="text-9xl font-bold h-4/5">
-              <h1>{randomLetter ? randomLetter : "_"}</h1>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row items-center justify-between w-full h-2/10 px-40">
-          <button 
-            onClick={() => generateRandomCategories()}
-            className="btn btn-primary text-3xl w-2/5">
-            Generate Categories
-          </button>
-          <button 
-            onClick={generateRandomLetter}
-            className="btn btn-primary text-3xl w-2/5">
-            Generate Letter
-          </button>
-        </div>
-        <div className="flex flex-col align-center items-center h-1/10">
-          <button 
-            onClick={() => setGameState(GameState.Active)}
-            disabled={selectedCategories.length === 0 || randomLetter === ""}
-            className={`btn btn-primary text-xl
-              ${selectedCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}
-              `}>
-            Continue
-          </button>
-        </div>
+        <CategorySelection 
+          selectedCategories={selectedCategories} 
+          randomLetter={randomLetter} 
+          onGenerateCategories={generateRandomCategories} 
+          onGenerateLetter={generateRandomLetter} 
+          onContinue={() => setGameState(GameState.Active)} />
       </div>
-
-
-
-
-
-
-
-      {/* Gameboard */}
       <div className={`
         ${gameState === GameState.Active ? 'visible' : 'invisible'}
       `}>
-        <div className="flex flex-col justify-between w-full h-screen gap-2 z-0 absolute">
-          <div className="flex flex-row justify-between w-full pt-2">
-            <h1 className="text-lg text-left pl-8 w-1/2">
-              {`
-                ${players.length >= 1 ? players[0]['name'] : ""}:
-                ${players.length >= 1 ? players[0]['points'] : ""}
-              `}
-            </h1>
-            <h1 className="text-lg text-right pr-8 w-1/2">
-              {`
-                ${players.length >= 2 ? players[1]['name'] : ""}:
-                ${players.length >= 2 ? players[1]['points'] : ""}
-              `}
-            </h1>
-          </div>
-          
-          <div className="flex flex-row justify-between w-full pb-3">
-            <h1 className="text-lg text-left pl-8 w-1/2">{players.length >= 3 ? players[2]['name'] : ""}</h1>
-            <h1 className="text-lg text-right pr-8 w-1/2">{players.length >= 4 ? players[3]['name'] : ""}</h1>
-          </div>
-        </div>
-        <div className="flex flex-row justify-center items-center w-full h-screen gap-5 z-10 absolute">
-          <ul className="flex flex-col items-center gap-1 py-5 bg-indigo-600 w-1/4 h-3/5 rounded-md">
-          {
-            selectedCategories.map(
-              (category, index) => (
-                <li className="
-                  bg-indigo-500 w-4/5
-                  rounded-md p-2 h-1/10
-                  text-lg
-                " key={index}>
-                  {category}
-                </li>
-              )
-            )  
-          }
-          </ul>
-        {/*Timer*/}
-        <div className="flex flex-col w-1/4 h-full align-center justify-center">
-          <div className="h-1/4 text-center">
-            <p className="text-2xl">Your Letter is:</p>
-            <h1 className="text-9xl">{randomLetter}</h1>
-          </div>
-          <div className="
-            flex flex-col w-full h-1/3 align-center
-            text-center justify-center text-2xl font-bold
-            rounded-lg bg-indigo-400
-          ">
-            <div className="h-1/4 text-5xl">{formatTime(timeLeft)}</div>
-            <div className="
-              flex flex-col items-center gap-2 w-full
-            ">
-              <button 
-                className="
-                  bg-emerald-900 rounded-md w-1/2
-                  hover:cursor-pointer hover:text-indigo-300
-                " 
-                onClick={() => {
-                  setIsRunning(true);
-                  socket.emit("startRound");
-                }}
-              >Start</button>
-              <button 
-                className="bg-red-900 rounded-md w-1/2
-                  hover:cursor-pointer hover:text-indigo-300
-                " 
-                onClick={() => setIsRunning(false)}
-              >Stop</button>
-              <button 
-                className="bg-blue-900 rounded-md w-1/2
-                  hover:cursor-pointer hover:text-indigo-300
-                " 
-                onClick={() => {
-                  setTimeLeft(20);
-                  setIsRunning(false);
-                }}
-              >Reset</button>
-            </div>
-          </div>
-        </div>
-        </div>  
+        <ActiveRound
+          players={players}
+          selectedCategories={selectedCategories}
+          randomLetter={randomLetter}
+          timeLeft={timeLeft}
+          onTimerStart={handleTimerStart}
+          onTimerStop={handleTimerStop}
+          onTimerReset={handleTimerReset}
+        />
+        
       </div>
       <div className={`
         ${gameState === GameState.Results ? 'visible' : 'invisible'}`}
