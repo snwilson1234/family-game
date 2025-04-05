@@ -117,39 +117,39 @@ const Gameboard = () => {
       socket.emit("endRound");
     }
   }, [timeLeft])
-  
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs.toString().padStart(2, "0")}`;
-  };
 
+  /* Do all state updates for next round. */
   const handleResultsContinue = () => {
     setGameState(GameState.CategorySelection);
     setIsRunning(false);
     setTimeLeft(20);
   };
 
+  /* Choose random categories for the current round. */
   const generateRandomCategories = () => {
     const shuffled = [...categories].sort(() => 0.5 - Math.random());
     setSelectedCategories(shuffled.slice(0, 10));
   };
 
+  /* Choose random letter from the alphabet for current round. */
   const generateRandomLetter = () => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const randomIndex = Math.floor(Math.random() * letters.length);
     setRandomLetter(letters[randomIndex]);
   };
 
+  /* Do state updates required for starting the timer. */
   const handleTimerStart = () => {
     setIsRunning(true);
     socket.emit("startRound");
   };
 
+  /* Do state updates required for stopping the timer. */
   const handleTimerStop = () => {
     setIsRunning(false)
   };
 
+  /* Do state updates required for restarting the timer. */
   const handleTimerReset = () => {
     setTimeLeft(20);
     setIsRunning(false);

@@ -5,14 +5,13 @@ import { useEffect, useState } from "react";
 import { Player } from "./types/player";
 
 
-const ResultsPage = (
-  { 
-    onContinue 
-  }: 
-  { 
-    onContinue: () => void 
-  }
-) => {
+type ResultsPageProps = {
+  onContinue : () => void
+};
+
+const ResultsPage = ({ 
+  onContinue 
+} : ResultsPageProps) => {
   
   const socket: Socket | null = useWebSocket();
   const [players, setPlayers] = useState<Player[]>([]);

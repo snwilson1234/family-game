@@ -1,27 +1,26 @@
+'use client';
 import { Player } from "./types/player";
 
+type ActiveRoundProps = {
+  players            : Player[],
+  selectedCategories : string[],
+  randomLetter       : string,
+  timeLeft           : number,
+  onTimerStart       : () => void,
+  onTimerStop        : () => void,
+  onTimerReset       : () => void,
+};
 
-const ActiveRound = (
-  {
-    players,
-    selectedCategories,
-    randomLetter,
-    timeLeft,
-    onTimerStart,
-    onTimerStop,
-    onTimerReset,
 
-  } :
-  {
-    players: Player[],
-    selectedCategories: string[],
-    randomLetter: string,
-    timeLeft: number,
-    onTimerStart: () => void,
-    onTimerStop: () => void,
-    onTimerReset: () => void,
-  }
-) => {
+const ActiveRound = ({
+  players,
+  selectedCategories,
+  randomLetter,
+  timeLeft,
+  onTimerStart,
+  onTimerStop,
+  onTimerReset,
+} : ActiveRoundProps) => {
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -85,25 +84,25 @@ const ActiveRound = (
             <div className="
             flex flex-col items-center gap-2 w-full
             ">
-            <button 
-              className="
-              bg-emerald-900 rounded-md w-1/2
-              hover:cursor-pointer hover:text-indigo-300
-              " 
-              onClick={onTimerStart}
-            >Start</button>
-            <button 
-              className="bg-red-900 rounded-md w-1/2
-              hover:cursor-pointer hover:text-indigo-300
-              " 
-              onClick={onTimerStop}
-            >Stop</button>
-            <button 
-              className="bg-blue-900 rounded-md w-1/2
-              hover:cursor-pointer hover:text-indigo-300
-              " 
-              onClick={onTimerReset}
-            >Reset</button>
+              <button 
+                className="
+                bg-emerald-900 rounded-md w-1/2
+                hover:cursor-pointer hover:text-indigo-300
+                " 
+                onClick={onTimerStart}
+              >Start</button>
+              <button 
+                className="bg-red-900 rounded-md w-1/2
+                hover:cursor-pointer hover:text-indigo-300
+                " 
+                onClick={onTimerStop}
+              >Stop</button>
+              <button 
+                className="bg-blue-900 rounded-md w-1/2
+                hover:cursor-pointer hover:text-indigo-300
+                " 
+                onClick={onTimerReset}
+              >Reset</button>
             </div>
           </div>
         </div>
