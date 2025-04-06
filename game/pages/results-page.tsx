@@ -24,16 +24,16 @@ const ResultsPage = ({
     if (socket) {
       console.log("socket on!!");
       socket.on("updatePlayers", setPlayers);
-      socket.on("updateCategories", setCategories);
+      socket.on("updateRoundCategories", setCategories);
       socket.emit("getPlayers");
-      socket.emit("getCategories");
+      socket.emit("getRoundCategories");
     }
 
     return () => {
       if (socket) {
         console.log("socket off from results page!!");
         socket.off("updatePlayers");
-        socket.off("updateCategories");
+        socket.off("updateRoundCategories");
       }
     }
   }, []);

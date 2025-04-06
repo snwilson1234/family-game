@@ -21,16 +21,17 @@ const PlayerResponseForm = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.on("updateCategories", setCategories);
-      socket.on("updateLetter", setLetter);
-      socket.emit("getCategories");
+      socket.on("updateRoundCategories", setCategories);
+      socket.on("updateRoundLetter", setLetter);
+      socket.emit("getRoundCategories");
+      socket.emit("getRoundLetter");
       socket.on("roundActive", setRoundActive);
     }
 
     return () => {
       if (socket) {
-        socket.off("updateCategories");
-        socket.off("updateLetter");
+        socket.off("updateRoundCategories");
+        socket.off("updateRoundLetter");
         socket.off("roundActive", setRoundActive);
       }
     }
