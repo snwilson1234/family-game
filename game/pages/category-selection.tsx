@@ -64,7 +64,7 @@ const CategorySelection = ({
         className={`btn btn-primary text-xl
           ${selectedCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}
           `}>
-        ontinue
+        Continue
       </button>
       </div>
     </div>
