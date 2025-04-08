@@ -28,7 +28,27 @@ const io = new Server(server, {
 // ─────────────────────────────
 
 // Full category list.
-const allCategories = [
+let allCategories = [
+  "Male First Names","Female First Names","Animals", "Countries", "Cities", "Fruits", "Vegetables", "Types of Candy", "Ice Cream Flavors", 
+  "Board Games", "Movie Titles", "Book Titles", "TV Shows", "Musical Instruments", "Sports", "Clothing Brands", "Car Brands", "Types of Weather",
+  "Occupations", "Things in a School", "Things in a Kitchen", "Things in a Garage", "Things in a Hospital", "Things at the Beach", "Things in the Sky",
+  "Things in a Park", "Things That Are Sticky","Things That Are Round", "Things That Smell Good","Things That Smell Bad","Things You Plug In",
+  "Things You Throw Away", "Things That Use Batteries", "Things You Keep in a Wallet", "Things That Can Melt", "Things That Can Fly",
+  "Things That Are Cold", "Things That Are Hot", "Types of Trees", "Types of Flowers", "Things You Shout", "Things You Whisper",
+  "Types of Drinks", "Hobbies", "School Subjects", "Dog Breeds", "Cat Breeds", "Cartoon Characters", "Superheroes", "Villains",
+  "Things That Are Loud", "Things That Are Quiet", "Things You Sit On", "Things You Wear on Your Feet", "Items in a Purse or Bag", 
+  "Foods You Eat with Your Hands", "Breakfast Foods", "Lunch Foods", "Dinner Foods", "Things That Float", "Things That Sink", "Famous Landmarks", 
+  "Languages", "Types of Transportation", "Things You Find on a Map", "Card Games", "Video Game Titles", "Things Found in a Bathroom",
+  "Types of Shoes", "Things You See at a Zoo", "Things Found in a Junk Drawer", "Insects", "Reptiles", "Things That Bounce",
+  "Things That Are Sticky", "Things You Take Camping", "Things You Do on Vacation", "Things That Need Water", "Things in a Science Lab",
+  "Things at a Carnival", "Things in a Hotel Room", "Things You Can Recycle", "Things You Can Build", "Types of Cheese", "Pizza Toppings",
+  "Kinds of Soup", "Famous Athletes", "Famous Actors", "Famous Singers", "Fast Food Restaurants", "Things That Are Blue", "Things That Are Made of Wood",
+  "Types of Hats", "Words Associated with Winter", "Words Associated with Summer", "Things That Are Sweet", "Things That Are Sour",
+  "Types of Fish", "Things Found in the Desert", "Things Found Under the Bed"
+];
+
+// Copy of all categories for use in restarting the game. (improve later)
+const allCategoriesCopy = [
   "Male First Names","Female First Names","Animals", "Countries", "Cities", "Fruits", "Vegetables", "Types of Candy", "Ice Cream Flavors", 
   "Board Games", "Movie Titles", "Book Titles", "TV Shows", "Musical Instruments", "Sports", "Clothing Brands", "Car Brands", "Types of Weather",
   "Occupations", "Things in a School", "Things in a Kitchen", "Things in a Garage", "Things in a Hospital", "Things at the Beach", "Things in the Sky",
@@ -169,7 +189,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("endRound", () => {
-    console.log("Admin has ended the rounded.")
+    console.log("Admin has ended the rounded.");
     io.emit("roundActive", false);
   });
 
@@ -193,6 +213,26 @@ io.on("connection", (socket) => {
       player.id === playerId ? { ...player, points: pointsValue } : player
     );
     io.emit("updatePlayers", playerArr);
+  });
+
+  // listen for admin to restart the game
+  socket.on("restartGame", () => {
+    console.log("admin has restarted the game");
+    // reset the categories array
+    allCategories = Array.from(allCategoriesCopy);
+
+    // reset player points
+    for (const id in players) {
+      players[id].points = 10;
+    };
+
+    for (const player of playerArr) {
+      player['points'] = 0;
+    }
+
+    io.emit("updatePlayers", playerArr);
+    io.emit("updateCategories", allCategories);
+    io.emit("startGame", false);
   });
 
   // Handle player disconnecting
