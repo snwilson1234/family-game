@@ -7,6 +7,7 @@ import ResultsPage from "./results-page";
 import { Socket } from "socket.io-client";
 import CategorySelection from "./category-selection";
 import ActiveRound from "./active-round";
+import EndPage from "./end-page";
 
 
 const Gameboard = () => {
@@ -16,10 +17,11 @@ const Gameboard = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [randomLetter, setRandomLetter] = useState<string>("");
   const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-  const [timeLeft, setTimeLeft] = useState(20); //TODO: update to 180 when done testing
+  const [timeLeft, setTimeLeft] = useState(5); //TODO: update to 180 when done testing
   const [isRunning, setIsRunning] = useState(false);
   const [thisPlayer, setThisPlayer] = useState<Player>();
   const [players, setPlayers] = useState<Player[]>([]);
+  const [winner, setWinner] = useState<Player>();
 
   useEffect(() => {
     if (socket) {
@@ -61,7 +63,7 @@ const Gameboard = () => {
   const handleResultsContinue = () => {
     setGameState(GameState.CategorySelection);
     setIsRunning(false);
-    setTimeLeft(20);
+    setTimeLeft(5);
   };
 
   /* Tell the server to choose random categories for the current round. */
@@ -87,16 +89,26 @@ const Gameboard = () => {
 
   /* Do state updates required for restarting the timer. */
   const handleTimerReset = () => {
-    setTimeLeft(20);
+    setTimeLeft(5);
     setIsRunning(false);
   };
+
+  const handleWinner = (winner: Player) => {
+    console.log("Winner is: ", winner ? winner.name : "placeholder");
+    setGameState(GameState.End);
+    // setWinner()
+    // TODO: add more
+  }
+
+  const handlePlayAgain = () => {
+    console.log("clicked play again");
+  }
   
   return (
     <div>
       <div className={`
-        ${gameState === GameState.CategorySelection ? 'visible' : 'invisible'}
+        ${gameState === GameState.CategorySelection ? 'visible' : 'hidden'}
         flex flex-col items-center justify-center w-full h-screen pt-10
-        absolute
       `}>
         <CategorySelection 
           selectedCategories={selectedCategories} 
@@ -106,7 +118,7 @@ const Gameboard = () => {
           onContinue={() => setGameState(GameState.Active)} />
       </div>
       <div className={`
-        ${gameState === GameState.Active ? 'visible' : 'invisible'}
+        ${gameState === GameState.Active ? 'visible' : 'hidden'}
       `}>
         <ActiveRound
           players={players}
@@ -120,12 +132,23 @@ const Gameboard = () => {
         
       </div>
       <div className={`
-        ${gameState === GameState.Results ? 'visible' : 'invisible'}`}
+        ${gameState === GameState.Results ? 'visible' : 'hidden'}
+        `}
       >
-        <ResultsPage onContinue={handleResultsContinue} />
-        <div className="flex flex-col items-center">
-        </div>
+        <ResultsPage 
+          onContinue={handleResultsContinue}
+          onWinner={handleWinner}
+        />
       </div>
+      <div className={`
+        ${gameState === GameState.End ? 'visible' : 'hidden'}`}
+      >
+        <EndPage 
+          winner={winner!}
+          onPlayAgain={handlePlayAgain}
+        />
+      </div>
+      
     </div>
   );
 }

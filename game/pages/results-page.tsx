@@ -6,11 +6,12 @@ import { Player } from "./types/player";
 
 
 type ResultsPageProps = {
-  onContinue : () => void
+  onContinue : () => void,
+  onWinner : (winner: Player) => void,
 };
 
 const ResultsPage = ({ 
-  onContinue 
+  onContinue, onWinner
 } : ResultsPageProps) => {
   
   const socket: Socket | null = useWebSocket();
@@ -60,6 +61,12 @@ const ResultsPage = ({
       console.log(`${player.name} now has ${player.points} points.`);
 
       socket?.emit("updatePoints",player.id,player.points);
+
+      // detect winner
+      // TODO: change to more reasonable number when actually playing the game
+      if (player.points >= 10) {
+        onWinner(player);
+      }
 
     });
 
