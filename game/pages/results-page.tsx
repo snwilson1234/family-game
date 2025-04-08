@@ -54,19 +54,24 @@ const ResultsPage = ({
 
     players.forEach(( player, _ ) => {
       const answer = player.answers[focusCategoryIndex];
-      row_highlights.push(answer_counts[answer] > 1 ? 'bg-red-800' : 'bg-green-800');
-      if (answer_counts[answer] == 1) {
-        player.points += 10;
+      if (answer != 'NO_ANSWER') {
+        row_highlights.push(answer_counts[answer] > 1 ? 'bg-red-800' : 'bg-green-800');
+        if (answer_counts[answer] == 1) {
+          player.points += 10;
+        }
+      }
+      else {
+        row_highlights.push('bg-red-800');
       }
       console.log(`${player.name} now has ${player.points} points.`);
-
       socket?.emit("updatePoints",player.id,player.points);
-
       // detect winner
       // TODO: change to more reasonable number when actually playing the game
-      if (player.points >= 10) {
+      if (player.points >= 50) {
         onWinner(player);
+        setFocusCategoryIndex(-1);
       }
+      
 
     });
 
@@ -107,7 +112,7 @@ const ResultsPage = ({
         </div>
         
         {
-          players?.map((player, p_idx) => (
+          players && players.length > 0 && players?.map((player, p_idx) => (
             <div
               key={p_idx} 
               className={`

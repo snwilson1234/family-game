@@ -26,7 +26,7 @@ const EndPage = ({
                 className="btn btn-primary text-xl"
                 onClick={onPlayAgain}
             >Play again?</button>
-        </div>
+        </div>/* TODO: add option for "play again with same players vs. new game" */
     )
 
 

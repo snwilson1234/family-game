@@ -49,6 +49,13 @@ const PlayerResponseForm = () => {
     console.log("player answers:", answers);
 
     if (socket) {
+      answers.forEach((answer, i) => {
+        console.log(`Player answer: XX${answer}XX`);
+        console.log(`Player answer type: XX${typeof(answer)}XX`);
+        if (answer === undefined || answer.trim() == '')
+          answers[i] = 'NO_ANSWER';
+      });
+      console.log("player answers NOW!:", answers);
       socket.emit("submitAnswers", answers);
     }
 

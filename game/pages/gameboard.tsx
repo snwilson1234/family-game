@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { GameState } from "./gamestate/gamestate";
 import { useWebSocket } from "./context/GameSocketContext";
 import { Player } from "./types/player";
@@ -13,11 +14,12 @@ import EndPage from "./end-page";
 const Gameboard = () => {
 
   const socket: Socket | null = useWebSocket();
+  const router = useRouter();
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [randomLetter, setRandomLetter] = useState<string>("");
   const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-  const [timeLeft, setTimeLeft] = useState(5); //TODO: update to 180 when done testing
+  const [timeLeft, setTimeLeft] = useState(10); //TODO: update to 180 when done testing
   const [isRunning, setIsRunning] = useState(false);
   const [thisPlayer, setThisPlayer] = useState<Player>();
   const [players, setPlayers] = useState<Player[]>([]);
@@ -63,7 +65,7 @@ const Gameboard = () => {
   const handleResultsContinue = () => {
     setGameState(GameState.CategorySelection);
     setIsRunning(false);
-    setTimeLeft(5);
+    setTimeLeft(10);
   };
 
   /* Tell the server to choose random categories for the current round. */
@@ -89,19 +91,21 @@ const Gameboard = () => {
 
   /* Do state updates required for restarting the timer. */
   const handleTimerReset = () => {
-    setTimeLeft(5);
+    setTimeLeft(10);
     setIsRunning(false);
   };
 
   const handleWinner = (winner: Player) => {
     console.log("Winner is: ", winner ? winner.name : "placeholder");
     setGameState(GameState.End);
-    // setWinner()
-    // TODO: add more
+    setWinner(winner);
   }
 
   const handlePlayAgain = () => {
     console.log("clicked play again");
+    socket?.emit("restartGame");
+    setGameState(GameState.CategorySelection);
+    handleTimerReset();
   }
   
   return (
