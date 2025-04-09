@@ -49,14 +49,21 @@ const PlayerResponseForm = () => {
     console.log("player answers:", answers);
 
     if (socket) {
-      answers.forEach((answer, i) => {
+      let newAnswers = [...answers];
+      newAnswers.forEach((answer, i) => {
         console.log(`Player answer: XX${answer}XX`);
         console.log(`Player answer type: XX${typeof(answer)}XX`);
         if (answer === undefined || answer.trim() == '')
-          answers[i] = 'NO_ANSWER';
+          newAnswers[i] = 'NO_ANSWER';
       });
-      console.log("player answers NOW!:", answers);
-      socket.emit("submitAnswers", answers);
+
+      if (newAnswers.length < 10) {
+        const pad = 10 - newAnswers.length;
+        newAnswers = newAnswers.concat(Array(pad).fill('NO_ANSWER'));
+      }
+      console.log("player answers NOW!:", newAnswers);
+      socket.emit("submitAnswers", newAnswers);
+      setAnswers(newAnswers);
     }
 
     setFormState(PlayerFormState.Submitted);
