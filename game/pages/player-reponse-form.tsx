@@ -48,6 +48,7 @@ const PlayerResponseForm = () => {
 
     console.log("player answers:", answers);
 
+    // TODO: improve this code
     if (socket) {
       let newAnswers = [...answers];
       newAnswers.forEach((answer, i) => {

@@ -6,8 +6,8 @@ import { Player } from "./types/player";
 
 
 type ResultsPageProps = {
-  onContinue : () => void,
-  onWinner : (winner: Player) => void,
+  onContinue              : () => void,
+  onWinner                : (winner: Player) => void,
 };
 
 const ResultsPage = ({ 
@@ -80,14 +80,23 @@ const ResultsPage = ({
 
   }, [focusCategoryIndex])
 
+  const onPlayerPointsIncrement = (player: Player) => {
+    socket?.emit("updatePoints", player.id, player.points + 10);
+  }
+  const onPlayerPointsDecrement = (player: Player) => {
+    if (player.points > 0) {
+      socket?.emit("updatePoints", player.id, player.points - 10);
+    }
+  }
+
   return (
-    <div className="flex flex-col h-full w-full items-center gap-10 p-8">
-      <div className="flex flex-row gap-10">
+    <div className="flex flex-col h-full w-full items-center gap-5 p-8">
+      <div className="flex flex-row gap-5">
         <h1 className="text-3xl font-bold font-white">The results are in...</h1>
         <button onClick={() => {setFocusCategoryIndex(focusCategoryIndex + 1)}} className="btn btn-primary">Next</button>
       </div>
       <div className="
-        flex flex-row h-full w-full gap-10 p-8
+        flex flex-row h-9/10 w-full gap-10 p-8
       ">
         <div className={`
           flex flex-col w-1/${players ? players.length : 2} h-full
@@ -138,16 +147,32 @@ const ResultsPage = ({
               </div>
 
               <div className="
-                flex flex-col items-center justify-center text-lg h-1/4
+                flex flex-row items-center justify-center text-lg h-1/4 pt-2
               ">
-                <h1>{player.name}: {player.points}</h1>
+                <button
+                  onClick={() => {onPlayerPointsDecrement(player)}}
+                  className="btn btn-primary bg-red-800 hover:bg-red-900 w-1/4 h-6 flex items-center justify-center">
+                  <p className="m-0 p-0">-</p>
+                </button>
+                <h1 className="w-1/3 text-center">{player.name}: {player.points}</h1>
+                <button
+                  onClick={() => {
+                    onPlayerPointsIncrement(player);
+                    if (player.points >= 50) {
+                      onWinner(player);
+                      setFocusCategoryIndex(-1);
+                    }
+                  }}
+                  className="btn btn-primary bg-green-800 hover:bg-green-900 w-1/4 h-6 flex items-center justify-center">
+                  <p className="m-0 p-0">+</p>
+                </button>
               </div>
             </div>
           ))
         }
       </div>
       <button className="
-        bg-indigo-400 w-xs h-20
+        bg-indigo-400 w-xs h-1/10
         text-lg font-bold rounded-md
         hover:cursor-pointer
         hover:text-indigo-400
