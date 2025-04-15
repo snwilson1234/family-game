@@ -22,7 +22,7 @@ const AdminPage = () => {
         <header className="flex flex-col items-center w-full">
           <h1 className="text-5xl font-medium inline-block">Category Game</h1>
         </header>
-        <div className="flex flex-col gap-5 items-center">
+        <div className="flex flex-col items-center gap-5">
           <Link href={{ pathname: '/choose-num-players' }}>
             <button className="btn btn-primary">
               <div className="text-xl font-medium">Select Players</div>

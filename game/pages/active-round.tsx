@@ -70,14 +70,14 @@ const ActiveRound = ({
 
 
         {/*Timer*/}
-        <div className="flex flex-col w-1/4 h-full align-center justify-center">
+        <div className="flex flex-col align-center justify-center w-1/4 h-full">
           <div className="h-1/4 text-center">
             <p className="text-2xl">Your Letter is:</p>
             <h1 className="text-9xl">{randomLetter}</h1>
           </div>
           <div className="
-            flex flex-col w-full h-1/3 align-center
-            text-center justify-center text-2xl font-bold
+            flex flex-col align-center text-center justify-center
+            w-full h-1/3 text-2xl font-bold
             rounded-lg bg-indigo-400
           ">
             <div className="h-1/4 text-5xl">{formatTime(timeLeft)}</div>

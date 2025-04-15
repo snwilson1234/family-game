@@ -79,14 +79,14 @@ const PlayerResponseForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen items-center justify-center">
+    <div className="flex flex-col items-center justify-center w-full h-screen">
       <div className={`
         ${formState === PlayerFormState.Submitted ? 'visible' : 'invisible' }  absolute  
       `}>
         <h1 className="text-xl">Waiting for timer to run out...</h1>
       </div>
       <div className={`
-        flex flex-col w-full h-full p-2 items-center absolute
+        flex flex-col items-center w-full h-full p-2 absolute
         ${formState === PlayerFormState.Active ? 'visible' : 'invisible' }   
       `}>
         <h1 className="

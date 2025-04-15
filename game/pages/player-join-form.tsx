@@ -26,7 +26,7 @@ const PlayerJoinForm = () => {
       <form 
         autoComplete="off" 
         onSubmit={joinGame}
-        className="flex flex-col w-full h-screen items-center justify-center gap-10">
+        className="flex flex-col items-center justify-center w-full h-screen gap-10">
         <label className="mb-2">
           <h1 className="text-bold text-lg">Enter your name: </h1>
           <input 
