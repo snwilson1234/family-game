@@ -1,5 +1,9 @@
 'use client';
 
+import * as THREE from 'three';
+import { Canvas, useFrame } from '@react-three/fiber';
+import LetterDie from './components/letterDie';
+
 
 type CategorySelectionProps = {
   selectedCategories   : string[],
@@ -41,6 +45,12 @@ const CategorySelection = ({
       <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
         <h1 className="text-3xl font-medium">Your letter is...</h1>
         <div className="text-9xl font-bold h-4/5">
+        <Canvas id="numbers">
+          <ambientLight intensity={Math.PI / 2} />
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+          <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+          <LetterDie />
+        </Canvas>
           <h1>{randomLetter ? randomLetter : "_"}</h1>
         </div>
       </div>
