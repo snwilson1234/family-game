@@ -16,7 +16,7 @@ function makeLettersTexture() {
   ctx.textBaseline = 'middle';
 
   const step = canvas.width / 20;
-  const letters = "ABCDEFGHIJKLMNOPQRSTW";
+  const letters = "ABCDEFGHIJKLMNOPRSTW";
   for (let i = 0; i < 20; i++) {
     ctx.fillText((letters[i]).toString(), step * i + step / 2, canvas.height / 2);
   }
@@ -26,35 +26,41 @@ function makeLettersTexture() {
   return texture;
 }
 
-const LetterDie = () => {
+type LetterDieProps = {
+  sendRandomLetter : (letter: string) => void,
+};
+
+const LetterDie = ({
+  sendRandomLetter
+} : LetterDieProps) => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const [rotationActive, setRotationActive] = useState(false);
   const points = [
-    new THREE.Vector3(0.9, 0.3, -0.55), // A
-    new THREE.Vector3(0.9, -0.95, -0.55), // B
-    new THREE.Vector3(0.9, -2.2, -0.55), // C
-    new THREE.Vector3(0.9, -3.45, -0.55), // D
-    new THREE.Vector3(0.9, -4.7, -0.55), // E
-    new THREE.Vector3(0.9, -0.3, 0.55), // F
-    new THREE.Vector3(-0.2, 0.3, 0.55), // G
-    new THREE.Vector3(1.55, -3.65, -1.95), // H
-    new THREE.Vector3(0.4, -3.15, -1.6), // I
-    new THREE.Vector3(-0.9, -2.6, -1.95), // J
-    new THREE.Vector3(0.9, 0.3, -3.65), // K
-    new THREE.Vector3(0.9, -0.95, -3.65), // L
-    new THREE.Vector3(0.9, -2.2, -3.7), // M
-    new THREE.Vector3(0.9, -3.45, -3.7), // N
-    new THREE.Vector3(2.2, 1.55, 1.35), // O
-    new THREE.Vector3(3, 2.85, 0.55), // P
-    new THREE.Vector3(0.9, -0.3, -2.6), // R
-    new THREE.Vector3(-0.9, -2.6, 1.2), // S
-    new THREE.Vector3(0.4, -3.15, -4.7), // T
-    new THREE.Vector3(-1.55, 0.5, -1.95), // W
+    { letter: "A", vect: new THREE.Vector3(0.9, 0.3, -0.55) }, // A
+    { letter: "B", vect: new THREE.Vector3(0.9, -0.95, -0.55) }, // B
+    { letter: "C", vect: new THREE.Vector3(0.9, -2.2, -0.55) }, // C
+    { letter: "D", vect: new THREE.Vector3(0.9, -3.45, -0.55) }, // D
+    { letter: "E", vect: new THREE.Vector3(0.9, -4.7, -0.55) }, // E
+    { letter: "F", vect: new THREE.Vector3(0.9, -0.3, 0.55) }, // F
+    { letter: "G", vect: new THREE.Vector3(-0.2, 0.3, 0.55) }, // G
+    { letter: "H", vect: new THREE.Vector3(1.55, -3.65, -1.95) }, // H
+    { letter: "I", vect: new THREE.Vector3(0.4, -3.15, -1.6) }, // I
+    { letter: "J", vect: new THREE.Vector3(-0.9, -2.6, -1.95) }, // J
+    { letter: "K", vect: new THREE.Vector3(0.9, 0.3, -3.65) }, // K
+    { letter: "L", vect: new THREE.Vector3(0.9, -0.95, -3.65) }, // L
+    { letter: "M", vect: new THREE.Vector3(0.9, -2.2, -3.7) }, // M
+    { letter: "N", vect: new THREE.Vector3(0.9, -3.45, -3.7) }, // N
+    { letter: "O", vect: new THREE.Vector3(2.2, 1.55, 1.35) }, // O
+    { letter: "P", vect: new THREE.Vector3(3, 2.85, 0.55) }, // P
+    { letter: "R", vect: new THREE.Vector3(0.9, -0.3, -2.6) }, // R
+    { letter: "S", vect: new THREE.Vector3(-0.9, -2.6, 1.2) }, // S
+    { letter: "T", vect: new THREE.Vector3(0.4, -3.15, -4.7) }, // T
+    { letter: "W", vect: new THREE.Vector3(-1.55, 0.5, -1.95) }, // W
   ];
   const [counter, setCounter] = useState(0);
 
   const { geometry, material } = useMemo(() => {
-    const geometry = new THREE.IcosahedronGeometry(1);
+    const geometry = new THREE.IcosahedronGeometry(1.5);
     const color = new THREE.Vector3(0.11, 0.1, 0.56);
     const colors: number[] = [];
     const uv: number[] = [];
@@ -73,8 +79,6 @@ const LetterDie = () => {
 
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-    console.log("index:", geometry.getIndex());
-    console.log("faces:", geometry.getAttribute('faces'));
 
     const material = new THREE.MeshStandardMaterial({
       vertexColors: true,
@@ -100,9 +104,10 @@ const LetterDie = () => {
             setRotationActive(false);
             // end in a random position and make this the die result, to simplify rotation logic
             const rotatePoint = points[getRandomInt(0,19)];
-            meshRef.current.rotation.x = rotatePoint.x;
-            meshRef.current.rotation.y = rotatePoint.y;
-            meshRef.current.rotation.z = rotatePoint.z;
+            meshRef.current.rotation.x = rotatePoint.vect.x;
+            meshRef.current.rotation.y = rotatePoint.vect.y;
+            meshRef.current.rotation.z = rotatePoint.vect.z;
+            sendRandomLetter(rotatePoint.letter);
         }
     }
   });

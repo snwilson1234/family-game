@@ -73,9 +73,11 @@ const Gameboard = () => {
     socket?.emit("setRoundCategories");
   };
 
-  /* Choose random letter from the alphabet for current round. */
-  const generateRandomLetter = () => {
-    socket?.emit("setRoundLetter");
+  /* Get random letter from the alphabet for current round. */
+  const generateRandomLetter = (letter: string) => {
+    socket?.emit("setRoundLetter", letter);
+    console.log("received letter: ", letter);
+    setRandomLetter(letter);
   };
 
   /* Do state updates required for starting the timer. */

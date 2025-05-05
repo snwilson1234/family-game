@@ -9,7 +9,7 @@ type CategorySelectionProps = {
   selectedCategories   : string[],
   randomLetter         : string,
   onGenerateCategories : () => void,
-  onGenerateLetter     : () => void,
+  onGenerateLetter     : (letter: string) => void,
   onContinue           : () => void,
 };
 
@@ -25,7 +25,7 @@ const CategorySelection = ({
     <div className="flex flex-col items-center justify-center w-full h-screen">
       <div className="flex flex-row items-center justify-center w-full h-8/10">
         <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
-        <h1 className="text-3xl font-medium">Your categories are...</h1>
+        <h1 className="text-3xl font-medium">Press the button for categories!</h1>
         <ul className="flex flex-col items-center w-3/4 h-4/5 gap-1 py-5 bg-indigo-600 rounded-md text-xl shadow-lg">
         {
           selectedCategories.map(
@@ -43,15 +43,14 @@ const CategorySelection = ({
         </ul>
         </div>
       <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
-        <h1 className="text-3xl font-medium">Your letter is...</h1>
-        <div className="text-9xl font-bold h-4/5">
-        <Canvas id="numbers">
-          <ambientLight intensity={Math.PI / 2} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-          <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-          <LetterDie />
-        </Canvas>
-          <h1>{randomLetter ? randomLetter : "_"}</h1>
+        <h1 className="text-3xl font-medium">Roll for your letter!</h1>
+        <div className="h-4/5">
+          <Canvas id="numbers">
+            <ambientLight intensity={Math.PI / 2} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+            <LetterDie sendRandomLetter={onGenerateLetter} />
+          </Canvas>
         </div>
       </div>
       </div>
@@ -60,11 +59,6 @@ const CategorySelection = ({
           onClick={() => onGenerateCategories()}
           className="btn btn-primary text-3xl w-2/5">
           Generate Categories
-        </button>
-        <button 
-          onClick={onGenerateLetter}
-          className="btn btn-primary text-3xl w-2/5">
-          Generate Letter
         </button>
       </div>
       <div className="flex flex-col align-center items-center h-1/10">
