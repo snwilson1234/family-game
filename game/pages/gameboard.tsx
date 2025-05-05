@@ -76,7 +76,6 @@ const Gameboard = () => {
   /* Get random letter from the alphabet for current round. */
   const generateRandomLetter = (letter: string) => {
     socket?.emit("setRoundLetter", letter);
-    console.log("received letter: ", letter);
     setRandomLetter(letter);
   };
 
