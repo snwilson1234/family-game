@@ -171,9 +171,8 @@ io.on("connection", (socket) => {
     socket.emit("updateRoundCategories", roundCategories);
   });
 
-  socket.on("setRoundLetter", () => {
-    const randomIndex = Math.floor(Math.random() * allLetters.length);
-    roundLetter = allLetters[randomIndex];
+  socket.on("setRoundLetter", (letter) => {
+    roundLetter = letter;
     console.log("Round letter is: ", roundLetter);
     io.emit("updateRoundLetter", roundLetter);
   });

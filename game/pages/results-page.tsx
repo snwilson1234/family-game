@@ -102,8 +102,8 @@ const ResultsPage = ({
           flex flex-col w-1/${players ? players.length : 2} h-full
         `}>
           <div className={`
-            flex flex-col w-full h-3/4 bg-indigo-800 gap-2 rounded-lg
-            items-center justify-center p-8           
+            flex flex-col items-center justify-center w-full h-3/4
+            bg-indigo-800 gap-2 rounded-lg p-8           
           `}>
           {
             categories?.map((category, index) => (
@@ -128,8 +128,8 @@ const ResultsPage = ({
               flex flex-col w-1/${players ? players.length : 2} h-full
             `}>
               <div className="
-                flex flex-col w-full h-3/4 bg-indigo-800 gap-2 rounded-lg
-                items-center justify-center p-8
+                flex flex-col items-center justify-center w-full h-3/4
+                bg-indigo-800 gap-2 rounded-lg p-8 
               ">
                 {
                   player.answers?.map( (answer, index) => (
