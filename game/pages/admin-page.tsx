@@ -18,17 +18,13 @@ const AdminPage = () => {
 
 
     return (
-      <div className="flex flex-col w-full h-screen gap-20 p-8">
-        <header className="flex flex-col items-center w-full">
-          <h1 className="text-5xl font-medium inline-block">Category Game</h1>
-        </header>
-        <div className="flex flex-col items-center gap-5">
-          <Link href={{ pathname: '/choose-num-players' }}>
-            <button className="btn btn-primary">
-              <div className="text-xl font-medium">Select Players</div>
-            </button>
-          </Link>
-        </div>
+      <div className="flex flex-col w-full h-screen items-center justify-center gap-20">
+        <h1 className="text-5xl font-medium inline-block">Welcome to Category Game!</h1>
+        <Link className="flex flex-col w-full items-center" href={{ pathname: '/choose-num-players' }}>
+          <button className="btn btn-primary w-1/2">
+            <p className="text-3xl">Play</p>
+          </button>
+        </Link>
       </div>
     );
 }

@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import MyDropdown from './components/dropdown';
 
 
 export default function PlayerChoice() {
@@ -24,27 +25,19 @@ export default function PlayerChoice() {
   }
 
   return (
-    <div className="flex flex-col gap-20 p-8">
-      <header className="flex items-center mx-auto max-w-sm">
-        <h1 className="text-5xl font-medium inline-block">Choose Players</h1>
-      </header>
-      <div className="flex justify-evenly">
-        <button
-          id="btn-2"
-          onClick={() => handlePlayerUpdate(2)}
-          className={`btn btn-secondary ${getButtonClassNames(2)}`}
-        >Two</button>
-        <button
-          id="btn-3"
-          onClick={() => handlePlayerUpdate(3)}
-          className={`btn btn-secondary ${getButtonClassNames(3)}`}
-        >Three</button>
-        <button
-          id="btn-4"
-          onClick={() => handlePlayerUpdate(4)}
-          className={`btn btn-secondary ${getButtonClassNames(4)}`}
-        >Four</button>
-      </div>
+    <div className="flex flex-col w-full h-screen items-center justify-center gap-20">
+      <h1 className="text-5xl font-medium inline-block">How many players?</h1>
+      <MyDropdown
+        options={[
+          { value: '1', label: 'One' },
+          { value: '2', label: 'Two' },
+          { value: '3', label: 'Three' },
+          { value: '4', label: 'Four' },
+          { value: '5', label: 'Five' },
+          { value: '6', label: 'Six' },
+          { value: '7', label: 'Seven' }
+        ]} 
+        onSelect={handlePlayerUpdate} />
       <div className="flex flex-col items-center">
         <Link
           href={{
