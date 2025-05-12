@@ -90,61 +90,64 @@ const ResultsPage = ({
   }
 
   return (
-    <div className="flex flex-col h-full w-full items-center gap-5 p-8">
-      <div className="flex flex-row gap-5">
-        <h1 className="text-3xl font-bold font-white">The results are in...</h1>
-        <button onClick={() => {setFocusCategoryIndex(focusCategoryIndex + 1)}} className="btn btn-primary">Next</button>
+    <div className="flex flex-col w-full h-screen items-center">
+      <div className="flex flex-row items-center justify-center h-15">
+        <h1 className="text-xl font-bold font-white">The results are in...</h1>
+        <button
+          onClick={() => {setFocusCategoryIndex(focusCategoryIndex + 1)}} 
+          className="p-2 bg-indigo-600 rounded-md"
+        >
+          <p>Next</p>
+        </button>
       </div>
+
       <div className="
-        flex flex-row h-9/10 w-full gap-10 p-8
+        flex flex-row w-full h-full gap-4 justify-center p-4
       ">
-        <div className={`
-          flex flex-col w-1/${players ? players.length : 2} h-full
+        <ul className={`
+          flex flex-col items-center justify-center flex-1 h-3/4
+          bg-indigo-800 gap-2 rounded-lg          
         `}>
-          <div className={`
-            flex flex-col items-center justify-center w-full h-3/4
-            bg-indigo-800 gap-2 rounded-lg p-8           
-          `}>
-          {
-            categories?.map((category, index) => (
-              <div
-                key={index}
-                className={`
-                text-xl text-center rounded-lg w-full p-1
+        {
+          categories?.map((category, index) => (
+            <li
+              key={index}
+              className={`
+                text-sm font-bold text-end w-full p-1 pr-2
+                border-indigo-400 border-b-2
                 ${index === focusCategoryIndex ? 'bg-gray-800' : 'bg-indigo-800'}
-              `}>
-                <h2>{category}:</h2>
-              </div>
-            ))
-          } 
-          </div>
-        </div>
-        
+            `}>
+              <h2>{category}:</h2>
+            </li>
+          ))
+        } 
+        </ul>
         {
           players && players.length > 0 && players?.map((player, p_idx) => (
             <div
               key={p_idx} 
               className={`
-              flex flex-col w-1/${players ? players.length : 2} h-full
+              flex flex-col flex-1 h-full
             `}>
-              <div className="
-                flex flex-col items-center justify-center w-full h-3/4
-                bg-indigo-800 gap-2 rounded-lg p-8 
+              <ul className="
+                flex flex-col items-center justify-center h-3/4
+                bg-indigo-800 gap-2 rounded-lg  
               ">
                 {
                   player.answers?.map( (answer, index) => (
-                    <div
+                    <li
                       key={index}
                       className={`
-                      text-xl text-center rounded-lg w-3/4 p-1
-                      ${index == focusCategoryIndex ? rowFocusColors[p_idx] : 'bg-indigo-700'}
+                        text-sm font-bold text-center w-full p-1 pr-2
+                        border-indigo-400 border-b-2
+                        ${index == focusCategoryIndex ? rowFocusColors[p_idx] : 'bg-indigo-800'}
                     `}>
                       <h2>{answer}</h2>
-                    </div>
+                    </li>
                     )
                   )
                 }
-              </div>
+              </ul>
 
               <div className="
                 flex flex-row items-center justify-center text-lg h-1/4 pt-2
@@ -171,8 +174,9 @@ const ResultsPage = ({
           ))
         }
       </div>
+
       <button className="
-        bg-indigo-400 w-xs h-1/10
+        bg-indigo-400 w-xs h-20
         text-lg font-bold rounded-md
         hover:cursor-pointer
         hover:text-indigo-400

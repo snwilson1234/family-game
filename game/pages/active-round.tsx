@@ -30,46 +30,22 @@ const ActiveRound = ({
 
   return (
     <div>
-      <div className="flex flex-col justify-between w-full h-screen gap-2 z-0 absolute">
-        <div className="flex flex-row justify-between w-full pt-2">
-          <h1 className="text-lg text-left pl-8 w-1/2">
-          {`
-            ${players.length >= 1 ? players[0]['name'] : ""}:
-            ${players.length >= 1 ? players[0]['points'] : ""}
-          `}
-          </h1>
-          <h1 className="text-lg text-right pr-8 w-1/2">
-          {`
-            ${players.length >= 2 ? players[1]['name'] : ""}:
-            ${players.length >= 2 ? players[1]['points'] : ""}
-          `}
-          </h1>
+      <div className="flex flex-row justify-center items-center w-full h-screen gap-5">
+        <div className="flex flex-col w-1/2">
+          <h1 className="w-full text-center text-lg">Scoreboard</h1>
+          <ul className="flex flex-col bg-indigo-600 w-full h-5/6 rounded-md">
+          {players.map(
+            (player, index) => (
+              <li className="flex flex-row justify-between p-2 pl-4 pr-4 border-b-2 border-indigo-500 last:border-none" key={index}>
+                <p className="flex">{player.name}</p>
+                <p>{player.points}</p>
+              </li>
+            )
+          )}
+          </ul>
         </div>
-        
-        <div className="flex flex-row justify-between w-full pb-3">
-          <h1 className="text-lg text-left pl-8 w-1/2">{players.length >= 3 ? players[2]['name'] : ""}</h1>
-          <h1 className="text-lg text-right pr-8 w-1/2">{players.length >= 4 ? players[3]['name'] : ""}</h1>
-        </div>
-      </div>
-      <div className="flex flex-row justify-center items-center w-full h-screen gap-5 z-10 absolute">
-        <ul className="flex flex-col items-center gap-1 p-1 bg-indigo-600 w-1/4 h-5/6 rounded-md">
-        {
-          selectedCategories.map(
-          (category, index) => (
-            <li className="
-            bg-indigo-500 w-4/5
-            rounded-md p-2 h-1/10
-            text-lg
-            " key={index}>
-            {category}
-            </li>
-          )
-          )  
-        }
-        </ul>
 
-
-        {/*Timer*/}
+        {/*Timer TODO: Move to a component*/}
         <div className="flex flex-col align-center justify-center w-1/4 h-full">
           <div className="h-1/4 text-center">
             <p className="text-2xl">Your Letter is:</p>
