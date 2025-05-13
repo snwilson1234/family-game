@@ -95,7 +95,7 @@ const ResultsPage = ({
   }
 
   return (
-    <div className="flex flex-col w-full h-screen items-center p-1">
+    <div className="flex flex-col w-full h-screen items-center p-4">
       <h1 className="text-xl font-bold font-white">The results are in...</h1>
 
       <div className="
@@ -103,15 +103,15 @@ const ResultsPage = ({
       ">
         <ul className={`
           flex flex-col items-center justify-center flex-1 h-3/4
-          bg-indigo-800 gap-2 rounded-lg          
+          bg-indigo-800 rounded-lg         
         `}>
         {
           categories?.map((category, index) => (
             <li
               key={index}
               className={`
-                text-sm font-bold text-end w-full p-1 pr-2
-                border-indigo-400 border-b-2
+                text-sm font-bold text-end w-full p-2
+                border-indigo-400 border-b-2 first:border-t-2
                 ${index === focusCategoryIndex ? 'bg-gray-800' : 'bg-indigo-800'}
             `}>
               <h2>{category}:</h2>
@@ -128,15 +128,15 @@ const ResultsPage = ({
             `}>
               <ul className="
                 flex flex-col items-center justify-center h-3/4
-                bg-indigo-800 gap-2 rounded-lg w-full
+                bg-indigo-800 rounded-lg w-full
               ">
                 {
                   player.answers?.map( (answer, index) => (
                     <li
                       key={index}
                       className={`
-                        text-sm font-bold text-center w-full p-1
-                        border-indigo-400 border-b-2 pl-8 pr-8
+                        text-sm font-bold text-center w-full p-2
+                        border-indigo-400 border-b-2 pl-8 pr-8 first:border-t-2
                         ${index == focusCategoryIndex ? rowFocusColors[p_idx] : 'bg-indigo-800'}
                     `}>
                       <h2>{answer}</h2>
@@ -145,7 +145,7 @@ const ResultsPage = ({
                   )
                 }
               </ul>
-              <h1 className="w-3/5 text-center text-lg font-bold">{player.name}</h1>
+              <h1 className="w-3/5 text-center text-2xl font-bold">{player.name}</h1>
 
               <div className="
                 flex flex-row items-center justify-center text-lg h-1/6 w-3/4
@@ -155,7 +155,7 @@ const ResultsPage = ({
                   className="btn btn-primary bg-red-800 hover:bg-green-900 w-1/5 h-6 flex flex-1 items-center justify-center">
                   <p className="m-0 p-0">-</p>
                 </button>
-                <h1 className="w-3/5 text-center">{player.points}</h1>
+                <h1 className="text-4xl font-bold w-3/5 text-center">{player.points}</h1>
                 <button
                   onClick={() => {
                     onPlayerPointsIncrement(player);

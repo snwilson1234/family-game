@@ -19,7 +19,7 @@ const Gameboard = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [randomLetter, setRandomLetter] = useState<string>("");
   const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-  const [timeLeft, setTimeLeft] = useState(200); //TODO: update to 180 when done testing
+  const [timeLeft, setTimeLeft] = useState(10); //TODO: update to 180 when done testing
   const [isRunning, setIsRunning] = useState(false);
   const [thisPlayer, setThisPlayer] = useState<Player>();
   const [players, setPlayers] = useState<Player[]>([]);

@@ -23,10 +23,10 @@ const CategorySelection = ({
   
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen">
-      <div className="flex flex-row items-center justify-center w-full">
+      <div className="flex flex-row items-center justify-center w-full h-full">
         <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
           <h1 className="text-3xl font-medium h-1/7">Press the button for categories!</h1>
-          <ul className="flex flex-col items-center w-3/4 h-full gap-1 py-1 bg-indigo-600 rounded-md text-xl shadow-lg">
+          <ul className="flex flex-col items-center w-3/4 h-5/7 gap-1 py-1 bg-indigo-600 rounded-md text-xl shadow-lg">
           {
             selectedCategories.map(
               (category, index) => (
@@ -48,8 +48,8 @@ const CategorySelection = ({
           </button>
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
-          <h1 className="text-3xl font-medium">Roll for your letter!</h1>
-          <div className="h-4/5">
+          <h1 className="text-3xl font-medium h-1/7">Roll for your letter!</h1>
+          <div className="h-6/7">
             <Canvas id="numbers">
               <ambientLight intensity={Math.PI / 2} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />

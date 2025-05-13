@@ -29,7 +29,8 @@ const PlayerJoinForm = () => {
         className="flex flex-col items-center justify-center w-full h-screen gap-10">
         <label className="mb-2">
           <h1 className="text-bold text-lg">Enter your name: </h1>
-          <input 
+          <input
+            maxLength={15} 
             className="bg-indigo-50 text-indigo-900 capitalize rounded-sm pt-2 px-2 border-b-4 border-indigo-500 focus:outline-2 focus:outline-indigo-500"
             name="playerName" 
             value={playerName}

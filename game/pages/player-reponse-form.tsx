@@ -122,6 +122,7 @@ const PlayerResponseForm = () => {
                 <label key={index} className="mb-2">
                   <h1 className="text-bold text-md">{category}: </h1>
                   <input
+                    maxLength={25}
                     onChange={(e) => handleInputChange(index, e.target.value)} 
                     className="bg-indigo-50 text-indigo-900 capitalize rounded-sm pt-1 px-2 border-b-4 border-indigo-500 focus:outline-2 focus:outline-indigo-500"
                     name={`query${index}`} 

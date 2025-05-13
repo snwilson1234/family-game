@@ -157,7 +157,13 @@ io.on("connection", (socket) => {
     }
     roundCategories = randomCategories;
     console.log(`Next round categories (${roundCategories.length}) are: ${roundCategories}`);
-    console.log(`Remaining categories (${allCategories.length}) are: ${allCategories}`)
+    console.log(`Remaining categories (${allCategories.length}) are: ${allCategories}`);
+    console.log("No more categories detected. Resetting list...")
+    if (allCategories.length === 0) {
+      for (let category of allCategoriesCopy) {
+        allCategories.push(category);
+      }
+    }
     io.emit("updateRoundCategories", roundCategories);
     // TODO: add forced game over when allCategories length = 0
   });
