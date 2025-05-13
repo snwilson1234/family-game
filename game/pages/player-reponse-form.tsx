@@ -18,6 +18,7 @@ const PlayerResponseForm = () => {
   const [answers, setAnswers] = useState<string[]>([]);
   const [formState, setFormState] = useState<PlayerFormState>(PlayerFormState.Active);
   const [roundActive, setRoundActive] = useState<boolean>(true);
+  const [formValid, setFormValid] = useState<boolean>(true);
 
   useEffect(() => {
     if (socket) {
@@ -44,16 +45,34 @@ const PlayerResponseForm = () => {
   }, [roundActive])
 
   const submitAnswers = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    console.log("player answers:", answers);
+    event.preventDefault()
 
     // TODO: improve this code
     if (socket) {
       let newAnswers = [...answers];
+      let currFormValid = true;
+
+      // check starting letter, if not the correct letter, error
+      answers.forEach((answer, i) => {
+        if (answer != undefined) {
+          answer = answer.trim();
+        }
+        if ( answer != undefined && answer.length > 0 && answer[0].toUpperCase() != letter ) {
+          currFormValid = false;
+        }
+      })
+
+      if (!currFormValid) {
+        console.log("form not valid! Exiting...");
+        console.log("formValid:", formValid);
+        setFormValid(false);
+        return;
+      }
+
+      setFormValid(true);
+
+      // allow for blank answers by filling in NO_ANSWER constant
       newAnswers.forEach((answer, i) => {
-        console.log(`Player answer: XX${answer}XX`);
-        console.log(`Player answer type: XX${typeof(answer)}XX`);
         if (answer === undefined || answer.trim() == '')
           newAnswers[i] = 'NO_ANSWER';
       });
@@ -62,7 +81,6 @@ const PlayerResponseForm = () => {
         const pad = 10 - newAnswers.length;
         newAnswers = newAnswers.concat(Array(pad).fill('NO_ANSWER'));
       }
-      console.log("player answers NOW!:", newAnswers);
       socket.emit("submitAnswers", newAnswers);
       setAnswers(newAnswers);
     }
@@ -80,18 +98,20 @@ const PlayerResponseForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen">
-      <div className={`
-        ${formState === PlayerFormState.Submitted ? 'visible' : 'invisible' }  absolute  
-      `}>
+      <div 
+        hidden={!(formState === PlayerFormState.Submitted)}>
         <h1 className="text-xl">Waiting for timer to run out...</h1>
       </div>
-      <div className={`
-        flex flex-col items-center w-full h-full p-2 absolute
-        ${formState === PlayerFormState.Active ? 'visible' : 'invisible' }   
-      `}>
+      <div 
+        hidden={!(formState === PlayerFormState.Active)}
+      className="flex flex-col items-center w-full h-full p-2">
         <h1 className="
           text-xl font-bold
         ">Your letter is: {letter}</h1>
+        <div className={`
+            text-red-500 font-bold
+            ${formValid ? 'invisible' : 'visible' }   
+          `}>Answers must start with the letter above.</div>
 
         <form 
           onSubmit={submitAnswers}

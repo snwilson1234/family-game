@@ -75,22 +75,18 @@ const PlayerLobby = () => {
   }, [roundActive]);
 
   return (
-    <div className="flex flex-col w-full h-screen">
-      <div className={`flex flex-row justify-center items-center h-screen w-full absolute
-        bg-indigo-950 ${lobbyState === LobbyState.WaitingForStart ? 'visible': 'invisible'}
-      `}>
-        <div className="flex flex-col gap-5">
+    <div className="flex flex-col w-full h-screen items-center justify-center">
+      <div 
+        hidden={lobbyState === LobbyState.WaitingForStart}
+        className="flex flex-col items-center justify-center w-full h-screen gap-5 bg-indigo-950">
           <h1 className="text-2xl font-bold font-semibold text-center">Hello {`${thisPlayer ? thisPlayer['name'] : ""}`}!</h1>
           <h1 className="text-xl text-center">Waiting for Admin to start the game....</h1>
-        </div>
       </div>
-      <div className={`flex flex-row justify-center items-center h-screen w-full absolute
-        bg-indigo-950 ${lobbyState === LobbyState.BetweenRound ? 'visible': 'invisible'}
-      `}>
-        <div className="flex flex-col gap-5">
-          <h1 className="text-2xl font-bold font-semibold text-center">Hello {`${thisPlayer ? thisPlayer['name'] : ""}`}!</h1>
-          <h1 className="text-xl text-center">Waiting for next round....</h1>
-        </div>
+      <div 
+        hidden={lobbyState === LobbyState.BetweenRound}
+        className="flex flex-col gap-5 justify-center items-center h-screen w-full bg-indigo-950">
+        <h1 className="text-2xl font-bold font-semibold text-center">Hello {`${thisPlayer ? thisPlayer['name'] : ""}`}!</h1>
+        <h1 className="text-xl text-center">Waiting for next round....</h1>
       </div>
     </div>
   ); 
