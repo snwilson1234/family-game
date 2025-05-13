@@ -19,6 +19,7 @@ const ResultsPage = ({
   const [categories, setCategories] = useState([]);
   const [focusCategoryIndex, setFocusCategoryIndex] = useState<number>(-1);
   const [rowFocusColors, setRowFocusColors] = useState<string[]>(['bg-green-800','bg-green-800','bg-green-800','bg-green-800']);
+  const [continueEnabled, setContinueEnabled] = useState<boolean>(false);
 
   
   useEffect(() => {
@@ -75,6 +76,10 @@ const ResultsPage = ({
 
     });
 
+    if (focusCategoryIndex === 10) {
+      setContinueEnabled(true);
+    }
+
     // set the row colors based on answer similarities
     setRowFocusColors(row_highlights);
 
@@ -90,16 +95,8 @@ const ResultsPage = ({
   }
 
   return (
-    <div className="flex flex-col w-full h-screen items-center">
-      <div className="flex flex-row items-center justify-center h-15">
-        <h1 className="text-xl font-bold font-white">The results are in...</h1>
-        <button
-          onClick={() => {setFocusCategoryIndex(focusCategoryIndex + 1)}} 
-          className="p-2 bg-indigo-600 rounded-md"
-        >
-          <p>Next</p>
-        </button>
-      </div>
+    <div className="flex flex-col w-full h-screen items-center p-1">
+      <h1 className="text-xl font-bold font-white">The results are in...</h1>
 
       <div className="
         flex flex-row w-full h-full gap-4 justify-center p-4
@@ -127,19 +124,19 @@ const ResultsPage = ({
             <div
               key={p_idx} 
               className={`
-              flex flex-col flex-1 h-full
+              flex flex-col flex-1 h-full items-center gap-2
             `}>
               <ul className="
                 flex flex-col items-center justify-center h-3/4
-                bg-indigo-800 gap-2 rounded-lg  
+                bg-indigo-800 gap-2 rounded-lg w-full
               ">
                 {
                   player.answers?.map( (answer, index) => (
                     <li
                       key={index}
                       className={`
-                        text-sm font-bold text-center w-full p-1 pr-2
-                        border-indigo-400 border-b-2
+                        text-sm font-bold text-center w-full p-1
+                        border-indigo-400 border-b-2 pl-8 pr-8
                         ${index == focusCategoryIndex ? rowFocusColors[p_idx] : 'bg-indigo-800'}
                     `}>
                       <h2>{answer}</h2>
@@ -148,16 +145,17 @@ const ResultsPage = ({
                   )
                 }
               </ul>
+              <h1 className="w-3/5 text-center text-lg font-bold">{player.name}</h1>
 
               <div className="
-                flex flex-row items-center justify-center text-lg h-1/4 pt-2
+                flex flex-row items-center justify-center text-lg h-1/6 w-3/4
               ">
                 <button
                   onClick={() => {onPlayerPointsDecrement(player)}}
-                  className="btn btn-primary bg-red-800 hover:bg-red-900 w-1/4 h-6 flex items-center justify-center">
+                  className="btn btn-primary bg-red-800 hover:bg-green-900 w-1/5 h-6 flex flex-1 items-center justify-center">
                   <p className="m-0 p-0">-</p>
                 </button>
-                <h1 className="w-1/3 text-center">{player.name}: {player.points}</h1>
+                <h1 className="w-3/5 text-center">{player.points}</h1>
                 <button
                   onClick={() => {
                     onPlayerPointsIncrement(player);
@@ -166,7 +164,7 @@ const ResultsPage = ({
                       setFocusCategoryIndex(-1);
                     }
                   }}
-                  className="btn btn-primary bg-green-800 hover:bg-green-900 w-1/4 h-6 flex items-center justify-center">
+                  className="btn btn-primary bg-green-800 hover:bg-green-900 w-1/5 h-6 flex flex-1 items-center justify-center">
                   <p className="m-0 p-0">+</p>
                 </button>
               </div>
@@ -174,16 +172,24 @@ const ResultsPage = ({
           ))
         }
       </div>
+      <div className="flex flex-row items-center justify-center gap-10 h-20">
+        <button
+          onClick={() => {setFocusCategoryIndex(focusCategoryIndex + 1)}} 
+          className="btn btn-primary"
+        >
+          <p>Next</p>
+        </button>
+        <button
+          disabled={!continueEnabled}
+          className="
+            btn btn-primary" 
+          onClick={() => {
+          setFocusCategoryIndex(-1);
+          onContinue();
+        }}>Continue</button>
+      </div>
 
-      <button className="
-        bg-indigo-400 w-xs h-20
-        text-lg font-bold rounded-md
-        hover:cursor-pointer
-        hover:text-indigo-400
-      " onClick={() => {
-        setFocusCategoryIndex(-1);
-        onContinue();
-      }}>Continue</button>
+      
     </div>
   );
 }

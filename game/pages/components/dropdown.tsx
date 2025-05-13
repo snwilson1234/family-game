@@ -16,7 +16,7 @@ function MyDropdown({ options, onSelect }) {
 
   return (
   <div className="flex flex-row justify-center h-1/2 w-1/2">
-    <ul className={`flex flex-col w-2/3 items-center bg-indigo-700 rounded-t-lg rounded-b-lg ${isOpen ? 'outline-2 outline-indigo-400 h-80' : 'h-10'}`}>
+    <ul className={`flex flex-col w-2/3 items-center bg-indigo-700 rounded-t-lg rounded-b-lg ${isOpen ? 'outline-2 outline-indigo-400 h-70' : 'h-10'}`}>
       <li 
         onClick={() => setIsOpen(!isOpen)}
         className={`flex flex-row w-full h-10 p-3 items-center justify-between bg-indigo-700 rounded-t-lg ${isOpen ? 'outline-2 outline-indigo-400' : 'rounded-b-lg hover:outline-2 hover:outline-indigo-400'} hover:cursor-pointer`}

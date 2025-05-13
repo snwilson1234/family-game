@@ -6,23 +6,13 @@ import MyDropdown from './components/dropdown';
 
 export default function PlayerChoice() {
   const [players, setPlayers] = useState<number | null>(null);
-  const [continueVisible, setContinueVisible] = useState<boolean | null>(null);
-
+  const [continueEnabled, setContinueEnabled] = useState<boolean | null>(false);
 
   const handlePlayerUpdate = (value: number) => {
-    enableContinue();
+    console.log('players updated');
+    setContinueEnabled(true);
     setPlayers(value);
   };
-
-  const getButtonClassNames = (id: number) => {
-    return `${
-      players === id ? 'text-indigo-200 bg-indigo-600' : 'text-indigo-50'
-    }`;
-  };
-
-  const enableContinue = () => {
-    setContinueVisible(true);
-  }
 
   return (
     <div className="flex flex-col w-full h-screen items-center justify-center gap-20">
@@ -35,7 +25,6 @@ export default function PlayerChoice() {
           { value: '4', label: 'Four' },
           { value: '5', label: 'Five' },
           { value: '6', label: 'Six' },
-          { value: '7', label: 'Seven' }
         ]} 
         onSelect={handlePlayerUpdate} />
       <div className="flex flex-col items-center">
@@ -47,7 +36,9 @@ export default function PlayerChoice() {
             }
           }}
         >
-          <button className="btn btn-primary w-lg">Continue</button>
+          <button  
+            disabled={!continueEnabled}
+            className="btn btn-primary w-lg">Continue</button>
         </Link>
       </div>
     </div>
