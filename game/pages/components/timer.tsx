@@ -23,7 +23,7 @@ const Timer = ({
   return (
     <div className="
       flex flex-col align-center text-center justify-center
-      w-full h-1/3 text-2xl font-bold
+      w-full h-1/2 text-2xl font-bold
       rounded-lg bg-indigo-400
     ">
       <div className="h-1/4 text-5xl">{formatTime(timeLeft)}</div>

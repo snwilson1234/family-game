@@ -4,7 +4,6 @@ import { Player } from "./types/player";
 
 type ActiveRoundProps = {
   players            : Player[],
-  selectedCategories : string[],
   randomLetter       : string,
   timeLeft           : number,
   onTimerStart       : () => void,
@@ -15,7 +14,6 @@ type ActiveRoundProps = {
 
 const ActiveRound = ({
   players,
-  selectedCategories,
   randomLetter,
   timeLeft,
   onTimerStart,
@@ -24,31 +22,29 @@ const ActiveRound = ({
 } : ActiveRoundProps) => {
 
   return (
-    <div>
-      <div className="flex flex-row justify-center items-center w-full h-screen gap-5">
-        <div className="flex flex-col w-1/2">
-          <h1 className="w-full text-center text-lg">Scoreboard</h1>
-          <ul className="flex flex-col bg-indigo-600 w-full h-5/6 rounded-md">
+    <div className="flex flex-row justify-center items-center w-full h-screen gap-5 p-8">
+      <div className="flex flex-col items-center justify-center w-1/4 h-full gap-2">
+        <ul className="flex flex-col w-full h-full bg-indigo-600 rounded-md">
+          <li className="text-3xl w-full text-center border-b-4 border-indigo-500 pb-2 pt-2">Scoreboard</li>
           {players.map(
             (player, index) => (
-              <li className="flex flex-row justify-between p-2 pl-4 pr-4 border-b-2 border-indigo-500 last:border-none" key={index}>
-                <p className="flex">{player.name}</p>
-                <p>{player.points}</p>
+              <li className="flex flex-row justify-between p-2 pl-4 pr-4 border-b-2 border-indigo-500" key={index}>
+                <p className="text-xl">{player.name}</p>
+                <p className="text-xl">{player.points}</p>
               </li>
             )
           )}
-          </ul>
+        </ul>
+      </div>
+      
+      <div className="flex flex-col items-center justify-center w-1/4 h-full gap-2">
+        <div className="flex flex-col items-center justify-center w-full h-1/2 text-center bg-indigo-500 rounded-md">
+          <p className="text-2xl">Your Letter is:</p>
+          <h1 className="text-8xl">{randomLetter}</h1>
         </div>
-        
-        <div className="flex flex-col align-center justify-center w-1/4 h-full">
-          <div className="h-1/4 text-center">
-            <p className="text-2xl">Your Letter is:</p>
-            <h1 className="text-8xl">{randomLetter}</h1>
-          </div>
-          <Timer timeLeft={timeLeft} onTimerStart={onTimerStart} onTimerStop={onTimerStop} onTimerReset={onTimerReset}  />
-        </div>
-      </div>  
-    </div>
+        <Timer timeLeft={timeLeft} onTimerStart={onTimerStart} onTimerStop={onTimerStop} onTimerReset={onTimerReset}  />
+      </div>
+    </div> 
   );
 
 

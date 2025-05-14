@@ -32,7 +32,7 @@ let allCategories = ["Male First Names", "Female First Names", "Animals","Countr
  "Movie Titles", "Book Titles", "TV Shows", "Musical Instruments", "Sports", "Clothing Brands", "Car Brands", "Types of Weather",
  "Occupations", "Things in a School", "Things in a Kitchen", "Things in a Garage", "Things in a Hospital", "Things at the Beach",
  "Things in the Sky", "Things in a Park", "Things That Are Sticky", "Things That Are Round",
- "Things That Smell Good", "Things That Smell Bad", "Things You Plug In", "Things You Throw Away", "Things That Use Batteries", "Things That Can Melt", "Things That Can Fly", "Things That Are Cold", "Things That Are Hot", "Types of Trees", "Types of Flowers", "Things You Shout",
+ "Things That Smell Good", "Things That Smell Bad", "Things You Plug In", "Things You Throw Away", "Things That Can Melt", "Things That Can Fly", "Things That Are Cold", "Things That Are Hot", "Types of Trees", "Types of Flowers", "Things You Shout",
  "Things You Whisper", "Types of Drinks", "Hobbies", "School Subjects", "Dog Breeds", "Cat Breeds", "Cartoon Characters", "Superheroes",
  "Villains", "Things That Are Loud", "Things That Are Quiet", "Things You Sit On",
  "Items in a Purse or Bag", "Breakfast Foods", "Lunch Foods", "Dinner Foods", "Things That Float", "Things That Sink",
@@ -43,14 +43,14 @@ let allCategories = ["Male First Names", "Female First Names", "Animals","Countr
  "Things in a Science Lab", "Things at a Carnival", "Things in a Hotel Room", "Things You Can Recycle",
  "Things You Can Build", "Types of Cheese", "Pizza Toppings", "Kinds of Soup", "Famous Athletes", "Famous Actors",
  "Famous Singers", "Fast Food Restaurants", "Things That Are Blue", "Types of Hats",
- "Words Associated with Summer", "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"]
+ "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"]
 
 // Copy of all categories for use in restarting the game. (improve later)
 const allCategoriesCopy = ["Male First Names", "Female First Names", "Animals","Countries","Cities","Fruits","Vegetables","Types of Candy","Ice Cream Flavors","Board Games",
   "Movie Titles", "Book Titles", "TV Shows", "Musical Instruments", "Sports", "Clothing Brands", "Car Brands", "Types of Weather",
   "Occupations", "Things in a School", "Things in a Kitchen", "Things in a Garage", "Things in a Hospital", "Things at the Beach",
   "Things in the Sky", "Things in a Park", "Things That Are Sticky", "Things That Are Round",
-  "Things That Smell Good", "Things That Smell Bad", "Things You Plug In", "Things You Throw Away", "Things That Use Batteries", "Things That Can Melt", "Things That Can Fly", "Things That Are Cold", "Things That Are Hot", "Types of Trees", "Types of Flowers", "Things You Shout",
+  "Things That Smell Good", "Things That Smell Bad", "Things You Plug In", "Things You Throw Away", "Things That Can Melt", "Things That Can Fly", "Things That Are Cold", "Things That Are Hot", "Types of Trees", "Types of Flowers", "Things You Shout",
   "Things You Whisper", "Types of Drinks", "Hobbies", "School Subjects", "Dog Breeds", "Cat Breeds", "Cartoon Characters", "Superheroes",
   "Villains", "Things That Are Loud", "Things That Are Quiet", "Things You Sit On",
   "Items in a Purse or Bag", "Breakfast Foods", "Lunch Foods", "Dinner Foods", "Things That Float", "Things That Sink",
@@ -61,7 +61,7 @@ const allCategoriesCopy = ["Male First Names", "Female First Names", "Animals","
   "Things in a Science Lab", "Things at a Carnival", "Things in a Hotel Room", "Things You Can Recycle",
   "Things You Can Build", "Types of Cheese", "Pizza Toppings", "Kinds of Soup", "Famous Athletes", "Famous Actors",
   "Famous Singers", "Fast Food Restaurants", "Things That Are Blue", "Types of Hats",
-  "Words Associated with Summer", "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"]
+  "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"]
  
 
 // Categories used during the game.
@@ -158,11 +158,9 @@ io.on("connection", (socket) => {
     roundCategories = randomCategories;
     console.log(`Next round categories (${roundCategories.length}) are: ${roundCategories}`);
     console.log(`Remaining categories (${allCategories.length}) are: ${allCategories}`);
-    console.log("No more categories detected. Resetting list...")
     if (allCategories.length === 0) {
-      for (let category of allCategoriesCopy) {
-        allCategories.push(category);
-      }
+      console.log("No more categories detected. Resetting list...");
+      allCategories = allCategoriesCopy.slice();
     }
     io.emit("updateRoundCategories", roundCategories);
     // TODO: add forced game over when allCategories length = 0
@@ -221,7 +219,7 @@ io.on("connection", (socket) => {
   socket.on("restartGame", () => {
     console.log("admin has restarted the game");
     // reset the categories array
-    allCategories = Array.from(allCategoriesCopy);
+    allCategories = allCategoriesCopy.slice();
 
     // reset player points
     for (const id in players) {

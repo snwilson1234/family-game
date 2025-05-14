@@ -22,7 +22,7 @@ const CategorySelection = ({
 } : CategorySelectionProps) => {
   
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen">
+    <div className="flex flex-col items-center justify-center w-full h-screen p-4">
       <div className="flex flex-row items-center justify-center w-full h-full">
         <div className="flex flex-col items-center justify-center w-1/2 h-full gap-4">
           <h1 className="text-3xl font-medium h-1/7">Press the button for categories!</h1>

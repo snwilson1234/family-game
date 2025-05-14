@@ -186,6 +186,7 @@ const ResultsPage = ({
           onClick={() => {
           setFocusCategoryIndex(-1);
           onContinue();
+          setContinueEnabled(false);
         }}>Continue</button>
       </div>
 
