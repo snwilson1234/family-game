@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { ExpandMore, ExpandLess } from '@mui/icons-material';
 
 function MyDropdown({ options, onSelect }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,10 +22,10 @@ function MyDropdown({ options, onSelect }) {
       >
         <p>{selectedValueLabel || 'Choose a number'}</p>
         {isOpen && (
-          <p><ExpandLessIcon /></p>
+          <p><ExpandLess /></p>
         )}
         {!isOpen && (
-          <p><ExpandMoreIcon /></p>
+          <p><ExpandMore /></p>
         )}
       </li>
       {isOpen && options.map((option) => (

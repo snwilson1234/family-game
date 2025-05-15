@@ -16,6 +16,7 @@
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
     "@types/three": "^0.176.0",
+    "animejs": "^4.0.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "install": "^0.13.0",
