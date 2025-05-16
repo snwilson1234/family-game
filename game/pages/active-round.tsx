@@ -1,4 +1,4 @@
-import Timer from "./components/timer";
+import Timer from "./components/timer/timer";
 import { Player } from "./types/player";
 
 

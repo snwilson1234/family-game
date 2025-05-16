@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import MyDropdown from './components/dropdown';
+import DropDown from './components/dropdown/dropdown';
 
 
-export default function PlayerChoice() {
+const PlayerChoice = () => {
   const [players, setPlayers] = useState<number | null>(null);
   const [continueEnabled, setContinueEnabled] = useState<boolean | null>(false);
 
@@ -17,7 +17,7 @@ export default function PlayerChoice() {
   return (
     <div className="flex flex-col w-full h-screen items-center justify-center gap-20">
       <h1 className="text-5xl font-medium inline-block">How many players?</h1>
-      <MyDropdown
+      <DropDown
         options={[
           { value: '2', label: 'Two' },
           { value: '3', label: 'Three' },
@@ -43,3 +43,5 @@ export default function PlayerChoice() {
     </div>
   );
 }
+
+export default PlayerChoice;

@@ -4,13 +4,6 @@ import { animate, createScope } from 'animejs';
 import { PlayArrow, Pause, RestartAlt } from '@mui/icons-material';
 
 
-type TimerProps = {
-  timeLeft: number,
-  onTimerStart: () => void,
-  onTimerStop: () => void,
-  onTimerReset: () => void,
-};
-
 const Timer = ({
   timeLeft,
   onTimerStart,

@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import LetterDie from './components/letterDie';
+import LetterDie from './components/letterdie/letterdie';
 
 
 type CategorySelectionProps = {

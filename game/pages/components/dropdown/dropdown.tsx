@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 
 
-function MyDropdown({ options, onSelect }) {
+const DropDown = ({
+  options,
+  onSelect
+}: DropDownProps) => {
   // todo: style this like all other components, or make all others look like this one.
   // or.. look at what the different component declarations (const () => vs function, ..) and pick best practice for each scenario...
 
@@ -50,4 +53,4 @@ function MyDropdown({ options, onSelect }) {
   );
 }
 
-export default MyDropdown;
+export default DropDown;

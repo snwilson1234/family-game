@@ -4,36 +4,6 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 
-function makeLettersTexture() {
-// TODO: add comments here to make this more clear, move things around so that the component is first in the file, etc..
-
-  const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = '#000';
-  ctx.font = 'bold 20px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-
-  const step = canvas.width / 20;
-  const letters = "ABCDEFGHIJKLMNOPRSTW";
-  for (let i = 0; i < 20; i++) {
-    ctx.fillText((letters[i]).toString(), step * i + step / 2, canvas.height / 2);
-  }
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
-  return texture;
-}
-
-type LetterDieProps = {
-  sendRandomLetter : (letter: string) => void,
-};
-
 const LetterDie = ({
   sendRandomLetter
 } : LetterDieProps) => {
@@ -62,6 +32,32 @@ const LetterDie = ({
     { letter: "W", vect: new THREE.Vector3(-1.55, 0.5, -1.95) }, // W
   ];
   const [counter, setCounter] = useState(0);
+
+  const makeLettersTexture = () => {
+    // TODO: add comments here to make this more clear, move things around so that the component is first in the file, etc..
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold 20px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const step = canvas.width / 20;
+    const letters = "ABCDEFGHIJKLMNOPRSTW";
+    for (let i = 0; i < 20; i++) {
+      ctx.fillText((letters[i]).toString(), step * i + step / 2, canvas.height / 2);
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }
 
   const { geometry, material } = useMemo(() => {
     const geometry = new THREE.IcosahedronGeometry(1.5);
