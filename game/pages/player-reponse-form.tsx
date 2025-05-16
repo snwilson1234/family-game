@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Socket } from "socket.io-client";
 import { useWebSocket } from "./context/GameSocketContext";
-import { PlayerFormState } from "./types/formstate";
-import { LobbyState } from "./types/lobbystate";
+import { PlayerFormState } from "./states/formstate";
+import { LobbyState } from "./states/lobbystate";
 
 
 const PlayerResponseForm = () => {

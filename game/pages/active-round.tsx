@@ -1,5 +1,5 @@
 import Timer from "./components/timer/timer";
-import { Player } from "./types/player";
+import { Player } from "./interfaces/player";
 
 
 type ActiveRoundProps = {
