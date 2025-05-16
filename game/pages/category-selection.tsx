@@ -1,7 +1,4 @@
-'use client';
-
-import * as THREE from 'three';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import LetterDie from './components/letterDie';
 
 

@@ -1,14 +1,15 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useWebSocket } from "./context/GameSocketContext";
-import { Socket } from "socket.io-client";
-import { PlayerFormState } from "./types/formstate";
 import { useRouter } from "next/router";
+import { Socket } from "socket.io-client";
+import { useWebSocket } from "./context/GameSocketContext";
+import { PlayerFormState } from "./types/formstate";
 import { LobbyState } from "./types/lobbystate";
 
-// need to work on state changes in game and form
 
 const PlayerResponseForm = () => {
+
+  // TODO: need to work on state changes in game and form
 
   const socket: Socket | null = useWebSocket();
   const router = useRouter();

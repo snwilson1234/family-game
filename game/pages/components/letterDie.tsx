@@ -1,8 +1,12 @@
-import * as THREE from 'three';
+'use client';
 import { useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+
 
 function makeLettersTexture() {
+// TODO: add comments here to make this more clear, move things around so that the component is first in the file, etc..
+
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
   canvas.height = 64;

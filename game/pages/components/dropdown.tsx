@@ -1,7 +1,15 @@
+'use client';
 import React, { useState } from 'react';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 
+
 function MyDropdown({ options, onSelect }) {
+  // todo: style this like all other components, or make all others look like this one.
+  // or.. look at what the different component declarations (const () => vs function, ..) and pick best practice for each scenario...
+
+
+  // todo:: fix project structure... (types, gamestate, components, pages ... no real pattern going on.)
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedValueLabel, setSelectedValueLabel] = useState(null);

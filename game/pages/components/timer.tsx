@@ -1,6 +1,8 @@
+'use client';
 import { useEffect, useRef, useState } from 'react';
 import { animate, createScope } from 'animejs';
 import { PlayArrow, Pause, RestartAlt } from '@mui/icons-material';
+
 
 type TimerProps = {
   timeLeft: number,

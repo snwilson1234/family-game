@@ -1,17 +1,24 @@
 'use client';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Socket } from "socket.io-client";
 import { GameState } from "./gamestate/gamestate";
 import { useWebSocket } from "./context/GameSocketContext";
 import { Player } from "./types/player";
 import ResultsPage from "./results-page";
-import { Socket } from "socket.io-client";
 import CategorySelection from "./category-selection";
 import ActiveRound from "./active-round";
 import EndPage from "./end-page";
 
 
 const Gameboard = () => {
+
+  // TODO: gameboard shouldn't be handling all these things. yes, it's good to have components now, but this file is getting large.
+
+  /// REFACTOR to separate files, make timer handle time and send info back to gameboard, rather than the other way around...
+  // brainstorm other ideas for making this file smaller and delegating responsibility.
+
+  // TODO:: fixx imports!!! define a standard, or Google one. ugly rn
 
   const socket: Socket | null = useWebSocket();
   const router = useRouter();

@@ -1,6 +1,6 @@
-'use client';
 import Timer from "./components/timer";
 import { Player } from "./types/player";
+
 
 type ActiveRoundProps = {
   players            : Player[],
