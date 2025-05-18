@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+@import "tailwindcss";
+
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-roboto: "Roboto Slab", sans-serif;
+}
+
+@layer components {
+  .btn {
+    @apply rounded-lg shadow-lg p-6;
+    @apply font-semibold;
+    @apply transition duration-200 hover:cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-800 text-white hover:bg-indigo-900;
+  }
+
+  .btn-primary:disabled {
+    @apply bg-indigo-200 text-white hover:cursor-default;
+  }
+
+  .btn-secondary {
+    @apply bg-indigo-400 text-white hover:bg-indigo-600;
+  }
+}
+
+:root {
+  --background: oklch(0.257 0.09 281.288);
+  --foreground: oklch(0.962 0.018 272.314);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-roboto);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
