@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "./context/GameSocketContext";
-import { Player } from "./interfaces/player";
+import { useWebSocket } from "../../context/GameSocketContext";
+import { Player } from "../../interfaces/player";
 
 
 type ResultsPageProps = {

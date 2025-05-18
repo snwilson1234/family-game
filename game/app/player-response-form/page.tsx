@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "./context/GameSocketContext";
-import { PlayerFormState } from "./states/formstate";
-import { LobbyState } from "./states/lobbystate";
+import { useWebSocket } from "../context/GameSocketContext";
+import { PlayerFormState } from "../states/formstate";
+import { LobbyState } from "../states/lobbystate";
 
 
 const PlayerResponseForm = () => {

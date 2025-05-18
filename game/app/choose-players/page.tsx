@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import DropDown from './components/dropdown/dropdown';
+import DropDown from './dropdown/dropdown';
 
 
-const PlayerChoice = () => {
+const ChoosePlayers = () => {
   const [players, setPlayers] = useState<number | null>(null);
   const [continueEnabled, setContinueEnabled] = useState<boolean | null>(false);
 
@@ -44,4 +44,4 @@ const PlayerChoice = () => {
   );
 }
 
-export default PlayerChoice;
+export default ChoosePlayers;

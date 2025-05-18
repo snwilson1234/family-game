@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "./context/GameSocketContext";
-import { Player } from "./interfaces/player";
-import { LobbyState } from "./states/lobbystate";
+import { useWebSocket } from "../context/GameSocketContext";
+import { Player } from "../interfaces/player";
+import { LobbyState } from "../states/lobbystate";
 
 
 const PlayerLobby = () => {
@@ -69,7 +69,7 @@ const PlayerLobby = () => {
 
   useEffect(() => {
     if (roundActive === true) {
-      router.push("/player-reponse-form");
+      router.push("/player-response-form");
     }
   }, [roundActive]);
 

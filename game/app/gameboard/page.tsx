@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Socket } from "socket.io-client";
-import { GameState } from "./states/gamestate";
-import { useWebSocket } from "./context/GameSocketContext";
-import { Player } from "./interfaces/player";
-import ResultsPage from "./results-page";
-import CategorySelection from "./category-selection";
-import ActiveRound from "./active-round";
-import EndPage from "./end-page";
+import { GameState } from "../states/gamestate";
+import { useWebSocket } from "../context/GameSocketContext";
+import { Player } from "../interfaces/player";
+import ResultsPage from "./results-page/results-page";
+import CategorySelection from "./category-selection/category-selection";
+import ActiveRound from "./active-round/active-round";
+import EndPage from "./end-page/end-page";
 
 
 const Gameboard = () => {
