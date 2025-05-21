@@ -43,7 +43,7 @@ let allCategories = ["Male First Names", "Female First Names", "Animals","Countr
  "Things in a Science Lab", "Things at a Carnival", "Things in a Hotel Room", "Things You Can Recycle",
  "Things You Can Build", "Types of Cheese", "Pizza Toppings", "Kinds of Soup", "Famous Athletes", "Famous Actors",
  "Famous Singers", "Fast Food Restaurants", "Things That Are Blue", "Types of Hats",
- "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"]
+ "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"];
 
 // Copy of all categories for use in restarting the game. (improve later)
 const allCategoriesCopy = ["Male First Names", "Female First Names", "Animals","Countries","Cities","Fruits","Vegetables","Types of Candy","Ice Cream Flavors","Board Games",
@@ -61,7 +61,7 @@ const allCategoriesCopy = ["Male First Names", "Female First Names", "Animals","
   "Things in a Science Lab", "Things at a Carnival", "Things in a Hotel Room", "Things You Can Recycle",
   "Things You Can Build", "Types of Cheese", "Pizza Toppings", "Kinds of Soup", "Famous Athletes", "Famous Actors",
   "Famous Singers", "Fast Food Restaurants", "Things That Are Blue", "Types of Hats",
-  "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"]
+  "Things That Are Sweet", "Things That Are Sour", "Types of Fish", "Things Found Under the Bed"];
  
 
 // Categories used during the game.
@@ -86,12 +86,11 @@ let playerArr = [];
 //        Socket Events
 // ─────────────────────────────
 
-// listen for player connections
-io.on("connection", (socket) => {
-  // once player is connected,
+/* Listen for player connections. */
+io.on("connection", (socket) => { 
   console.log(`Client connected: ${socket.id}`);
 
-  // listen for joinGame event
+  /* Listen for players to join the game. */
   socket.on("joinGame", (playerName, playerType) => {
     console.log("Player", playerName, "joined game as client:", socket.id);
     if (playerType == "player") {
@@ -122,6 +121,7 @@ io.on("connection", (socket) => {
     // socket.emit("confirmJoin", {playerId: socket.id});
   });
 
+  /* Listen for identity requests from players. */
   socket.on("whoami", () => {
     console.log("received whoami request");
     if (players[socket.id]) {
@@ -140,19 +140,14 @@ io.on("connection", (socket) => {
     
   });
 
+  /* Listen for players to request the players list. */
   socket.on("getPlayers", () => {
     console.log("received get players request");
     console.log("players:", players);
     socket.emit("updatePlayers", playerArr);
   });
 
-  // listen for admin to start the game
-  socket.on("startGame", () => {
-    console.log("Admin has started the game.");
-    io.emit("startGame", true);
-  });
-
-  // listen for admin to set categories
+  /* Listen for admin to set the category. */
   socket.on("setRoundCategories", () => {
     const shuffled = [...allCategories].sort(() => 0.5 - Math.random());
     const randomCategories = shuffled.slice(0, 10);
@@ -175,35 +170,27 @@ io.on("connection", (socket) => {
     // TODO: add forced game over when allCategories length = 0
   });
 
-  // listen for other players to request the current categories for their form labels
+  /* Listen for players to request the categories list. */
   socket.on("getRoundCategories", () => {
     console.log("sending categories to players");
     socket.emit("updateRoundCategories", roundCategories);
   });
 
+  /* Listen for admin to set the round letter. */
   socket.on("setRoundLetter", (letter) => {
     roundLetter = letter;
     console.log("Round letter is: ", roundLetter);
     io.emit("updateRoundLetter", roundLetter);
   });
 
+  /* Listen for players to request the letter. */
   socket.on("getRoundLetter", () => {
     console.log("sending letter to client");
     socket.emit("updateRoundLetter", roundLetter);
   });
 
-  socket.on("startRound", () => {
-    console.log("Admin has started the round.");
-    io.emit("roundActive", true);
-  });
 
-  socket.on("endRound", () => {
-    console.log("Admin has ended the rounded.");
-    io.emit("roundActive", false);
-  });
-
-
-  // listen for player response
+  /* Listen for players to submit their responses for the current round. */
   socket.on("submitAnswers", (answers) => {
     console.log("received player", players[socket.id]["name"], "answers");
     console.log("their answers were:", answers);
@@ -214,7 +201,7 @@ io.on("connection", (socket) => {
     io.emit("updatePlayers", playerArr);
   });
 
-  // listen for player points update from admin
+  /* Listen for player points updates. */
   socket.on("updatePoints", (playerId, pointsValue) => {
     console.log("received points update");
     players[playerId]["points"] = pointsValue;
@@ -224,7 +211,25 @@ io.on("connection", (socket) => {
     io.emit("updatePlayers", playerArr);
   });
 
-  // listen for admin to restart the game
+  /* Listen for the admin to start the game. */
+  socket.on("startGame", () => {
+    console.log("Admin has started the game.");
+    io.emit("startGame", true);
+  });
+
+  /* Listen for the admin to start the round. */
+  socket.on("startRound", () => {
+    console.log("Admin has started the round.");
+    io.emit("roundActive", true);
+  });
+
+  /* Listen for the admin to end the round. */
+  socket.on("endRound", () => {
+    console.log("Admin has ended the rounded.");
+    io.emit("roundActive", false);
+  });
+
+  /* Listen for the admin to restart the game. */
   socket.on("restartGame", () => {
     console.log("admin has restarted the game");
     // reset the categories array
@@ -244,7 +249,7 @@ io.on("connection", (socket) => {
     io.emit("startGame", false);
   });
 
-  // Handle player disconnecting
+  /* Listen for player disconnects. */
   socket.on("disconnect", () => {
     console.log(`Player disconnected: ${socket.id}`);
     playerArr = playerArr.filter(player => player.id !== socket.id);

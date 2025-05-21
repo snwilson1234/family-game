@@ -17,7 +17,7 @@ const ResultsPage = ({
     onPlayerPointsIncrement,
     updatePlayerPoints,
     nextRound,
-    selectedCategories,
+    roundCategories,
     players
   } = useGameContext();
   
@@ -81,7 +81,7 @@ const ResultsPage = ({
           bg-indigo-800 rounded-lg         
         `}>
         {
-          selectedCategories?.map((category, index) => (
+          roundCategories?.map((category, index) => (
             <li
               key={index}
               className={`

@@ -18,7 +18,6 @@ const Gameboard = () => {
 
   const { gameState,
           playAgain,
-          selectedCategories,
           randomLetter,
           timeLeft,
           players,
@@ -26,10 +25,7 @@ const Gameboard = () => {
           startTimer,
           stopTimer,
           resetTimer,
-          handleWinner,
-          generateRandomCategories,
-          generateRandomLetter, 
-          setGameState } = useGameContext();
+          handleWinner } = useGameContext();
 
   /* Do all state updates for next round. */
   const handleResultsContinue = () => {
@@ -42,13 +38,7 @@ const Gameboard = () => {
         ${gameState === GameState.CategorySelection ? 'visible' : 'hidden'}
         flex flex-col items-center justify-center w-full h-screen pt-10
       `}>
-        <CategorySelection 
-          selectedCategories={selectedCategories} 
-          randomLetter={randomLetter} 
-          onGenerateCategories={generateRandomCategories} 
-          onGenerateLetter={generateRandomLetter} 
-          onContinue={() => setGameState(GameState.Active)} 
-        />
+        <CategorySelection />
       </div>
       <div className={`
         ${gameState === GameState.Active ? 'visible' : 'hidden'}

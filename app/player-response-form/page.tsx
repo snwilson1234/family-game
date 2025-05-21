@@ -14,7 +14,7 @@ const PlayerResponseForm = () => {
   const socket: Socket | null = useWebSocket();
   const router = useRouter();
 
-  const [categories, setCategories] = useState([]);
+  const [roundCategories, setRoundCategories] = useState([]);
   const [letter, setLetter] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [formState, setFormState] = useState<PlayerFormState>(PlayerFormState.Active);
@@ -23,7 +23,7 @@ const PlayerResponseForm = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.on("updateRoundCategories", setCategories);
+      socket.on("updateRoundCategories", setRoundCategories);
       socket.on("updateRoundLetter", setLetter);
       socket.emit("getRoundCategories");
       socket.emit("getRoundLetter");
@@ -118,7 +118,7 @@ const PlayerResponseForm = () => {
           onSubmit={submitAnswers}
           className="flex flex-col items-center w-full h-screen bg-indigo-800 rounded-md p-4">
           {
-            categories.map(
+            roundCategories.map(
               (category, index) => (
                 <label key={index} className="mb-2">
                   <h1 className="text-bold text-md">{category}: </h1>

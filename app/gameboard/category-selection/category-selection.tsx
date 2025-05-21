@@ -1,22 +1,18 @@
 import { Canvas } from '@react-three/fiber';
 import LetterDie from './letterdie/letterdie';
+import { useGameContext } from '@/app/providers/GameProvider';
+import { GameState } from '@/app/states/gamestate';
 
 
-type CategorySelectionProps = {
-  selectedCategories   : string[],
-  randomLetter         : string,
-  onGenerateCategories : () => void,
-  onGenerateLetter     : (letter: string) => void,
-  onContinue           : () => void,
-};
+const CategorySelection = () => {
 
-const CategorySelection = ({ 
-  selectedCategories,
-  randomLetter,
-  onGenerateCategories,
-  onGenerateLetter,
-  onContinue,
-} : CategorySelectionProps) => {
+  const {
+    roundCategories,
+    randomLetter,
+    setGameState,
+    setRoundCategories,
+    setRoundLetter,
+  } = useGameContext();
   
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen p-4">
@@ -25,7 +21,7 @@ const CategorySelection = ({
           <h1 className="text-3xl font-medium h-1/7">Press the button for categories!</h1>
           <ul className="flex flex-col items-center w-3/4 h-5/7 gap-1 py-1 bg-indigo-600 rounded-md text-xl shadow-lg">
           {
-            selectedCategories.map(
+            roundCategories.map(
               (category, index) => (
                 <li className="
                   bg-indigo-500 w-3/4
@@ -39,7 +35,7 @@ const CategorySelection = ({
           }
           </ul>
           <button 
-            onClick={() => onGenerateCategories()}
+            onClick={() => setRoundCategories()}
             className="btn btn-primary text-2xl w-2/5">
             Generate Categories
           </button>
@@ -51,16 +47,16 @@ const CategorySelection = ({
               <ambientLight intensity={Math.PI / 2} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
               <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-              <LetterDie sendRandomLetter={onGenerateLetter} />
+              <LetterDie sendRandomLetter={setRoundLetter} />
             </Canvas>
           </div>
         </div>
       </div>
       <button 
-        onClick={onContinue}
-        disabled={selectedCategories.length === 0 || randomLetter === ""}
+        onClick={() => setGameState(GameState.Active)}
+        disabled={roundCategories.length === 0 || randomLetter === ""}
         className={`btn btn-primary text-xl
-          ${selectedCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}
+          ${roundCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}
           `}>
         Continue
       </button>

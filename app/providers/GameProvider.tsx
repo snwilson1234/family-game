@@ -5,22 +5,21 @@ import { GameState } from "../states/gamestate";
 import { useWebSocket } from "./WebSocketProvider";
 
 interface GameContext {
-  gameState: GameState,
   players: Player[],
   thisPlayer?: Player,
-  selectedCategories: string[],
+  roundCategories: string[],
   randomLetter: string,
+  gameState: GameState,
   timeLeft: number,
   isRunning: boolean,
   winner?: Player,
-  // refreshPla
   updatePlayer: () => void,
+  setRoundCategories: () => void,
+  setRoundLetter: (letter: string) => void,
   sendStartGameSignal: () => void,
   updatePlayerPoints: (player: Player) => void,
   onPlayerPointsIncrement: (player: Player) => void,
   onPlayerPointsDecrement: (player: Player) => void,
-  generateRandomCategories: () => void,
-  generateRandomLetter: (letter: string) => void,
   setGameState: (state: GameState) => void,
   handleWinner: (winner: Player) => void,
   startTimer: () => void,
@@ -38,7 +37,7 @@ const GameProvider = ({ children }) => {
   const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
   const [thisPlayer, setThisPlayer] = useState<Player>();
   const [players, setPlayers] = useState<Player[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [roundCategories, setSelectedCategories] = useState<string[]>([]);
   const [randomLetter, setRandomLetter] = useState<string>("");
   const [winner, setWinner] = useState<Player>();
   const [timeLeft, setTimeLeft] = useState(10);
@@ -123,13 +122,13 @@ const GameProvider = ({ children }) => {
   }
 
   /* Get random letter from the alphabet for current round. */
-  const generateRandomLetter = (letter: string) => {
+  const setRoundLetter = (letter: string) => {
     socket?.emit("setRoundLetter", letter);
     setRandomLetter(letter);
   };
   
-  /* Tell the server to choose random categories for the current round. */
-  const generateRandomCategories = () => {
+  /* Tell the server to choose random roundCategories for the current round. */
+  const setRoundCategories = () => {
     console.log("socket:", socket);
     console.log("generating cat.");
     socket?.emit("setRoundCategories");
@@ -170,21 +169,21 @@ const GameProvider = ({ children }) => {
 
   return (
     <MyGameContext.Provider value={{
-      gameState,
       players,
       thisPlayer,
-      selectedCategories,
+      roundCategories,
       randomLetter,
+      gameState,
       timeLeft,
       isRunning,
       winner,
       updatePlayer,
+      setRoundCategories,
+      setRoundLetter,
       sendStartGameSignal,
       updatePlayerPoints,
       onPlayerPointsIncrement,
       onPlayerPointsDecrement,
-      generateRandomCategories,
-      generateRandomLetter,
       setGameState,
       handleWinner,
       startTimer,
