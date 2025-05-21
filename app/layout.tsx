@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { WebSocketProvider } from "./context/GameSocketContext";
+import { WebSocketProvider } from "./providers/WebSocketProvider";
+import GameProvider from "./providers/GameProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <WebSocketProvider>
-          {children}
+          <GameProvider>
+            {children}
+          </GameProvider>
         </WebSocketProvider>
       </body>
     </html>

@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "../context/GameSocketContext";
+import { useWebSocket } from "../providers/WebSocketProvider";
 
 
 const AdminPage = () => {

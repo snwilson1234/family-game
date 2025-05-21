@@ -1,15 +1,4 @@
 import Timer from "./timer/timer";
-import { Player } from "../interfaces/player";
-
-
-type ActiveRoundProps = {
-  players            : Player[],
-  randomLetter       : string,
-  timeLeft           : number,
-  onTimerStart       : () => void,
-  onTimerStop        : () => void,
-  onTimerReset       : () => void,
-};
 
 
 const ActiveRound = ({

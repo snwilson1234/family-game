@@ -1,14 +1,10 @@
 'use client';
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Socket } from "socket.io-client";
 import { GameState } from "../states/gamestate";
-import { useWebSocket } from "../context/GameSocketContext";
-import { Player } from "../interfaces/player";
 import ResultsPage from "./results-page/results-page";
 import CategorySelection from "./category-selection/category-selection";
 import ActiveRound from "./active-round/active-round";
 import EndPage from "./end-page/end-page";
+import { useGameContext } from "../providers/GameProvider";
 
 
 const Gameboard = () => {
@@ -20,101 +16,25 @@ const Gameboard = () => {
 
   // TODO:: fixx imports!!! define a standard, or Google one. ugly rn
 
-  const socket: Socket | null = useWebSocket();
-  const router = useRouter();
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [randomLetter, setRandomLetter] = useState<string>("");
-  const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-  const [timeLeft, setTimeLeft] = useState(10); //TODO: update to 180 when done testing
-  const [isRunning, setIsRunning] = useState(false);
-  const [thisPlayer, setThisPlayer] = useState<Player>();
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [winner, setWinner] = useState<Player>();
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("updatePlayers", setPlayers);
-      socket.on("whoami", setThisPlayer);
-      socket.on("updateRoundCategories", setSelectedCategories);
-      socket.on("updateRoundLetter", setRandomLetter);
-      socket.emit("getPlayers");
-      socket.emit("whoami");
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("whoami");
-        socket.off("updatePlayers");
-        socket.off("updateRoundCategories", setSelectedCategories);
-        socket.off("updateRoundLetter", setRandomLetter);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isRunning || timeLeft <= 0) return;
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [isRunning, timeLeft]);
-
-  // when the timer is up, select new category
-  useEffect(() => {
-    if (isRunning && timeLeft == 0) {
-      setGameState(GameState.Results);
-      socket.emit("endRound");
-    }
-  }, [timeLeft])
+  const { gameState,
+          playAgain,
+          selectedCategories,
+          randomLetter,
+          timeLeft,
+          players,
+          winner,
+          startTimer,
+          stopTimer,
+          resetTimer,
+          handleWinner,
+          generateRandomCategories,
+          generateRandomLetter, 
+          setGameState } = useGameContext();
 
   /* Do all state updates for next round. */
   const handleResultsContinue = () => {
-    setGameState(GameState.CategorySelection);
-    setIsRunning(false);
-    setTimeLeft(10);
+    playAgain();
   };
-
-  /* Tell the server to choose random categories for the current round. */
-  const generateRandomCategories = () => {
-    socket?.emit("setRoundCategories");
-  };
-
-  /* Get random letter from the alphabet for current round. */
-  const generateRandomLetter = (letter: string) => {
-    socket?.emit("setRoundLetter", letter);
-    setRandomLetter(letter);
-  };
-
-  /* Do state updates required for starting the timer. */
-  const handleTimerStart = () => {
-    setIsRunning(true);
-    socket.emit("startRound");
-  };
-
-  /* Do state updates required for stopping the timer. */
-  const handleTimerStop = () => {
-    setIsRunning(false)
-  };
-
-  /* Do state updates required for restarting the timer. */
-  const handleTimerReset = () => {
-    setTimeLeft(10);
-    setIsRunning(false);
-  };
-
-  const handleWinner = (winner: Player) => {
-    console.log("Winner is: ", winner ? winner.name : "placeholder");
-    setGameState(GameState.End);
-    setWinner(winner);
-  }
-
-  const handlePlayAgain = () => {
-    console.log("clicked play again");
-    socket?.emit("restartGame");
-    setGameState(GameState.CategorySelection);
-    handleTimerReset();
-  }
   
   return (
     <div>
@@ -127,27 +47,26 @@ const Gameboard = () => {
           randomLetter={randomLetter} 
           onGenerateCategories={generateRandomCategories} 
           onGenerateLetter={generateRandomLetter} 
-          onContinue={() => setGameState(GameState.Active)} />
+          onContinue={() => setGameState(GameState.Active)} 
+        />
       </div>
       <div className={`
         ${gameState === GameState.Active ? 'visible' : 'hidden'}
       `}>
         <ActiveRound
           players={players}
-          selectedCategories={selectedCategories}
           randomLetter={randomLetter}
           timeLeft={timeLeft}
-          onTimerStart={handleTimerStart}
-          onTimerStop={handleTimerStop}
-          onTimerReset={handleTimerReset}
+          onTimerStart={startTimer}
+          onTimerStop={stopTimer}
+          onTimerReset={resetTimer}
         />
-        
       </div>
       <div className={`
         ${gameState === GameState.Results ? 'visible' : 'hidden'}
         `}
       >
-        <ResultsPage 
+        <ResultsPage
           onContinue={handleResultsContinue}
           onWinner={handleWinner}
         />
@@ -157,10 +76,9 @@ const Gameboard = () => {
       >
         <EndPage 
           winner={winner!}
-          onPlayAgain={handlePlayAgain}
+          onPlayAgain={() => playAgain()}
         />
       </div>
-      
     </div>
   );
 }

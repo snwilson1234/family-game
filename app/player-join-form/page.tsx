@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Socket } from "socket.io-client";
-import { useWebSocket } from "../context/GameSocketContext";
+import { useWebSocket } from "../providers/WebSocketProvider";
 import { LobbyState } from "../states/lobbystate";
 
 

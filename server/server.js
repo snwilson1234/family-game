@@ -89,11 +89,11 @@ let playerArr = [];
 // listen for player connections
 io.on("connection", (socket) => {
   // once player is connected,
-  console.log(`Player connected: ${socket.id}`);
+  console.log(`Client connected: ${socket.id}`);
 
   // listen for joinGame event
   socket.on("joinGame", (playerName, playerType) => {
-    console.log("player", playerName, "joined game");
+    console.log("Player", playerName, "joined game as client:", socket.id);
     if (playerType == "player") {
       // update player array for client usage if "player"
       playerArr.push({
@@ -115,20 +115,29 @@ io.on("connection", (socket) => {
     // send updated player array to all clients
     io.emit("updatePlayers", playerArr); 
 
-    console.log("All players: ", players);
-    console.log("All players array sent to clients: ", playerArr);
+    console.log("Updating players...");
+    console.log("Players map: ", players);
+    console.log("Players array: ", playerArr);
 
-    socket.emit("confirmJoin", {playerId: socket.id});
+    // socket.emit("confirmJoin", {playerId: socket.id});
   });
 
   socket.on("whoami", () => {
     console.log("received whoami request");
-    socket.emit("whoami", {
+    if (players[socket.id]) {
+      socket.emit("whoami", {
       id: String(socket.id),
       name: players[socket.id]['name'],
       type: players[socket.id]['type'],
-      points: players[socket.id]['points']
-    });
+        points: players[socket.id]['points']
+      });
+    }
+    else {
+      socket.emit("whoami", "ERROR");
+      // TODO: prevent this error
+      console.log("ERROR fetching player, but it will be fixed");
+    }
+    
   });
 
   socket.on("getPlayers", () => {
