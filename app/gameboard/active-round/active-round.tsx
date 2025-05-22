@@ -1,14 +1,11 @@
+import { useGameContext } from "@/app/providers/GameProvider";
 import Timer from "./timer/timer";
 
 
-const ActiveRound = ({
-  players,
-  randomLetter,
-  timeLeft,
-  onTimerStart,
-  onTimerStop,
-  onTimerReset,
-} : ActiveRoundProps) => {
+const ActiveRound = () => {
+
+  const { players,
+          roundLetter } = useGameContext();
 
   return (
     <div className="flex flex-row justify-center items-center w-full h-screen gap-5 p-8">
@@ -29,9 +26,9 @@ const ActiveRound = ({
       <div className="flex flex-col items-center justify-center w-1/4 h-full gap-2">
         <div className="flex flex-col items-center justify-center w-full h-1/2 text-center bg-indigo-500 rounded-md">
           <p className="text-2xl">Your Letter is:</p>
-          <h1 className="text-8xl">{randomLetter}</h1>
+          <h1 className="text-8xl">{roundLetter}</h1>
         </div>
-        <Timer timeLeft={timeLeft} onTimerStart={onTimerStart} onTimerStop={onTimerStop} onTimerReset={onTimerReset}  />
+        <Timer />
       </div>
     </div> 
   );

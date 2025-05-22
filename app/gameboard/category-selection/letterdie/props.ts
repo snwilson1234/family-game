@@ -1,4 +1,4 @@
 
 type LetterDieProps = {
-  sendRandomLetter : (letter: string) => void,
+  sendRoundLetter : (letter: string) => void,
 };

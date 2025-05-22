@@ -6,13 +6,11 @@ import { GameState } from '@/app/states/gamestate';
 
 const CategorySelection = () => {
 
-  const {
-    roundCategories,
-    randomLetter,
-    setGameState,
-    setRoundCategories,
-    setRoundLetter,
-  } = useGameContext();
+  const { roundCategories,
+          roundLetter,
+          setGameState,
+          setRoundCategories,
+          setRoundLetter } = useGameContext();
   
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen p-4">
@@ -47,16 +45,16 @@ const CategorySelection = () => {
               <ambientLight intensity={Math.PI / 2} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
               <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-              <LetterDie sendRandomLetter={setRoundLetter} />
+              <LetterDie sendRoundLetter={setRoundLetter} />
             </Canvas>
           </div>
         </div>
       </div>
       <button 
         onClick={() => setGameState(GameState.Active)}
-        disabled={roundCategories.length === 0 || randomLetter === ""}
+        disabled={roundCategories.length === 0 || roundLetter === ""}
         className={`btn btn-primary text-xl
-          ${roundCategories.length === 0 || randomLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}
+          ${roundCategories.length === 0 || roundLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}
           `}>
         Continue
       </button>

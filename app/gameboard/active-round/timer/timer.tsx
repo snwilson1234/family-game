@@ -2,14 +2,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate, createScope } from 'animejs';
 import { PlayArrow, Pause, RestartAlt } from '@mui/icons-material';
+import { useGameContext } from '@/app/providers/GameProvider';
 
 
-const Timer = ({
-  timeLeft,
-  onTimerStart,
-  onTimerStop,
-  onTimerReset
-}: TimerProps) => {
+const Timer = () => {
+
+  const { timeLeft, 
+          startTimer,
+          stopTimer,
+          resetTimer } = useGameContext();
 
   const root = useRef(null);
   const scope = useRef(null);
@@ -64,19 +65,18 @@ const Timer = ({
       ">
         <button
           onClick={() => {
-            onTimerStop();
-            // TODO: make timer clockhand animation stop in its place and able to restart from where it left off
+            stopTimer();
           }} 
           className="bg-yellow-500 rounded-md"><Pause /></button>
         <button
           onClick={() => {
-            onTimerStart();
+            startTimer();
             setTimerStarted(true);
           }}   
           className="bg-green-500 rounded-md"><PlayArrow /></button>
         <button
           onClick={() => {
-            onTimerReset();
+            resetTimer();
             setTimerStarted(false);
           }} 
           className="bg-red-800 rounded-md"><RestartAlt /></button>

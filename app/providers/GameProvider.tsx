@@ -8,7 +8,7 @@ interface GameContext {
   players: Player[],
   thisPlayer?: Player,
   roundCategories: string[],
-  randomLetter: string,
+  roundLetter: string,
   gameState: GameState,
   timeLeft: number,
   isRunning: boolean,
@@ -17,9 +17,7 @@ interface GameContext {
   setRoundCategories: () => void,
   setRoundLetter: (letter: string) => void,
   sendStartGameSignal: () => void,
-  updatePlayerPoints: (player: Player) => void,
-  onPlayerPointsIncrement: (player: Player) => void,
-  onPlayerPointsDecrement: (player: Player) => void,
+  updatePlayerPoints: (player: Player, value: number) => void,
   setGameState: (state: GameState) => void,
   handleWinner: (winner: Player) => void,
   startTimer: () => void,
@@ -34,14 +32,14 @@ const MyGameContext = createContext<GameContext | null>(null);
 const GameProvider = ({ children }) => {
   const socket = useWebSocket();
   
-  const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
-  const [thisPlayer, setThisPlayer] = useState<Player>();
   const [players, setPlayers] = useState<Player[]>([]);
+  const [thisPlayer, setThisPlayer] = useState<Player>();
   const [roundCategories, setSelectedCategories] = useState<string[]>([]);
-  const [randomLetter, setRandomLetter] = useState<string>("");
-  const [winner, setWinner] = useState<Player>();
+  const [roundLetter, setRandomLetter] = useState<string>("");
+  const [gameState, setGameState] = useState<GameState>(GameState.CategorySelection);
   const [timeLeft, setTimeLeft] = useState(10);
   const [isRunning, setIsRunning] = useState(false);
+  const [winner, setWinner] = useState<Player>();
 
   useEffect(() => {
     if (!socket) return;
@@ -78,7 +76,7 @@ const GameProvider = ({ children }) => {
       setGameState(GameState.Results);
       socket.emit("endRound");
     }
-  }, [timeLeft])
+  }, [timeLeft]);
 
   useEffect(() => {
     if (!isRunning || timeLeft <= 0) return;
@@ -88,7 +86,44 @@ const GameProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("THISPLAYER IS NOW:", thisPlayer);
-  }, [thisPlayer])
+  }, [thisPlayer]);
+
+  /* Ask the server for player's identity. */
+  const updatePlayer = () => {
+    socket?.emit("whoami");
+  }
+
+  /* Tell the server to choose random roundCategories for the current round. */
+  const setRoundCategories = () => {
+    console.log("socket:", socket);
+    console.log("generating cat.");
+    socket?.emit("setRoundCategories");
+  };
+
+  /* Get random letter from the alphabet for current round. */
+  const setRoundLetter = (letter: string) => {
+    socket?.emit("setRoundLetter", letter);
+    setRandomLetter(letter);
+  };
+
+  /* Send the signal to start the game. */
+  const sendStartGameSignal = () => {
+    if (socket) {
+      socket.emit("startGame");
+    }
+  }
+
+  /* Send updated player points to the server. */
+  const updatePlayerPoints = (player: Player, value: number) => {
+    socket?.emit("updatePoints", player.id, value);
+  }
+
+  /* Set the winner and end the game. */
+  const handleWinner = (winner: Player) => {
+    console.log("Winner is: ", winner ? winner.name : "placeholder");
+    setGameState(GameState.End);
+    setWinner(winner);
+  }
 
   /* Do state updates required for starting the timer. */
   const startTimer = () => {
@@ -96,17 +131,19 @@ const GameProvider = ({ children }) => {
     socket?.emit("startRound");
   };
 
-  const handleEndGame = (winner: Player) => {
-    setWinner(winner);
-    setGameState(GameState.End);
-  };
-
+  /* Do state updates required for stopping the timer. */
+  // TODO: Fix this so that timer clockhand animation stops in its place and able to restart from where it left off
   const stopTimer = () => setIsRunning(false);
 
   /* Do state updates required for restarting the timer. */
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(10);
+  };
+
+  const handleEndGame = (winner: Player) => {
+    setWinner(winner);
+    setGameState(GameState.End);
   };
 
   const playAgain = () => {
@@ -121,58 +158,16 @@ const GameProvider = ({ children }) => {
     resetTimer();
   }
 
-  /* Get random letter from the alphabet for current round. */
-  const setRoundLetter = (letter: string) => {
-    socket?.emit("setRoundLetter", letter);
-    setRandomLetter(letter);
-  };
-  
-  /* Tell the server to choose random roundCategories for the current round. */
-  const setRoundCategories = () => {
-    console.log("socket:", socket);
-    console.log("generating cat.");
-    socket?.emit("setRoundCategories");
-  };
-
-  const handleWinner = (winner: Player) => {
-    console.log("Winner is: ", winner ? winner.name : "placeholder");
-    setGameState(GameState.End);
-    setWinner(winner);
-  }
-
-  const onPlayerPointsIncrement = (player: Player) => {
-    socket?.emit("updatePoints", player.id, player.points + 10);
-  }
-  const onPlayerPointsDecrement = (player: Player) => {
-    if (player.points > 0) {
-      socket?.emit("updatePoints", player.id, player.points - 10);
-    }
-  }
-  const updatePlayerPoints = (player: Player) => {
-    socket?.emit("updatePoints",player.id,player.points);
-  }
-
   const refreshPlayers = () => {
     socket?.emit("getPlayers");
   }
-
-  const sendStartGameSignal = () => {
-    if (socket) {
-      socket.emit("startGame");
-    }
-  }
-
-  const updatePlayer = () => {
-    socket?.emit("whoami");
-  }
-
 
   return (
     <MyGameContext.Provider value={{
       players,
       thisPlayer,
       roundCategories,
-      randomLetter,
+      roundLetter,
       gameState,
       timeLeft,
       isRunning,
@@ -182,8 +177,6 @@ const GameProvider = ({ children }) => {
       setRoundLetter,
       sendStartGameSignal,
       updatePlayerPoints,
-      onPlayerPointsIncrement,
-      onPlayerPointsDecrement,
       setGameState,
       handleWinner,
       startTimer,

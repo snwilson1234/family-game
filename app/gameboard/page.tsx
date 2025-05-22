@@ -9,28 +9,7 @@ import { useGameContext } from "../providers/GameProvider";
 
 const Gameboard = () => {
 
-  // TODO: gameboard shouldn't be handling all these things. yes, it's good to have components now, but this file is getting large.
-
-  /// REFACTOR to separate files, make timer handle time and send info back to gameboard, rather than the other way around...
-  // brainstorm other ideas for making this file smaller and delegating responsibility.
-
-  // TODO:: fixx imports!!! define a standard, or Google one. ugly rn
-
-  const { gameState,
-          playAgain,
-          randomLetter,
-          timeLeft,
-          players,
-          winner,
-          startTimer,
-          stopTimer,
-          resetTimer,
-          handleWinner } = useGameContext();
-
-  /* Do all state updates for next round. */
-  const handleResultsContinue = () => {
-    playAgain();
-  };
+  const { gameState } = useGameContext();
   
   return (
     <div>
@@ -43,31 +22,18 @@ const Gameboard = () => {
       <div className={`
         ${gameState === GameState.Active ? 'visible' : 'hidden'}
       `}>
-        <ActiveRound
-          players={players}
-          randomLetter={randomLetter}
-          timeLeft={timeLeft}
-          onTimerStart={startTimer}
-          onTimerStop={stopTimer}
-          onTimerReset={resetTimer}
-        />
+        <ActiveRound />
       </div>
       <div className={`
         ${gameState === GameState.Results ? 'visible' : 'hidden'}
         `}
       >
-        <ResultsPage
-          onContinue={handleResultsContinue}
-          onWinner={handleWinner}
-        />
+        <ResultsPage />
       </div>
       <div className={`
         ${gameState === GameState.End ? 'visible' : 'hidden'}`}
       >
-        <EndPage 
-          winner={winner!}
-          onPlayAgain={() => playAgain()}
-        />
+        <EndPage />
       </div>
     </div>
   );
