@@ -13,6 +13,8 @@ interface GameContext {
   timeLeft: number,
   isRunning: boolean,
   winner?: Player,
+  roundActive: boolean,
+  gameStarted: boolean,
   updatePlayer: () => void,
   setRoundCategories: () => void,
   setRoundLetter: (letter: string) => void,
@@ -24,7 +26,10 @@ interface GameContext {
   stopTimer: () => void,
   resetTimer: () => void,
   playAgain: () => void,
-  nextRound: () => void
+  nextRound: () => void,
+  adminJoinGame: () => void,
+  playerJoinGame: (playerName: string) => void,
+  submitAnswers: (answers: string[]) => void,
 }
 
 const MyGameContext = createContext<GameContext | null>(null);
@@ -40,6 +45,8 @@ const GameProvider = ({ children }) => {
   const [timeLeft, setTimeLeft] = useState(10);
   const [isRunning, setIsRunning] = useState(false);
   const [winner, setWinner] = useState<Player>();
+  const [roundActive, setRoundActive] = useState<boolean>(false);
+  const [gameStarted, setGameStarted] = useState<boolean>(true);
 
   useEffect(() => {
     if (!socket) return;
@@ -50,7 +57,9 @@ const GameProvider = ({ children }) => {
     socket.on("updatePlayers", setPlayers);
     socket.on("updateRoundCategories", setSelectedCategories);
     socket.on("updateRoundLetter", setRandomLetter);
+    // socket.on("startGame", setGameStarted);
     socket.on("endGame", handleEndGame);
+    socket.on("roundActive", setRoundActive);
 
     socket.emit("getPlayers");
     socket.emit("whoami");
@@ -62,7 +71,9 @@ const GameProvider = ({ children }) => {
       socket.off("updatePlayers", setPlayers);
       socket.off("updateRoundCategories", setSelectedCategories);
       socket.off("updateRoundLetter", setRandomLetter);
+      // socket.on("startGame", setGameStarted)
       socket.off("endGame", handleEndGame);
+      socket.off("roundActive", setRoundActive);
     };
   }, [socket]);
 
@@ -86,7 +97,16 @@ const GameProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("THISPLAYER IS NOW:", thisPlayer);
+    if (thisPlayer && thisPlayer.name != "admin") {
+      socket?.on("startGame", setGameStarted);
+    }
   }, [thisPlayer]);
+
+  useEffect(() => {
+    console.log("roundActive updated to:", roundActive);
+    console.log("gameStarted updated to:", gameStarted);
+
+  }, [roundActive, gameStarted])
 
   /* Ask the server for player's identity. */
   const updatePlayer = () => {
@@ -108,7 +128,7 @@ const GameProvider = ({ children }) => {
 
   /* Send the signal to start the game. */
   const sendStartGameSignal = () => {
-    if (socket) {
+    if (socket && thisPlayer!.name == "admin") {
       socket.emit("startGame");
     }
   }
@@ -158,6 +178,19 @@ const GameProvider = ({ children }) => {
     resetTimer();
   }
 
+  const adminJoinGame = () => {
+    socket?.emit("joinGame","admin","admin");
+  }
+
+  const playerJoinGame = (playerName: string) => {
+    socket?.emit("joinGame", playerName,"player");
+    socket?.emit("whoami");
+  }
+
+  const submitAnswers = (answers: string[]) => {
+    socket?.emit("submitAnswers", answers);
+  }
+
   const refreshPlayers = () => {
     socket?.emit("getPlayers");
   }
@@ -172,6 +205,8 @@ const GameProvider = ({ children }) => {
       timeLeft,
       isRunning,
       winner,
+      roundActive,
+      gameStarted,
       updatePlayer,
       setRoundCategories,
       setRoundLetter,
@@ -183,7 +218,10 @@ const GameProvider = ({ children }) => {
       stopTimer,
       resetTimer, 
       playAgain,
-      nextRound
+      nextRound,
+      adminJoinGame,
+      playerJoinGame,
+      submitAnswers
     }}>
       {children}
     </MyGameContext.Provider>

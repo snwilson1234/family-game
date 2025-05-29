@@ -1,20 +1,18 @@
 'use client';
 import { useEffect } from "react";
 import Link from "next/link";
-import { Socket } from "socket.io-client";
-import { useWebSocket } from "../providers/WebSocketProvider";
+import { useGameContext } from "../providers/GameProvider";
 
 
 const AdminPage = () => {
-  const socket: Socket | null = useWebSocket();
+
+  const {
+    adminJoinGame
+  } = useGameContext();
 
   useEffect(() => {
-    if (socket) {
-      console.log("socket not null");
-      socket.emit("joinGame","admin","admin");
-    }
-
-  }, [socket])
+    adminJoinGame();
+  }, [])
 
 
     return (
