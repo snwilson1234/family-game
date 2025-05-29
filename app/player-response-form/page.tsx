@@ -1,43 +1,29 @@
 'use client';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Socket } from "socket.io-client";
-import { useWebSocket } from "../context/GameSocketContext";
 import { PlayerFormState } from "../states/formstate";
 import { LobbyState } from "../states/lobbystate";
+import { useGameContext } from "../providers/GameProvider";
 
 
 const PlayerResponseForm = () => {
 
+  const {
+          roundCategories,
+          roundLetter,
+          roundActive,
+          submitAnswers
+        } = useGameContext();
+
   // TODO: need to work on state changes in game and form
 
-  const socket: Socket | null = useWebSocket();
   const router = useRouter();
 
-  const [categories, setCategories] = useState([]);
-  const [letter, setLetter] = useState("");
+  // const [roundCategories, setRoundCategories] = useState([]);
+  // const [letter, setLetter] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [formState, setFormState] = useState<PlayerFormState>(PlayerFormState.Active);
-  const [roundActive, setRoundActive] = useState<boolean>(true);
   const [formValid, setFormValid] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("updateRoundCategories", setCategories);
-      socket.on("updateRoundLetter", setLetter);
-      socket.emit("getRoundCategories");
-      socket.emit("getRoundLetter");
-      socket.on("roundActive", setRoundActive);
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("updateRoundCategories");
-        socket.off("updateRoundLetter");
-        socket.off("roundActive", setRoundActive);
-      }
-    }
-  },[]);
 
   useEffect(() => {
     if (roundActive === false) {
@@ -45,46 +31,44 @@ const PlayerResponseForm = () => {
     }
   }, [roundActive])
 
-  const submitAnswers = (event: React.FormEvent) => {
+  const cleanAnswers = (event: React.FormEvent) => {
     event.preventDefault()
 
     // TODO: improve this code
-    if (socket) {
-      let newAnswers = [...answers];
-      let currFormValid = true;
+    let newAnswers = [...answers];
+    let currFormValid = true;
 
-      // check starting letter, if not the correct letter, error
-      answers.forEach((answer, i) => {
-        if (answer != undefined) {
-          answer = answer.trim();
-        }
-        if ( answer != undefined && answer.length > 0 && answer[0].toUpperCase() != letter ) {
-          currFormValid = false;
-        }
-      })
-
-      if (!currFormValid) {
-        console.log("form not valid! Exiting...");
-        console.log("formValid:", formValid);
-        setFormValid(false);
-        return;
+    // check starting letter, if not the correct letter, error
+    answers.forEach((answer, i) => {
+      if (answer != undefined) {
+        answer = answer.trim();
       }
-
-      setFormValid(true);
-
-      // allow for blank answers by filling in NO_ANSWER constant
-      newAnswers.forEach((answer, i) => {
-        if (answer === undefined || answer.trim() == '')
-          newAnswers[i] = 'NO_ANSWER';
-      });
-
-      if (newAnswers.length < 10) {
-        const pad = 10 - newAnswers.length;
-        newAnswers = newAnswers.concat(Array(pad).fill('NO_ANSWER'));
+      if ( answer != undefined && answer.length > 0 && answer[0].toUpperCase() != roundLetter ) {
+        currFormValid = false;
       }
-      socket.emit("submitAnswers", newAnswers);
-      setAnswers(newAnswers);
+    })
+
+    if (!currFormValid) {
+      console.log("form not valid! Exiting...");
+      console.log("formValid:", formValid);
+      setFormValid(false);
+      return;
     }
+
+    setFormValid(true);
+
+    // allow for blank answers by filling in NO_ANSWER constant
+    newAnswers.forEach((answer, i) => {
+      if (answer === undefined || answer.trim() == '')
+        newAnswers[i] = 'NO_ANSWER';
+    });
+
+    if (newAnswers.length < 10) {
+      const pad = 10 - newAnswers.length;
+      newAnswers = newAnswers.concat(Array(pad).fill('NO_ANSWER'));
+    }
+    submitAnswers(newAnswers);
+    setAnswers(newAnswers);
 
     setFormState(PlayerFormState.Submitted);
   };
@@ -108,17 +92,17 @@ const PlayerResponseForm = () => {
       className="flex flex-col items-center w-full h-full p-2">
         <h1 className="
           text-xl font-bold
-        ">Your letter is: {letter}</h1>
+        ">Your letter is: {roundLetter}</h1>
         <div className={`
             text-red-500 font-bold
             ${formValid ? 'invisible' : 'visible' }   
           `}>Answers must start with the letter above.</div>
 
         <form 
-          onSubmit={submitAnswers}
+          onSubmit={cleanAnswers}
           className="flex flex-col items-center w-full h-screen bg-indigo-800 rounded-md p-4">
           {
-            categories.map(
+            roundCategories.map(
               (category, index) => (
                 <label key={index} className="mb-2">
                   <h1 className="text-bold text-md">{category}: </h1>

@@ -3,42 +3,26 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Loader2, Signal } from "lucide-react"; 
-import { Socket } from "socket.io-client";
-import { useWebSocket } from "../context/GameSocketContext";
-import { Player } from "../interfaces/player";
+import { useGameContext } from "../providers/GameProvider";
 
 
 const ConnectPage = () => {
-  const socket: Socket | null = useWebSocket();
+
+  const {
+    players,
+    thisPlayer,
+    updatePlayer,
+    sendStartGameSignal
+  } = useGameContext();
 
   const searchParams = useSearchParams();
   const numPlayers = Number(searchParams?.get("numPlayers")) || 0;
 
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [adminUser, setAdminUser] = useState<Player>();
   const [gameActive, setGameActive] = useState(false);
 
   useEffect(() => {
-    if (socket) {
-      socket.on("updatePlayers", setPlayers);
-      socket.on("whoami", setAdminUser);
-      socket.emit("getPlayers");
-      socket.emit("whoami");
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("updatePlayers");
-        socket.off("whoami", setAdminUser);
-      }
-    };
+    updatePlayer();
   }, []);
-
-  const sendStartGameSignal = () => {
-    if (socket) {
-      socket.emit("startGame");
-    }
-  }
   
   if (gameActive) {
     return (
@@ -94,7 +78,7 @@ const ConnectPage = () => {
           </Link>
           
           {
-            <p>You are: {`${adminUser ? adminUser['name'] : ""}`}</p>
+            <p>You are: {`${thisPlayer ? thisPlayer['name'] : ""}`}</p>
           }
       </div>
     );

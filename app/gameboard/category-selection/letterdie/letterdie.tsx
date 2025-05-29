@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 
 const LetterDie = ({
-  sendRandomLetter
+  sendRoundLetter
 } : LetterDieProps) => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const [rotationActive, setRotationActive] = useState(false);
@@ -107,7 +107,7 @@ const LetterDie = ({
             meshRef.current.rotation.x = rotatePoint.vect.x;
             meshRef.current.rotation.y = rotatePoint.vect.y;
             meshRef.current.rotation.z = rotatePoint.vect.z;
-            sendRandomLetter(rotatePoint.letter);
+            sendRoundLetter(rotatePoint.letter);
         }
     }
   });

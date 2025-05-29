@@ -1,52 +1,26 @@
 'use client';
 import { useEffect, useState } from "react";
-import { Socket } from "socket.io-client";
-import { useWebSocket } from "../../context/GameSocketContext";
-import { Player } from "../../interfaces/player";
+import { useGameContext } from "@/app/providers/GameProvider";
 
 
-type ResultsPageProps = {
-  onContinue              : () => void,
-  onWinner                : (winner: Player) => void,
-};
+const ResultsPage = () => {
 
-const ResultsPage = ({ 
-  onContinue, onWinner
-} : ResultsPageProps) => {
+  const {
+    updatePlayerPoints,
+    nextRound,
+    handleWinner,
+    roundCategories,
+    players
+  } = useGameContext();
   
-  const socket: Socket | null = useWebSocket();
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [categories, setCategories] = useState([]);
   const [focusCategoryIndex, setFocusCategoryIndex] = useState<number>(-1);
   const [rowFocusColors, setRowFocusColors] = useState<string[]>(['bg-green-800','bg-green-800','bg-green-800','bg-green-800']);
   const [continueEnabled, setContinueEnabled] = useState<boolean>(false);
 
-  
   useEffect(() => {
-    if (socket) {
-      console.log("socket on!!");
-      socket.on("updatePlayers", setPlayers);
-      socket.on("updateRoundCategories", setCategories);
-      socket.emit("getPlayers");
-      socket.emit("getRoundCategories");
-    }
-
-    return () => {
-      if (socket) {
-        console.log("socket off from results page!!");
-        socket.off("updatePlayers");
-        socket.off("updateRoundCategories");
-      }
-    }
-  }, []);
-
-  // useEffect()
-
-  useEffect(() => {
+    if (focusCategoryIndex < 0) return;
     const row_highlights : string[] = [];
     const answer_counts: {[key: string]: number} = {};
-
-    console.log("FOCUS CATEGORY INDEX:", focusCategoryIndex);
 
     players.forEach(( player, _ ) => {
       const answer = player.answers[focusCategoryIndex];
@@ -65,14 +39,12 @@ const ResultsPage = ({
         row_highlights.push('bg-red-800');
       }
       console.log(`${player.name} now has ${player.points} points.`);
-      socket?.emit("updatePoints",player.id,player.points);
-      // detect winner
+      updatePlayerPoints(player, player.points);
       // TODO: change to more reasonable number when actually playing the game
       if (player.points >= 50) {
-        onWinner(player);
+        handleWinner(player);
         setFocusCategoryIndex(-1);
       }
-      
 
     });
 
@@ -84,15 +56,6 @@ const ResultsPage = ({
     setRowFocusColors(row_highlights);
 
   }, [focusCategoryIndex])
-
-  const onPlayerPointsIncrement = (player: Player) => {
-    socket?.emit("updatePoints", player.id, player.points + 10);
-  }
-  const onPlayerPointsDecrement = (player: Player) => {
-    if (player.points > 0) {
-      socket?.emit("updatePoints", player.id, player.points - 10);
-    }
-  }
 
   return (
     <div className="flex flex-col w-full h-screen items-center p-4">
@@ -106,7 +69,7 @@ const ResultsPage = ({
           bg-indigo-800 rounded-lg         
         `}>
         {
-          categories?.map((category, index) => (
+          roundCategories?.map((category, index) => (
             <li
               key={index}
               className={`
@@ -151,16 +114,16 @@ const ResultsPage = ({
                 flex flex-row items-center justify-center text-lg h-1/6 w-3/4
               ">
                 <button
-                  onClick={() => {onPlayerPointsDecrement(player)}}
+                  onClick={() => {updatePlayerPoints(player, player.points - 10)}}
                   className="btn btn-primary bg-red-800 hover:bg-green-900 w-1/5 h-6 flex flex-1 items-center justify-center">
                   <p className="m-0 p-0">-</p>
                 </button>
                 <h1 className="text-4xl font-bold w-3/5 text-center">{player.points}</h1>
                 <button
                   onClick={() => {
-                    onPlayerPointsIncrement(player);
+                    updatePlayerPoints(player, player.points + 10);
                     if (player.points >= 50) {
-                      onWinner(player);
+                      handleWinner(player);
                       setFocusCategoryIndex(-1);
                     }
                   }}
@@ -185,7 +148,7 @@ const ResultsPage = ({
             btn btn-primary" 
           onClick={() => {
           setFocusCategoryIndex(-1);
-          onContinue();
+          nextRound();
           setContinueEnabled(false);
         }}>Continue</button>
       </div>
