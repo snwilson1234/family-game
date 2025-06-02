@@ -1,9 +1,6 @@
 'use client';
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { PlayerFormState } from "../states/formstate";
-import { LobbyState } from "../states/lobbystate";
-import { useGameContext } from "../providers/GameProvider";
+import { useState } from "react";
+import { useGameContext } from "../../providers/GameProvider";
 
 
 const PlayerResponseForm = () => {
@@ -11,28 +8,16 @@ const PlayerResponseForm = () => {
   const {
           roundCategories,
           roundLetter,
-          roundActive,
           submitAnswers
         } = useGameContext();
 
-  // TODO: need to work on state changes in game and form
-
-  const router = useRouter();
-
-  // const [roundCategories, setRoundCategories] = useState([]);
-  // const [letter, setLetter] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
-  const [formState, setFormState] = useState<PlayerFormState>(PlayerFormState.Active);
   const [formValid, setFormValid] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (roundActive === false) {
-      router.push(`player-lobby?lobbyState=${LobbyState.BetweenRound}`);
-    }
-  }, [roundActive])
-
   const cleanAnswers = (event: React.FormEvent) => {
-    event.preventDefault()
+    event.preventDefault();
+
+    console.log("ANSWERS GIVEN WERE:", answers);
 
     // TODO: improve this code
     let newAnswers = [...answers];
@@ -68,9 +53,8 @@ const PlayerResponseForm = () => {
       newAnswers = newAnswers.concat(Array(pad).fill('NO_ANSWER'));
     }
     submitAnswers(newAnswers);
-    setAnswers(newAnswers);
+    setAnswers([]);
 
-    setFormState(PlayerFormState.Submitted);
   };
 
   const handleInputChange = (index: number, value: string) => {
@@ -84,12 +68,7 @@ const PlayerResponseForm = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen">
       <div 
-        hidden={!(formState === PlayerFormState.Submitted)}>
-        <h1 className="text-xl">Waiting for timer to run out...</h1>
-      </div>
-      <div 
-        hidden={!(formState === PlayerFormState.Active)}
-      className="flex flex-col items-center w-full h-full p-2">
+        className="flex flex-col items-center w-full h-full p-2">
         <h1 className="
           text-xl font-bold
         ">Your letter is: {roundLetter}</h1>
@@ -108,6 +87,7 @@ const PlayerResponseForm = () => {
                   <h1 className="text-bold text-md">{category}: </h1>
                   <input
                     maxLength={25}
+                    value={answers[index] || ''}
                     onChange={(e) => handleInputChange(index, e.target.value)} 
                     className="bg-indigo-50 text-indigo-900 capitalize rounded-sm pt-1 px-2 border-b-4 border-indigo-500 focus:outline-2 focus:outline-indigo-500"
                     name={`query${index}`} 

@@ -199,6 +199,7 @@ io.on("connection", (socket) => {
         player.id === socket.id ? { ...player, answers: answers } : player
     );
     io.emit("updatePlayers", playerArr);
+    socket.emit("setLobbyState", "WaitForTimerEnd");
   });
 
   /* Listen for player points updates. */
@@ -211,23 +212,26 @@ io.on("connection", (socket) => {
     io.emit("updatePlayers", playerArr);
   });
 
+  /* Listen for the admin to start the timer. */
+  socket.on("startTimer", () => {
+    io.emit("setLobbyState", "Responding");
+  });
+
+  /* Listen for the admin to stop the timer. */
+  socket.on("stopTimer", () => {
+    io.emit("setLobbyState", "WaitForRound");
+  });
+
   /* Listen for the admin to start the game. */
   socket.on("startGame", () => {
     console.log("Admin has started the game.");
-    io.emit("startGame", true);
+    io.emit("setLobbyState", "WaitForTimerStart");
   });
 
-  /* Listen for the admin to start the round. */
-  socket.on("startRound", () => {
-    console.log("Admin has started the round.");
-    io.emit("roundActive", true);
-  });
-
-  /* Listen for the admin to end the round. */
-  socket.on("endRound", () => {
-    console.log("Admin has ended the rounded.");
-    io.emit("roundActive", false);
-  });
+  socket.on("nextRound", () => {
+    console.log("Admin has advanced to next round.");
+    io.emit("setLobbyState", "WaitForTimerStart");
+  })
 
   /* Listen for the admin to restart the game. */
   socket.on("restartGame", () => {
@@ -246,7 +250,7 @@ io.on("connection", (socket) => {
 
     io.emit("updatePlayers", playerArr);
     io.emit("updateCategories", allCategories);
-    io.emit("startGame", false);
+    io.emit("setLobbyState", "WaitForTimerStart");
   });
 
   /* Listen for player disconnects. */

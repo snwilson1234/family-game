@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { Player } from "../interfaces/player";
 import { GameState } from "../states/gamestate";
 import { useWebSocket } from "./WebSocketProvider";
+import { LobbyState } from "../states/lobbystate";
 
 interface GameContext {
   players: Player[],
@@ -13,8 +14,7 @@ interface GameContext {
   timeLeft: number,
   isRunning: boolean,
   winner?: Player,
-  roundActive: boolean,
-  gameStarted: boolean,
+  lobbyState: LobbyState,
   updatePlayer: () => void,
   setRoundCategories: () => void,
   setRoundLetter: (letter: string) => void,
@@ -45,8 +45,7 @@ const GameProvider = ({ children }) => {
   const [timeLeft, setTimeLeft] = useState(10);
   const [isRunning, setIsRunning] = useState(false);
   const [winner, setWinner] = useState<Player>();
-  const [roundActive, setRoundActive] = useState<boolean>(false);
-  const [gameStarted, setGameStarted] = useState<boolean>(true);
+  const [lobbyState, setLobbyState] = useState<LobbyState>(LobbyState.WaitForStart);
 
   useEffect(() => {
     if (!socket) return;
@@ -57,9 +56,8 @@ const GameProvider = ({ children }) => {
     socket.on("updatePlayers", setPlayers);
     socket.on("updateRoundCategories", setSelectedCategories);
     socket.on("updateRoundLetter", setRandomLetter);
-    // socket.on("startGame", setGameStarted);
+    socket.on("setLobbyState", setLobbyState);
     socket.on("endGame", handleEndGame);
-    socket.on("roundActive", setRoundActive);
 
     socket.emit("getPlayers");
     socket.emit("whoami");
@@ -71,9 +69,8 @@ const GameProvider = ({ children }) => {
       socket.off("updatePlayers", setPlayers);
       socket.off("updateRoundCategories", setSelectedCategories);
       socket.off("updateRoundLetter", setRandomLetter);
-      // socket.on("startGame", setGameStarted)
+      socket.off("setLobbyState", setLobbyState);
       socket.off("endGame", handleEndGame);
-      socket.off("roundActive", setRoundActive);
     };
   }, [socket]);
 
@@ -85,7 +82,7 @@ const GameProvider = ({ children }) => {
   useEffect(() => {
     if (isRunning && timeLeft == 0) {
       setGameState(GameState.Results);
-      socket.emit("endRound");
+      socket?.emit("stopTimer");
     }
   }, [timeLeft]);
 
@@ -98,15 +95,14 @@ const GameProvider = ({ children }) => {
   useEffect(() => {
     console.log("THISPLAYER IS NOW:", thisPlayer);
     if (thisPlayer && thisPlayer.name != "admin") {
-      socket?.on("startGame", setGameStarted);
+      socket?.on("setLobbyState", setLobbyState);
     }
   }, [thisPlayer]);
 
   useEffect(() => {
-    console.log("roundActive updated to:", roundActive);
-    console.log("gameStarted updated to:", gameStarted);
+    console.log("lobbyState updated to:", lobbyState);
 
-  }, [roundActive, gameStarted])
+  }, [lobbyState])
 
   /* Ask the server for player's identity. */
   const updatePlayer = () => {
@@ -148,12 +144,15 @@ const GameProvider = ({ children }) => {
   /* Do state updates required for starting the timer. */
   const startTimer = () => {
     setIsRunning(true);
-    socket?.emit("startRound");
+    socket?.emit("startTimer");
   };
 
   /* Do state updates required for stopping the timer. */
   // TODO: Fix this so that timer clockhand animation stops in its place and able to restart from where it left off
-  const stopTimer = () => setIsRunning(false);
+  const stopTimer = () => {
+    setIsRunning(false);
+    socket?.emit("stopTimer");
+  }
 
   /* Do state updates required for restarting the timer. */
   const resetTimer = () => {
@@ -176,6 +175,7 @@ const GameProvider = ({ children }) => {
   const nextRound = () => {
     setGameState(GameState.CategorySelection);
     resetTimer();
+    socket?.emit("nextRound");
   }
 
   const adminJoinGame = () => {
@@ -205,8 +205,7 @@ const GameProvider = ({ children }) => {
       timeLeft,
       isRunning,
       winner,
-      roundActive,
-      gameStarted,
+      lobbyState,
       updatePlayer,
       setRoundCategories,
       setRoundLetter,

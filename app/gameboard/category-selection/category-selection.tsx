@@ -51,7 +51,9 @@ const CategorySelection = () => {
         </div>
       </div>
       <button 
-        onClick={() => setGameState(GameState.Active)}
+        onClick={() => {
+          setGameState(GameState.Active);
+        }}
         disabled={roundCategories.length === 0 || roundLetter === ""}
         className={`btn btn-primary text-xl
           ${roundCategories.length === 0 || roundLetter === "" ? "opacity-50 hover:cursor-default" : "hover:cursor-pointer hover:text-indigo-300"}

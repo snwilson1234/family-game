@@ -1,5 +1,8 @@
 
 export enum LobbyState {
-    WaitingForStart = 'waiting',
-    BetweenRound = 'betweenRounds'
+    WaitForStart = 'WaitForStart',
+    WaitForTimerStart = 'WaitForTimerStart',
+    Responding = 'Responding',
+    WaitForTimerEnd = 'WaitForTimerEnd',
+    WaitForRound = 'WaitForRound'
 }
