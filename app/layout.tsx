@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { WebSocketProvider } from "./providers/WebSocketProvider";
 import GameProvider from "./providers/GameProvider";
+import { PrimeReactProvider } from 'primereact/api';
+import "./globals.css";
+import 'primereact/resources/themes/lara-dark-indigo/theme.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Category Game",
@@ -27,11 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <WebSocketProvider>
-          <GameProvider>
-            {children}
-          </GameProvider>
-        </WebSocketProvider>
+        <PrimeReactProvider>
+          <WebSocketProvider>
+            <GameProvider>
+              {children}
+            </GameProvider>
+          </WebSocketProvider>
+        </PrimeReactProvider>
       </body>
     </html>
   );

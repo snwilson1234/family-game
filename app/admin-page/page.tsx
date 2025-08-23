@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from "react";
-import Link from "next/link";
 import { useGameContext } from "../providers/GameProvider";
+import PButton from "../components/Button";
 
 
 const AdminPage = () => {
@@ -20,11 +20,7 @@ const AdminPage = () => {
         <h1 className="text-5xl font-medium inline-block">
           Welcome to Category Game!
         </h1>
-        <Link 
-          className="flex flex-col btn btn-primary w-full items-center" 
-          href={{ pathname: '/choose-players' }}>
-          <p className="text-3xl">Play</p>
-        </Link>
+        <PButton label={"Play"} isLink={true} href="/choose-players" />
       </div>
     );
 }
