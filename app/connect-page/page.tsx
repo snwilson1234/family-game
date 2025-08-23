@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useGameContext } from "../providers/GameProvider";
 import PlayerTable from "./PlayerTable";
-import PButton from "../components/Button";
+import PButton from "../components/PButton";
 
 
 const ConnectPage = () => {

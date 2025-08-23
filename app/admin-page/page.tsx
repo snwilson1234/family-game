@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from "react";
 import { useGameContext } from "../providers/GameProvider";
-import PButton from "../components/Button";
+import PButton from "../components/PButton";
 
 
 const AdminPage = () => {

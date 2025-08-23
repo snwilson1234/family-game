@@ -1,9 +1,7 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
-import DropDown from './dropdown/dropdown';
-import PButton from '../components/Button';
-import PDropdown from '../components/Dropdown';
+import PButton from '../components/PButton';
+import PDropdown from '../components/PDropdown';
 
 
 const ChoosePlayers = () => {
