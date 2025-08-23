@@ -28,14 +28,12 @@ const ChoosePlayers = () => {
         placeholder={'Select number of players'}
         onChange={handlePlayerUpdate}
       />
-      <div className="flex flex-col items-center">
-        <PButton 
-          label={"Continue"} 
-          isLink={true}
-          href={`/connect-page?numPlayers=${players}`}
-          disabled={!continueEnabled}
-        />
-      </div>
+      <PButton 
+        label={"Continue"} 
+        isLink={true}
+        href={`/connect-page?numPlayers=${players}`}
+        disabled={!continueEnabled}
+      />
     </div>
   );
 }

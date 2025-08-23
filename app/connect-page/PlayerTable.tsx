@@ -16,9 +16,9 @@ export default function PlayerTable({ players, numPlayers }: PlayerTableProps) {
   // display a Check if player has conncted. Otherwise, display loader.
   const statusTemplate = (player: Player | undefined) => {
     if (player && player.type === "player") {
-      return <Check className="text-black" />;
+      return <Check className="text-white" />;
     }
-    return <Loader2 className="animate-spin text-black" />;
+    return <Loader2 className="animate-spin text-white" />;
   };
 
   // template for name column

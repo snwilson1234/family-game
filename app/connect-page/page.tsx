@@ -31,10 +31,10 @@ const ConnectPage = () => {
   }
   else {
     return (
-      <div className="flex flex-col items-center w-full h-screen gap-20 p-8">
-        <div className="flex flex-col items-center w-full h-1/5">
-          <h1 className="text-5xl font-medium inline-block">Connect Players</h1>
-        </div>
+      <div className="flex flex-col items-center justify-center w-full h-screen gap-20 p-8">
+        <h1 className="text-5xl font-medium inline-block">
+          Connect Players
+        </h1>
         <PlayerTable 
           players={players} 
           numPlayers={numPlayers}
