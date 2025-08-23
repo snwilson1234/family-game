@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import DropDown from './dropdown/dropdown';
+import PButton from '../components/Button';
+import PDropdown from '../components/Dropdown';
 
 
 const ChoosePlayers = () => {
@@ -17,7 +19,7 @@ const ChoosePlayers = () => {
   return (
     <div className="flex flex-col w-full h-screen items-center justify-center gap-20">
       <h1 className="text-5xl font-medium inline-block">How many players?</h1>
-      <DropDown
+      <PDropdown 
         options={[
           { value: '2', label: 'Two' },
           { value: '3', label: 'Three' },
@@ -25,20 +27,16 @@ const ChoosePlayers = () => {
           { value: '5', label: 'Five' },
           { value: '6', label: 'Six' },
         ]} 
-        onSelect={handlePlayerUpdate} />
+        placeholder={'Select number of players'}
+        onChange={handlePlayerUpdate}
+      />
       <div className="flex flex-col items-center">
-        <Link
-          href={{
-            pathname: '/connect-page',
-            query: {
-              numPlayers: `${players}`,
-            }
-          }}
-        >
-          <button  
-            disabled={!continueEnabled}
-            className="btn btn-primary w-lg">Continue</button>
-        </Link>
+        <PButton 
+          label={"Continue"} 
+          isLink={true}
+          href={`/connect-page?numPlayers=${players}`}
+          disabled={!continueEnabled}
+        />
       </div>
     </div>
   );
