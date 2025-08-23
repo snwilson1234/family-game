@@ -3,7 +3,7 @@ import { WebSocketProvider } from "./providers/WebSocketProvider";
 import GameProvider from "./providers/GameProvider";
 import { PrimeReactProvider } from 'primereact/api';
 import "./globals.css";
-import 'primereact/resources/themes/lara-dark-indigo/theme.css';
+import 'primereact/resources/themes/saga-orange/theme.css';
 
 
 export const metadata: Metadata = {
