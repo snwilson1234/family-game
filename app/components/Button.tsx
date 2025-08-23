@@ -1,41 +1,45 @@
-import Link from 'next/link';
-import { Button } from 'primereact/button';
-
+import { useRouter } from "next/navigation";
+import { Button } from "primereact/button";
 
 export interface PButtonProps {
   label: string;
-  isLink: boolean;
+  isLink?: boolean;
   href?: string;
-};
+  disabled?: boolean;
+  onClick?: () => void;
+}
 
 const PButton = ({
   label,
-  isLink=false,
-  href=""
+  isLink = false,
+  href = "",
+  disabled = false,
+  onClick,
 }: PButtonProps) => {
-  
+  const router = useRouter();
+
   if (isLink) {
     return (
-      // utilize primereact classes so we can have a semantic link-button that is still rendered as anchor.
-      // prime-react has "link" attribute for button, but that just changes the styling. it doesnt render anchor
-      <Link
-        className='p-button p-component'
-        href={href}
-      >
-        <span className='p-button-label p-c'>
-          {label}
-        </span>
-      </Link>
+      <Button
+        disabled={disabled}
+        className="font-bold"
+        label={label}
+        onClick={() => {
+          if (onClick) onClick();
+          if (href) router.push(href);
+        }}
+      />
     );
   }
-  else {
-    return (
-      <Button 
-        label={label}
-        link={false}
-      />
-    )
-  };
-}
+
+  return (
+    <Button
+      disabled={disabled}
+      className="font-bold"
+      label={label}
+      onClick={onClick}
+    />
+  );
+};
 
 export default PButton;
