@@ -183,7 +183,7 @@ const GameProvider = ({ children }) => {
   }
 
   const playerJoinGame = (playerName: string) => {
-    socket?.emit("joinGame", playerName,"player");
+    socket?.emit("joinGame", playerName, "player");
     socket?.emit("whoami");
   }
 

@@ -1,7 +1,6 @@
 'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LobbyState } from "../states/lobbystate";
 import { useGameContext } from "../providers/GameProvider";
 
 
@@ -19,7 +18,7 @@ const PlayerJoinForm = () => {
     event.preventDefault();
     if (playerName.trim() !== "") {
       playerJoinGame(playerName);
-      router.push(`player-lobby?lobbyState=${LobbyState.WaitingForStart}`);
+      router.push("player-lobby");
     }
   }
 
@@ -39,7 +38,7 @@ const PlayerJoinForm = () => {
             onChange={(e) => {
               const formattedName = e.target.value
                 .toLowerCase()
-                .replace(/\b\w/g, (char) => char.toUpperCase()); //capitalize first letter of each word
+                .replace(/\b\w/g, (char) => char.toUpperCase());
               setPlayerName(formattedName);
             }}
           />
