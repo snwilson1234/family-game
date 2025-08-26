@@ -2,6 +2,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Loader2, Check } from 'lucide-react';
 import { Player } from '../interfaces/player';
+import './playerTable.css';
 
 interface PlayerTableProps {
   players: (Player | undefined)[];
@@ -30,7 +31,11 @@ export default function PlayerTable({ players, numPlayers }: PlayerTableProps) {
   };
 
   return (
-    <DataTable value={paddedPlayers} tableStyle={{ minWidth: '30rem' }}>
+    <DataTable 
+      value={paddedPlayers}
+      tableStyle={{ minWidth: '30rem' }}
+      className='rounded-lg overflow-hidden'
+    >
       <Column header="Status" body={statusTemplate} />
       <Column header="Name" body={nameTemplate} />
     </DataTable>
