@@ -38,13 +38,13 @@ const PlayerLobby = () => {
     <div className="flex flex-col w-full h-screen items-center justify-center">
       <div
         hidden={ lobbyState === LobbyState.Responding }
-        className="flex flex-col items-center justify-center w-full h-screen gap-5 bg-indigo-950">
+        className="flex flex-col items-center justify-center w-full h-screen gap-5">
           <h1 className="text-2xl font-bold font-semibold text-center">Hello {`${thisPlayer ? thisPlayer['name'] : ""}`}!</h1>
           <h1 className="text-xl text-center">{lobbyMessage}</h1>
       </div>
       <div
         hidden={ lobbyState !== LobbyState.Responding }
-        className="flex flex-col items-center justify-center w-full h-screen gap-5 bg-indigo-950">
+        className="flex flex-col items-center justify-center w-full h-screen gap-5">
          <PlayerResponseForm />
       </div>
     </div>
