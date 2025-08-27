@@ -5,6 +5,7 @@ export interface PButtonProps {
   label: string;
   isLink?: boolean;
   href?: string;
+  type?: "button" | "reset" | "submit";
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -13,6 +14,7 @@ const PButton = ({
   label,
   isLink = false,
   href = "",
+  type="button",
   disabled = false,
   onClick,
 }: PButtonProps) => {
@@ -35,6 +37,7 @@ const PButton = ({
   return (
     <Button
       disabled={disabled}
+      type={type}
       className="font-bold"
       label={label}
       onClick={onClick}
