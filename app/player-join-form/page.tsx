@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGameContext } from "../providers/GameProvider";
+import PButton from "../components/PButton";
+import PInputText from "../components/PInputText";
 
 
 const PlayerJoinForm = () => {
@@ -27,27 +29,16 @@ const PlayerJoinForm = () => {
       <form 
         autoComplete="off" 
         onSubmit={joinGame}
-        className="flex flex-col items-center justify-center w-full h-screen gap-10">
-        <label className="mb-2">
-          <h1 className="text-bold text-lg">Enter your name: </h1>
-          <input
-            maxLength={15} 
-            className="bg-indigo-50 text-indigo-900 capitalize rounded-sm pt-2 px-2 border-b-4 border-indigo-500 focus:outline-2 focus:outline-indigo-500"
-            name="playerName" 
-            value={playerName}
-            onChange={(e) => {
-              const formattedName = e.target.value
-                .toLowerCase()
-                .replace(/\b\w/g, (char) => char.toUpperCase());
-              setPlayerName(formattedName);
-            }}
-          />
-        </label>
-        
-        <button 
-          className="btn btn-primary w-xs" 
-          type="submit"
-        >Join</button>
+        className="flex flex-col items-center justify-center w-full h-screen gap-10"
+      >
+        <label htmlFor="playerName">Enter your name:</label>
+        <PInputText 
+          name={"playerName"}  
+          value={playerName}
+          maxLength={15}
+          onChange={setPlayerName} 
+        />
+        <PButton label={"Join"} type="submit" />
       </form>
     </div>
   );
