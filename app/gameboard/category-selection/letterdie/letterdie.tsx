@@ -61,7 +61,7 @@ const LetterDie = ({
 
   const { geometry, material } = useMemo(() => {
     const geometry = new THREE.IcosahedronGeometry(1.5);
-    const color = new THREE.Vector3(0.11, 0.1, 0.56);
+    const color = new THREE.Vector3(0.17, 0.1, 0.56);
     const colors: number[] = [];
     const uv: number[] = [];
 
