@@ -1,0 +1,20 @@
+/* .p-card .p-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+} */
+
+.p-card .p-card-body .p-content {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  justify-content: center;
+}
+
+.p-card .p-card-body .p-footer {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  justify-content: center;
+}
