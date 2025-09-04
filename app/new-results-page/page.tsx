@@ -13,10 +13,10 @@ const NewResultsPage = () => {
     roundCategories
   } = useGameContext();
   return (
-    <div className="flex flex-col p-8 items-center h-screen">
-      <h1 className="text-6xl h-1/5">{roundCategories[3]}</h1>
-      <CardGroup numCards={8} />
-      <div className="flex flex-col justify-center h-1/5">
+    <div className="flex flex-col p-8 gap-8 items-center h-screen">
+      <h1 className="text-6xl">{"This is a sample"}</h1>
+      <CardGroup numCards={3} />
+      <div className="flex flex-col justify-center">
         <PButton label={"Continue"} />
       </div>
     </div>

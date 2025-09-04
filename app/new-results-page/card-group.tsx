@@ -18,7 +18,7 @@ const CardGroup = ({ numCards }: CardGroupProps) => {
 
   // row helper
   const renderRow = (row: typeof players, size: number) => (
-    <div className="flex flex-row items-center justify-center w-full gap-8 h-1/2">
+    <div className="flex flex-row items-center justify-center w-full gap-8">
       {row.map((p, idx) => (
         <AnswerCard
           key={idx}
@@ -32,11 +32,7 @@ const CardGroup = ({ numCards }: CardGroupProps) => {
 
   return (
     <div
-      className={
-        numCards <= 3
-          ? "flex flex-row items-center justify-center w-full gap-8 h-1/2"
-          : "flex flex-col gap-8 h-3/5"
-      }
+      className={`flex justify-center w-full gap-8 h-5/6 ${numCards <= 3 ? 'flex-row items-center' : 'flex-col'}`}
     >
       {numCards <= 3
         ? players.map((p, idx) => (

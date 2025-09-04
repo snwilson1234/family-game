@@ -1,7 +1,7 @@
 import { Card } from "primereact/card";
 import PButton from "../components/PButton";
 import { Button } from "primereact/button";
-import './answerCard.css';
+
 
 interface AnswerCardProps {
   playerName: string;
@@ -18,19 +18,23 @@ const AnswerCard = ({
 }: AnswerCardProps) => {
 
   const sizeClassMap: Record<number, string> = {
-    2: "w-100 h-80", //text-5xl
-    3: "w-80 h-70", //text-4xl
-    4: "w-80 h-60", //text-4xl
-    5: "w-80 h-60",
-    6: "w-80 h-60",
-    7: "w-70 h-60",
-    8: "w-70 h-60",
-    // 4: "w-40 h-40",
-    // 5: "w-50 h-50",
-    // 6: "w-60 h-60",
-    // 7: "w-70 h-70",
-    // 8: "w-80 h-80",
-    // 9: "w-90 h-90",
+    2: "w-[540px]",
+    3: "w-[450px]",
+    4: "w-[450px]",
+    5: "w-[360px]",
+    6: "w-[360px]",
+    7: "w-[270px]",
+    8: "w-[270px]"
+  };
+
+  const textClassMap: Record<number, string> = {
+    2: "text-5xl h-16",
+    3: "text-5xl h-16",
+    4: "text-4xl h-12",
+    5: "text-4xl h-12",
+    6: "text-4xl h-12",
+    7: "text-3xl h-10",
+    8: "text-3xl h-10",
   };
 
   const header = (
@@ -42,18 +46,18 @@ const AnswerCard = ({
   );
 
   const footer = (
-    <div className="flex flex-row items-center">
-      <p className="text-3xl">{playerName}</p>
+    <div className="flex flex-row items-center justify-center">
+      <p className="text-4xl font-bold">{playerName}</p>
     </div>
   );
 
   return (
     <Card
-      className={`${sizeClassMap[size]} flex flex-col py-4`}
+      className={`${sizeClassMap[size]} flex flex-col py-2`}
       header={header}
       footer={footer}
-      >
-      <p className="text-center text-4xl overflow-hidden text-ellipsis">{answer}</p>
+    >
+      <p className={`text-center overflow-hidden text-ellipsis whitespace-nowrap h-10 w-full ${textClassMap[size]}`}>{answer}</p>
     </Card>  
   )
 };
