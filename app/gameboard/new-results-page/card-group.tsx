@@ -1,6 +1,6 @@
-import { useGameContext } from "@/app/providers/GameProvider";
 import AnswerCard from "./answer-card";
 import { Player } from "@/app/interfaces/player";
+
 
 interface CardGroupProps {
   players: Player[];
@@ -15,32 +15,6 @@ const CardGroup = ({
   increasePointsBy10,
   decreasePointsBy10
 }: CardGroupProps) => {
-
-  /**
-   * TODO: need to find a way to pass players to here in a way that is readable by the code in renderRow below.
-   * expecting {
-   *  playerName: 'alice',
-   *  answer: 'test response'
-   * 
-   * 
-   * but need to pass form
-   * {
-   *  playerName: 'alice',
-   *  answer: 'test response',
-   *  points: 0
-   * }
-   * 
-   *  and need to: find out how to update points in this new format
-   *  and how to change page (covered by currCatIdx??)
-   */
-
-
-
-  // const {
-  //     players,
-  //   } = useGameContext();
-  console.log("PLAYERS:", players);
-  console.log("curr cat indx", currCatIdx);
 
   // split into rows if more than 3 players
   const numCards = players.length;

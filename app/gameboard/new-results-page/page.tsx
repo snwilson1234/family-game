@@ -4,24 +4,13 @@ import { useState } from "react";
 import PButton from "../../components/PButton";
 import { useGameContext } from "../../providers/GameProvider";
 import CardGroup from "./card-group";
-import { Player } from "@/app/interfaces/player";
 
 
-interface NewResultsPageProps {
-  categories: string[];
-};
+const NewResultsPage = () => {
 
-const NewResultsPage = ({
-  categories,
-}: NewResultsPageProps) => {
-
-  // const [currCategory, setCurrCategory] = useState<string>(categories[0]);
-  // const []
   const [currCatIdx, setCurrCatIdx] = useState<number>(0);
   const [nextBtnEnabled, setNextBtnEnabled] = useState<boolean>(false);
   const [continueVisible, setContinueVisible] = useState<boolean>(true);
-
-  console.log("next btn enabled?", nextBtnEnabled);
 
   const {
     players,
@@ -31,14 +20,12 @@ const NewResultsPage = ({
   } = useGameContext();
 
   const increasePointsBy10 = (playerName: string) => {
-    let player = players.find((player, idx) => player.name === playerName);
-
+    const player = players.find((player, ) => player.name === playerName);
     updatePlayerPoints(player!, player!.points + 10);
   };
 
   const decreasePointsBy10 = (playerName: string) => {
-    let player = players.find((player, idx) => player.name === playerName);
-
+    const player = players.find((player, ) => player.name === playerName);
     updatePlayerPoints(player!, player!.points - 10);
   };
 
@@ -68,7 +55,7 @@ const NewResultsPage = ({
       updatePlayerPoints(player, player.points);
       // TODO: change to more reasonable number when actually playing the game
       if (player.points >= 50) {
-        // handleWinner(player);
+        // handleWinner(player); TODO: add back in winning, with new results setup
         setCurrCatIdx(0);
       }
 
@@ -79,15 +66,16 @@ const NewResultsPage = ({
       setContinueVisible(false);
     }
 
+    // TODO: find another way to distinguish results in which player(s) gain points vs dont
     // set the row colors based on answer similarities
     // setRowFocusColors(row_highlights);
   };
 
   const handleNextRound = () => {
+    // Reset the category index, enable/disable buttons, send next round signal to players.
     setCurrCatIdx(0);
     setNextBtnEnabled(false);
     setContinueVisible(true);
-    console.log("handling next round");
     nextRound();
   };
 
@@ -96,7 +84,6 @@ const NewResultsPage = ({
       <h1 className="text-6xl">{roundCategories[currCatIdx]}</h1>
       <CardGroup 
         players={players} 
-        numCards={players.length} 
         currCatIdx={currCatIdx}
         increasePointsBy10={increasePointsBy10}
         decreasePointsBy10={decreasePointsBy10} 
