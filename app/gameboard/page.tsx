@@ -1,10 +1,10 @@
 'use client';
 import { GameState } from "../states/gamestate";
-import ResultsPage from "./results-page/results-page";
 import CategorySelection from "./category-selection/category-selection";
 import ActiveRound from "./active-round/active-round";
 import EndPage from "./end-page/end-page";
 import { useGameContext } from "../providers/GameProvider";
+import NewResultsPage from "./new-results-page/page";
 
 
 const Gameboard = () => {
@@ -28,7 +28,7 @@ const Gameboard = () => {
         ${gameState === GameState.Results ? 'visible' : 'hidden'}
         `}
       >
-        <ResultsPage />
+        <NewResultsPage />
       </div>
       <div className={`
         ${gameState === GameState.End ? 'visible' : 'hidden'}`}

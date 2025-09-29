@@ -1,5 +1,4 @@
 import { Card } from "primereact/card";
-import PButton from "../components/PButton";
 import { Button } from "primereact/button";
 
 
@@ -8,14 +7,19 @@ interface AnswerCardProps {
   playerPoints: number;
   answer: string;
   size: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  increasePointsBy10: (playerName: string) => void;
+  decreasePointsBy10: (playerName: string) => void;
 };
 
 const AnswerCard = ({
-  playerName="Default",
-  playerPoints=0,
-  answer="Default answer",
-  size=2
+  playerName,
+  playerPoints,
+  answer,
+  size=2,
+  increasePointsBy10,
+  decreasePointsBy10
 }: AnswerCardProps) => {
+  console.log("ANSWER:", answer);
 
   const sizeClassMap: Record<number, string> = {
     2: "w-[540px]",
@@ -39,9 +43,9 @@ const AnswerCard = ({
 
   const header = (
     <div className={`flex flex-row px-4 items-center justify-between`}>
-      <Button severity="danger" label={"-"} />
+      <Button severity="danger" label={"-"} onClick={() => decreasePointsBy10(playerName)} />
       <p className="text-3xl">{playerPoints}</p>
-      <Button severity="success" label={"+"} />
+      <Button severity="success" label={"+"} onClick={() => increasePointsBy10(playerName)} />
     </div>
   );
 
