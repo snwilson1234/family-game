@@ -1,10 +1,12 @@
-import AnswerCard from "./answer-card";
+import AnswerCard, { UnderlineColor } from "./answer-card";
 import { Player } from "@/app/interfaces/player";
 
 
 interface CardGroupProps {
   players: Player[];
   currCatIdx: number;
+  // underlineArr: boolean[];
+  underlineColorArr: UnderlineColor[];
   increasePointsBy10: (playerName: string) => void;
   decreasePointsBy10: (playerName: string) => void;
 }
@@ -12,6 +14,7 @@ interface CardGroupProps {
 const CardGroup = ({
   players, 
   currCatIdx,
+  underlineColorArr,
   increasePointsBy10,
   decreasePointsBy10
 }: CardGroupProps) => {
@@ -50,6 +53,7 @@ const CardGroup = ({
               playerPoints={p.points}
               increasePointsBy10={increasePointsBy10}
               decreasePointsBy10={decreasePointsBy10}
+              underlineColor={underlineColorArr[idx]}
             />
           ))
         : rows.map((row, i) => <div key={i}>{renderRow(row, numCards)}</div>)}

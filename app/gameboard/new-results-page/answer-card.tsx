@@ -1,12 +1,15 @@
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 
+export type UnderlineColor = "red" | "green";
+
 
 interface AnswerCardProps {
   playerName: string;
   playerPoints: number;
   answer: string;
   size: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  underlineColor: UnderlineColor;
   increasePointsBy10: (playerName: string) => void;
   decreasePointsBy10: (playerName: string) => void;
 };
@@ -16,6 +19,7 @@ const AnswerCard = ({
   playerPoints,
   answer,
   size=2,
+  underlineColor,
   increasePointsBy10,
   decreasePointsBy10
 }: AnswerCardProps) => {
@@ -41,6 +45,18 @@ const AnswerCard = ({
     8: "text-3xl h-10",
   };
 
+  const getUnderlineClass = (underlineColor: UnderlineColor) => {
+    if (underlineColor === "red") {
+      return "decoration-red-400";
+    }
+    else if (underlineColor === "green") {
+      return "decoration-green-400";
+    }
+    else {
+      return "";
+    }
+  }
+
   const header = (
     <div className={`flex flex-row px-4 items-center justify-between`}>
       <Button severity="danger" label={"-"} onClick={() => decreasePointsBy10(playerName)} />
@@ -61,7 +77,7 @@ const AnswerCard = ({
       header={header}
       footer={footer}
     >
-      <p className={`text-center overflow-hidden text-ellipsis whitespace-nowrap h-10 w-full ${textClassMap[size]}`}>{answer}</p>
+      <p className={`underline ${getUnderlineClass(underlineColor)} text-center overflow-hidden text-ellipsis whitespace-nowrap h-10 w-full ${textClassMap[size]}`}>{answer}</p>
     </Card>  
   )
 };
