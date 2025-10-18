@@ -19,14 +19,23 @@ const PInputText = ({
   placeholder="Enter value...",
   onChange
 }: PInputTextProps) => {
+
+  const forceProper = (word: string) => {
+    let newWord = word.toLowerCase();
+    if (newWord.length >= 1) {
+      newWord = newWord[0].toUpperCase() + newWord.substring(1,newWord.length);
+    }
+    return newWord;
+  }
+
   return (
-      <InputText
-        name={name}
-        value={value}
-        maxLength={maxLength}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-      />
+    <InputText
+      name={name}
+      value={value}
+      maxLength={maxLength}
+      onChange={(e) => onChange(forceProper(e.target.value))}
+      placeholder={placeholder}
+    />
     )
 }
 
