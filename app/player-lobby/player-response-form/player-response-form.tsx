@@ -6,6 +6,7 @@ import { useGameContext } from "../../providers/GameProvider";
 const PlayerResponseForm = () => {
 
   const {
+          timeLeft,
           roundCategories,
           roundLetter,
           submitAnswers
@@ -17,7 +18,7 @@ const PlayerResponseForm = () => {
   const cleanAnswers = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("ANSWERS GIVEN WERE:", answers);
+    // console.log("ANSWERS GIVEN WERE:", answers);
 
     // TODO: improve this code
     let newAnswers = [...answers];
@@ -34,8 +35,8 @@ const PlayerResponseForm = () => {
     })
 
     if (!currFormValid) {
-      console.log("form not valid! Exiting...");
-      console.log("formValid:", formValid);
+      // console.log("form not valid! Exiting...");
+      // console.log("formValid:", formValid);
       setFormValid(false);
       return;
     }

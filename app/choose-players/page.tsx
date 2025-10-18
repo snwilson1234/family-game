@@ -9,7 +9,7 @@ const ChoosePlayers = () => {
   const [continueEnabled, setContinueEnabled] = useState<boolean | null>(false);
 
   const handlePlayerUpdate = (value: number) => {
-    console.log('players updated');
+    // console.log('players updated');
     setContinueEnabled(true);
     setPlayers(value);
   };

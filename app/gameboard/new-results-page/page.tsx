@@ -28,8 +28,8 @@ const NewResultsPage = () => {
   useEffect(() => {
     if (gameState != GameState.Results) { return; };
     
-    console.log("gamestate changed to results!");
-    console.log("curr cat idx:", currCatIdx);
+    // console.log("gamestate changed to results!");
+    // console.log("curr cat idx:", currCatIdx);
     const row_highlights : string[] = [];
     const answer_counts: {[key: string]: number} = {};
 

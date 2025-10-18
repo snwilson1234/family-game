@@ -23,7 +23,7 @@ const AnswerCard = ({
   increasePointsBy10,
   decreasePointsBy10
 }: AnswerCardProps) => {
-  console.log("ANSWER:", answer);
+  // console.log("ANSWER:", answer);
 
   const sizeClassMap: Record<number, string> = {
     2: "w-[540px]",
