@@ -36,7 +36,7 @@ const PlayerJoinForm = () => {
           name={"playerName"}  
           value={playerName}
           maxLength={15}
-          onChange={setPlayerName} 
+          onChange={setPlayerName}
         />
         <PButton label={"Join"} type="submit" />
       </form>
